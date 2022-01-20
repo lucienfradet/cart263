@@ -6,9 +6,15 @@ Lucien Cusson-Fradet
 
 "use strict";
 
+let canvas = {
+  w: 800,
+  h: 600
+};
+
+let city;
 
 /**
-Description of preload
+
 */
 function preload() {
 
@@ -16,9 +22,13 @@ function preload() {
 
 
 /**
-Description of setup
+
 */
 function setup() {
+  createCanvas(canvas.w, canvas.h, WEBGL);
+  background(0);
+
+  city = new City();
 
 }
 
@@ -27,5 +37,8 @@ function setup() {
 Description of draw()
 */
 function draw() {
-
+  city.adjustFrame();
+  for (let i = 0; i < city.buildings.length; i++) {
+    city.buildings[i].display();
+  }
 }
