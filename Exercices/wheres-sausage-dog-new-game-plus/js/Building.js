@@ -1,3 +1,5 @@
+//Buildings/Terrain objects
+
 class Building {
   constructor({
     x,
@@ -18,12 +20,12 @@ class Building {
     this.colorA = colorA;
     this.colorB = colorB;
 
-    this.posInitial = {
+    this.posInitial = { //Stocking the value before the start shaking so they return to the initial position
       x: this.x,
       y: this.y
     }
 
-    this.dead = false;
+    this.dead = false; //True when the building has been digged out by the Selector
   }
 
   display() {
@@ -37,7 +39,7 @@ class Building {
 
   update() {
     if (mouseIsPressed) {
-      this.vibratoum(); //VIBRATOUUUUM
+      this.vibratoum(); //VIBRATOUUUUM!!!!!!!!!
     }
     else {
       this.x = this.posInitial.x;
@@ -45,11 +47,11 @@ class Building {
     }
 
     if (this.dead) {
-      this.z += 15;
+      this.z += 15; //Ships the damn block out in the sky. //Would be interesting to remove them from the array afterwards but heh...
     }
   }
 
-  vibratoum() {
+  vibratoum() { //VIBRATOOOOOOOUUUM SACRAMENT! //shakes building and stuff. great classic.
     //if (!this.dead) {
       this.x += random(-5, 5);
       this.x = constrain(this.x, this.posInitial.x - 5, this.posInitial.x + 5);
@@ -60,6 +62,7 @@ class Building {
 
   }
 
+  //see description in script.js
   mousePressed() {
     this.posInitial.x = this.x;
     this.posInitial.y = this.y;

@@ -1,3 +1,5 @@
+//Object that needs to be digged out of the god damn dirt and progres to the next 'pseudo' level
+
 class Treasure {
   constructor() {
     this.img = img.clown;
@@ -18,6 +20,8 @@ class Treasure {
     pop();
   }
 
+  //Checks collision with the buildings and whether or not the the treasure is free.
+  //This whole thing doesn't work as intended but I can't spend more time on it.
   checkCollision() {
     let overlap = false;
 
@@ -46,13 +50,14 @@ class Treasure {
 
   }
 
+  //Visual Qs for when the treasure is freeded
   freedom() {
     this.size += random(0, 5);
     this.rotationSpeed += 0.01;
     this.z += 0.1;
 
     if (this.size > 500) {
-      resetCity();
+      resetCity(); //Resets the city using size as a counter
     }
   }
 }
