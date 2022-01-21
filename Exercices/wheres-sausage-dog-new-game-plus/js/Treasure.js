@@ -1,10 +1,10 @@
 class Treasure {
   constructor() {
     this.img = img.clown;
-    this.x = random(0, city.cityDimension);
-    this.y = random(0, city.cityDimension);
-    this.z = 25;
     this.size = 150;
+    this.x = random(0, city.cityDimension - this.size);
+    this.y = random(0, city.cityDimension - this.size);
+    this.z = 25;
     this.isFree = false;
   }
 
@@ -31,11 +31,11 @@ class Treasure {
         }
           //overlapping
         else if (!build.dead) { //check if the building is still active
-          overlap = false; //it is so start the loop again
+          //overlap = false; //it is so start the loop again
           break;
         }
       }
-        //no overlapping active buildings we did it
+        //no overlapping/active buildings we did it
     }
     this.isFree = true;
     console.log('ITFUCKINGWORKS');

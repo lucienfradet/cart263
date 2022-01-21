@@ -15,7 +15,7 @@ class Selector {
     fill(204, 0, 112);
     translate(this.x, this.y, this.z);
     if (mouseIsPressed) {
-      sphere(this.size * 2);
+      sphere(this.size * 4);
     }
     else {
       sphere(this.size);
@@ -24,11 +24,11 @@ class Selector {
   }
 
   update() {
-    this.x = map(mouseX, 0, width, 0, city.grid[city.grid.length - 1].x);
-    this.x = constrain(this.x, city.grid[0].x, city.grid[city.grid.length - 1].x);
+    this.x = map(mouseX, 0, width, 0, city.grid[city.grid.length - 1].x + city.buildings[0].baseWidth);
+    this.x = constrain(this.x, city.grid[0].x, city.grid[city.grid.length - 1].x + city.buildings[0].baseWidth);
 
-    this.y = map(mouseY, 0, height, 0, city.grid[city.grid.length - 1].y);
-    this.y = constrain(this.y, city.grid[0].y, city.grid[city.grid.length - 1].y);
+    this.y = map(mouseY, 0, height, 0, city.grid[city.grid.length - 1].y + city.buildings[0].baseWidth);
+    this.y = constrain(this.y, city.grid[0].y, city.grid[city.grid.length - 1].y + city.buildings[0].baseWidth);
 
     this.dist = [];
     for (let i = 0; i < city.buildings.length; i++) {
