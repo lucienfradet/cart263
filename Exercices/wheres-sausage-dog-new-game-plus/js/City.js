@@ -3,7 +3,7 @@
 class City {
   constructor() {
     this.cityDimension = 800;
-    this.numRow = 75;
+    this.numRow = 25;
     this.numCol = this.numRow;
     this.cellWidth = this.cityDimension / this.numRow;
     this.cellHeight = this.cityDimension / this.numCol;

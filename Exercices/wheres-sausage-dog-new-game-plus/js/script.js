@@ -17,14 +17,6 @@ let selector;
 /**
 
 */
-function preload() {
-
-}
-
-
-/**
-
-*/
 function setup() {
   createCanvas(canvas.w, canvas.h, WEBGL);
   background(0);
@@ -37,7 +29,7 @@ function setup() {
 
 
 /**
-Description of draw()
+
 */
 function draw() {
   background(0);
@@ -45,8 +37,19 @@ function draw() {
 
   for (let i = 0; i < city.buildings.length; i++) {
     city.buildings[i].display();
+    city.buildings[i].update();
+
+    if (mouseIsPressed && selector.selected === i) {
+      city.buildings[i].dead = true;
+    }
   }
 
   selector.display();
   selector.update();
+}
+
+function mousePressed() {
+  for (let i = 0; i < city.buildings.length; i++) {
+    city.buildings[i].mousePressed();
+  }
 }

@@ -1,11 +1,12 @@
 class Selector {
   constructor() {
-    this.size = 10;
+    this.size = 5;
     this.x = undefined;
     this.y = undefined;
     this.z = undefined;
 
     this.dist = [];
+    this.selected = undefined;
   }
 
   display() {
@@ -13,13 +14,21 @@ class Selector {
     noStroke();
     fill(204, 0, 112);
     translate(this.x, this.y, this.z);
-    sphere(this.size);
+    if (mouseIsPressed) {
+      sphere(this.size * 2);
+    }
+    else {
+      sphere(this.size);
+    }
     pop();
   }
 
   update() {
     this.x = map(mouseX, 0, width, 0, city.grid[city.grid.length - 1].x);
+    this.x = constrain(this.x, city.grid[0].x, city.grid[city.grid.length - 1].x);
+
     this.y = map(mouseY, 0, height, 0, city.grid[city.grid.length - 1].y);
+    this.y = constrain(this.y, city.grid[0].y, city.grid[city.grid.length - 1].y);
 
     this.dist = [];
     for (let i = 0; i < city.buildings.length; i++) {
@@ -37,6 +46,7 @@ class Selector {
         smallest = i;
       }
     }
+    this.selected = smallest;
     return smallest;
   }
 
