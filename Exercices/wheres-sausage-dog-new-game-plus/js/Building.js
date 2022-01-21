@@ -5,7 +5,9 @@ class Building {
     z,
     baseWidth,
     baseHeight,
-    h
+    h,
+    colorA,
+    colorB
   }) {
     this.x = x;
     this.y = y;
@@ -13,12 +15,14 @@ class Building {
     this.baseWidth = baseWidth;
     this.baseHeight = baseHeight;
     this.h = h;
+    this.colorA = colorA;
+    this.colorB = colorB;
   }
 
   display() {
     push();
-    //noStroke();
-    //fill(random(200, 255));
+    noStroke();
+    fill(this.colorA, this.colorB, this.colorA);
     translate(this.x, this.y, this.z);
     box(this.baseWidth,  this.baseHeight, this.h);
     pop();
