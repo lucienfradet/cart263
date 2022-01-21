@@ -3,7 +3,7 @@
 class City {
   constructor() {
     this.cityDimension = 800;
-    this.numRow = 25;
+    this.numRow = 5;
     this.numCol = this.numRow;
     this.cellWidth = this.cityDimension / this.numRow;
     this.cellHeight = this.cityDimension / this.numCol;
@@ -16,7 +16,7 @@ class City {
     this.pNoise = {
       xOff:0,
       yOff:0,
-      increment: 0.08
+      increment: 0.2
     }
     this.buildingHeight = {
       min: 25,
@@ -26,6 +26,8 @@ class City {
     this.createGrid();
     this.createBulding();
 
+    console.log(this.buildings);
+
   }
 
   createGrid() {
@@ -33,8 +35,8 @@ class City {
       this.pNoise.xOff = 0;
       for (let y = 0; y < this.numCol; y++) {
         let tile = {
-          x: x * this.cellHeight,
-          y: y * this.cellWidth,
+          x: y * this.cellHeight,
+          y: x * this.cellWidth,
           noise: noise(this.pNoise.xOff, this.pNoise.yOff, this.pNoise.zOff)
         }
         this.grid.push(tile);

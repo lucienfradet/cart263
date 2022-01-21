@@ -6,13 +6,22 @@ Lucien Cusson-Fradet
 
 "use strict";
 
-let canvas = {
+const canvas = {
   w: 800,
   h: 600
 };
 
 let city;
 let selector;
+let treasure;
+
+let img = {
+  clown: undefined
+}
+
+function preload() {
+  img.clown = loadImage('assets/images/clown.png');
+}
 
 /**
 
@@ -24,6 +33,8 @@ function setup() {
 
   city = new City();
   selector = new Selector();
+  treasure = new Treasure();
+  console.log(treasure);
 
 }
 
@@ -36,16 +47,21 @@ function draw() {
   city.adjustFrame();
 
   for (let i = 0; i < city.buildings.length; i++) {
-    city.buildings[i].display();
-    city.buildings[i].update();
+    let build = city.buildings[i];
+    build.display();
+    build.update();
 
     if (mouseIsPressed && selector.selected === i) {
-      city.buildings[i].dead = true;
+      build.dead = true;
     }
   }
 
   selector.display();
   selector.update();
+  treasure.display();
+  if (!treasure.isFree) {
+    treasure.checkCollision();
+  }
 }
 
 function mousePressed() {
