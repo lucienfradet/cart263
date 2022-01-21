@@ -2,10 +2,12 @@
 
 class City {
   constructor() {
-    this.numRow = 100;
-    this.numCol = 75;
-    this.cellWidth = canvas.w / this.numRow;
-    this.cellHeight = canvas.h / this.numCol;
+    this.cityDimension = 800;
+    this.numRow = 5;
+    this.numCol = this.numRow;
+    this.cellWidth = this.cityDimension / this.numRow;
+    this.cellHeight = this.cityDimension / this.numCol;
+    this.streetWidth = this.cellWidth / 10; //arbitrary ratio according to the building size
 
     this.grid = [];
     this.buildings = [];
@@ -33,9 +35,9 @@ class City {
         x: undefined,
         y: undefined,
         z: undefined,
-        baseWidth: this.cellWidth,
-        baseHeight: this.cellHeight,
-        h: random(15, 75)
+        baseWidth: this.cellWidth - this.streetWidth,
+        baseHeight: this.cellHeight -this.streetWidth,
+        h: random(15, 100)
       }
       //offset so x and y relate to the upper left corner of the box and match the grid
       config.x = tile.x + config.baseWidth/2;
@@ -48,8 +50,8 @@ class City {
   }
 
   adjustFrame() {
-    translate(-width/2, -height/4, -400);
-    rotateX(PI/3);
+    translate(-width/2, -height/2, -650);
+    rotateX(PI/3.5);
   }
 
 }
