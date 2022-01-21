@@ -3,14 +3,25 @@
 class City {
   constructor() {
     this.cityDimension = 800;
-    this.numRow = 5;
+    this.numRow = 60;
     this.numCol = this.numRow;
     this.cellWidth = this.cityDimension / this.numRow;
     this.cellHeight = this.cityDimension / this.numCol;
     this.streetWidth = this.cellWidth / 10; //arbitrary ratio according to the building size
 
     this.grid = [];
+
     this.buildings = [];
+    this.pNoise = {
+      xOff:0,
+      yOff:0,
+      increment: 0.08
+    }
+    this.buildingHeight = {
+      min: 25,
+      max: 150
+    }
+
     this.createGrid();
     this.createBulding();
 
@@ -18,13 +29,17 @@ class City {
 
   createGrid() {
     for (let x = 0; x < this.numRow; x++) {
+      this.pNoise.xOff = 0;
       for (let y = 0; y < this.numCol; y++) {
         let tile = {
           x: x * this.cellHeight,
-          y: y * this.cellWidth
+          y: y * this.cellWidth,
+          noise: noise(this.pNoise.xOff, this.pNoise.yOff, this.pNoise.zOff)
         }
         this.grid.push(tile);
+        this.pNoise.xOff += this.pNoise.increment;
       }
+      this.pNoise.yOff += this.pNoise.increment;
     }
   }
 
@@ -37,7 +52,7 @@ class City {
         z: undefined,
         baseWidth: this.cellWidth - this.streetWidth,
         baseHeight: this.cellHeight -this.streetWidth,
-        h: random(15, 100)
+        h: map(tile.noise, 0, 1, this.buildingHeight.min, this.buildingHeight.max)
       }
       //offset so x and y relate to the upper left corner of the box and match the grid
       config.x = tile.x + config.baseWidth/2;
