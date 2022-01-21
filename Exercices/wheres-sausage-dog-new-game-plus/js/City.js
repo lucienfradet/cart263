@@ -1,13 +1,13 @@
 //City layout
 
 class City {
-  constructor() {
+  constructor(size) {
     this.cityDimension = 800;
-    this.numRow = 5;
+    this.numRow = size;
     this.numCol = this.numRow;
     this.cellWidth = this.cityDimension / this.numRow;
     this.cellHeight = this.cityDimension / this.numCol;
-    this.streetWidth = this.cellWidth / 100; //arbitrary ratio according to the building size
+    this.streetWidth = 0; //arbitrary ratio according to the building size
     this.rotation = 0;
 
     this.grid = [];
@@ -25,9 +25,6 @@ class City {
 
     this.createGrid();
     this.createBulding();
-
-    console.log(this.buildings);
-
   }
 
   createGrid() {

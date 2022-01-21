@@ -2,23 +2,26 @@ class Treasure {
   constructor() {
     this.img = img.clown;
     this.size = 150;
-    this.x = random(0, city.cityDimension - this.size);
-    this.y = random(0, city.cityDimension - this.size);
+    this.x = random(0 + this.size/2, city.cityDimension - this.size/2);
+    this.y = random(0 + this.size/2, city.cityDimension - this.size/2);
     this.z = 25;
+    this.rotationSpeed = 0;
     this.isFree = false;
   }
 
   display() {
     push();
-    translate(0, 0, this.z);
+    translate(this.x, this.y, this.z);
+    rotateZ(this.rotationSpeed);
     imageMode(CENTER);
-    image(this.img, this.x, this.y, this.size, this.size);
+    image(this.img, 0, 0, this.size, this.size);
     pop();
   }
 
   checkCollision() {
     let overlap = false;
 
+    loop1:
     while (!overlap) {
       overlap = true; //prendre pour acquis que overlap
       for (let i = 0; i < city.buildings.length; i++) {
@@ -31,17 +34,25 @@ class Treasure {
         }
           //overlapping
         else if (!build.dead) { //check if the building is still active
-          //overlap = false; //it is so start the loop again
-          break;
+          overlap = false; //it is so start the loop again
+          break loop1;
+        }
+        else {
+          this.isFree = true;
         }
       }
         //no overlapping/active buildings we did it
     }
-    this.isFree = true;
-    console.log('ITFUCKINGWORKS');
+
   }
 
-  isFree() {
-    console.log(ITFUCKINGWORKS);
+  freedom() {
+    this.size += random(0, 5);
+    this.rotationSpeed += 0.01;
+    this.z += 0.1;
+
+    if (this.size > 500) {
+      resetCity();
+    }
   }
 }

@@ -11,6 +11,7 @@ const canvas = {
   h: 600
 };
 
+let citySize = 10;
 let city;
 let selector;
 let treasure;
@@ -31,11 +32,10 @@ function setup() {
   background(0);
   noCursor();
 
-  city = new City();
+
+  city = new City(citySize);
   selector = new Selector();
   treasure = new Treasure();
-  console.log(treasure);
-
 }
 
 
@@ -62,10 +62,20 @@ function draw() {
   if (!treasure.isFree) {
     treasure.checkCollision();
   }
+  else {
+    treasure.freedom();
+  }
 }
 
 function mousePressed() {
   for (let i = 0; i < city.buildings.length; i++) {
     city.buildings[i].mousePressed();
   }
+}
+
+function resetCity() {
+  citySize += 10;
+  city = new City(citySize);
+  selector = new Selector();
+  treasure = new Treasure();
 }
