@@ -25,29 +25,27 @@ class Treasure {
   checkCollision() {
     let overlap = false;
 
-    loop1:
-    while (!overlap) {
-      overlap = true; //prendre pour acquis que overlap
-      for (let i = 0; i < city.buildings.length; i++) {
-        let build = city.buildings[i];
-        if (build.x - build.baseWidth/2 >= this.x + this.size/2 //building to the right
-          || build.y - build.baseWidth/2 >= this.y + this.size/2 //building on top
-          || build.x + build.baseWidth/2 <= this.x - this.size/2 //building to the left
-          || build.y + build.baseWidth/2 <= this.y - this.size/2) { //building under
-          //not overlapping
-        }
-          //overlapping
-        else if (!build.dead) { //check if the building is still active
-          overlap = false; //it is so start the loop again
-          break loop1;
-        }
-        else {
-          this.isFree = true;
-        }
+    //FIND ONE COUNTER ARGUMENT AND REACT AFTER DAMNN (falsification) !!!
+      //prendre pour acquis que overlap
+    for (let i = 0; i < city.buildings.length; i++) {
+      let build = city.buildings[i];
+      if (build.x - build.baseWidth/2 >= this.x + this.size/2 //building to the right
+        || build.y - build.baseWidth/2 >= this.y + this.size/2 //building on top
+        || build.x + build.baseWidth/2 <= this.x - this.size/2 //building to the left
+        || build.y + build.baseWidth/2 <= this.y - this.size/2) { //building under
+        //not overlapping
       }
-        //no overlapping/active buildings we did it
+        //overlapping
+      else if (!build.dead) { //check if the building is still active
+        overlap = true; //it is so start the loop again
+        break;
+      }
     }
 
+    //no overlapping/active buildings we did it
+    if (!overlap) {
+      this.isFree = true;
+    }
   }
 
   //Visual Qs for when the treasure is freeded
