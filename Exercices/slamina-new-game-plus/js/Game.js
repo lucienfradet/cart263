@@ -1,10 +1,12 @@
+//Deals with the Game part of the program
+
 class Game extends State {
   constructor() {
     super();
-    this.reset = false;
-    this.counter = 0;
-    this.rightAnswers = 0;
-    this.voyons;
+    this.reset = false; //Bool so sounds and event happen only once
+    this.counter = 0; //Delay before going to the next word
+    this.rightAnswers = 0; //Right answers counter
+    this.voyons; //Stores Taunts for the player
 
     animal = new Animaux();
   }
@@ -15,7 +17,7 @@ class Game extends State {
     this.displayFace();
     this.recommence();
 
-    if (this.reset) {
+    if (this.reset) { //If guessed right, start timer
       this.counter++;
     }
 
@@ -31,7 +33,7 @@ class Game extends State {
     else {
       fill(255, 0, 0);
       if (!this.textDisplay && essai !== '') {
-        this.voyons = new Discouragements();
+        this.voyons = new Discouragements(); //Generate a new taunt from the list and play it
         speak(this.voyons.selection, "French Canadian Male");
       }
     }
@@ -47,6 +49,7 @@ class Game extends State {
     speak(animal.reverse, "French Canadian Male");
   }
 
+  //Displays score
   displayPoints() {
     push();
     fill(255);
@@ -57,6 +60,7 @@ class Game extends State {
     pop();
   }
 
+  //Display animated dumb f*** that speaks and sh**
   displayFace() {
     push();
     imageMode(CENTER);
@@ -91,6 +95,7 @@ class Game extends State {
     pop();
   }
 
+  //resets the game and preps the next word
   recommence() {
     if (this.counter > 150 && this.reset) {
       this.reset = false;

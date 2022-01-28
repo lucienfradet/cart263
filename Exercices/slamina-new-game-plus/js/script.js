@@ -10,6 +10,7 @@ author, and this description to match your project!
 //module aliases
 let speak = responsiveVoice.speak;
 
+//Sounds, fonts, images
 let snd = {
   ding: undefined
 }
@@ -29,13 +30,16 @@ let img = {
   mouth4: undefined
 }
 
+//State of the program
 let state;
 
+//holds the animal objet
 let animal = undefined;
+//holds the player's guess
 let essai = '';
 
 /**
-Description of preload
+Loads Sound and images
 */
 function preload() {
   img.face1 = loadImage('assets/images/face1.png');
@@ -52,7 +56,7 @@ function preload() {
 
 
 /**
-Description of setup
+Starts the annyang.js voice recognition and sets the State of the program
 */
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -74,13 +78,14 @@ function setup() {
 
 
 /**
-Description of draw()
+Updates the state
 */
 function draw() {
   background(0);
   state.update();
 }
 
+//Displays Instructions for the game
 function displayIntructions() {
   push();
   fill(255);
@@ -97,6 +102,7 @@ Appuies sur "p" pour passer au prochain animal :O`, 50, height/12);
   pop();
 }
 
+//Stores the player's guess in the essai variable
 function devinetteAnimal(devinette) {
   state.textDisplay = false;
   let guess = devinette.toLowerCase();
@@ -104,6 +110,7 @@ function devinetteAnimal(devinette) {
   console.log(essai);
 }
 
+//Reverses strings and return 'em
 function reverseString(str) {
   let splitString = str.split("");
   let reverseArray = splitString.reverse();
