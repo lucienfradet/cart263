@@ -1,9 +1,8 @@
 /**
-Title of Project
-Author Name
+Animal Guesser
+Lucien Cusson-Fradet
 
-This is a template. You must fill in the title,
-author, and this description to match your project!
+Pretty simple and self explanatory this one I'm affraid.
 */
 
 "use strict";
