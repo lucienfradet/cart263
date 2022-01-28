@@ -7,6 +7,7 @@ class FirstInteraction extends State {
     push();
     fill(255);
     textSize(32);
+    textFont(font.yoster);
     textAlign(CENTER, CENTER);
     text("appuyez sur une touche", width/2, height/2);
     pop();

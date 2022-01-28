@@ -14,6 +14,10 @@ let snd = {
   ding: undefined
 }
 
+let font = {
+  yoster: undefined
+}
+
 let state;
 
 let animal = undefined;
@@ -24,6 +28,7 @@ Description of preload
 */
 function preload() {
   snd.ding = loadSound('assets/sounds/ding.wav');
+  font.yoster = loadFont('assets/fonts/yoster.ttf');
 }
 
 
@@ -58,12 +63,15 @@ function displayIntructions() {
   push();
   fill(255);
   textSize(32);
+  textFont(font.yoster);
   textAlign();
-  text(`Quand tu appuit sur une touche,
-le nom d'un animal est dicter à l'envers.
+  text(`Quand tu appuies sur une touche,
+le nom d'un animal est dicté à l'envers.
 Écoute comme du monde,
 prend le temps qu'y faudra pis quand t'es prêt,
-dit: "Je pense que c'est un/une [...]" dans ton micro!`, 50, height/6);
+dit: "Je pense que c'est un,une ..." dans ton micro!
+
+Appuies sur "p" pour passer au prochain animal :O`, 50, height/6);
   pop();
 }
 
