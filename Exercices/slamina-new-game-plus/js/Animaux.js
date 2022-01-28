@@ -1,3 +1,5 @@
+//Contains the list of animals for the guessing game
+
 const animaux = [
   "oryctérope",
   "alligator",
@@ -137,6 +139,7 @@ const animaux = [
       //Traduit avec www.DeepL.com/Translator (version gratuite)
 ]
 
+//picks a random string from the animaux array and reverse it for the guessing game
 class Animaux {
   constructor() {
     this.selection = animaux[Math.floor(Math.random()*animaux.length)];

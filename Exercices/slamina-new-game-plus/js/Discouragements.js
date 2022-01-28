@@ -1,3 +1,5 @@
+//Array containing taunts to be used when the player guesses incorrectly
+
 const insultes = [
   `voyons! tu peux faire mieux`,
   `tu m'niaise tu!?`,

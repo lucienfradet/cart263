@@ -12,6 +12,7 @@ class Game extends State {
   update() {
     displayIntructions();
     this.displayPoints();
+    this.displayFace();
     this.recommence();
 
     if (this.reset) {
@@ -56,6 +57,40 @@ class Game extends State {
     pop();
   }
 
+  displayFace() {
+    push();
+    imageMode(CENTER);
+    if (responsiveVoice.isPlaying()) {
+      if (frameCount % 40 < 20) {
+        image(img.mouth1, width/4*3, height/2);
+      }
+      else if (frameCount % 30 < 20) {
+        image(img.mouth2, width/4*3, height/2);
+      }
+      else if (frameCount % 20 < 20) {
+        image(img.mouth3, width/4*3, height/2);
+      }
+      else if (frameCount % 10 < 20) {
+        image(img.mouth4, width/4*3, height/2);
+      }
+    }
+    else {
+      if (frameCount % 40 < 20) {
+        image(img.face1, width/4*3, height/2);
+      }
+      else if (frameCount % 30 < 20) {
+        image(img.face2, width/4*3, height/2);
+      }
+      else if (frameCount % 20 < 20) {
+        image(img.face3, width/4*3, height/2);
+      }
+      else if (frameCount % 10 < 20) {
+        image(img.face4, width/4*3, height/2);
+      }
+    }
+    pop();
+  }
+
   recommence() {
     if (this.counter > 150 && this.reset) {
       this.reset = false;
@@ -63,10 +98,12 @@ class Game extends State {
       essai = '';
       animal = new Animaux();
     }
-
   }
 
   keyPressed() {
+    if (responsiveVoice.isPlaying()) {
+      responsiveVoice.cancel();
+    }
     if (keyCode !== 80) {
       this.sayTheName();
     }
