@@ -76,6 +76,7 @@ Appuies sur "p" pour passer au prochain animal :O`, 50, height/6);
 }
 
 function devinetteAnimal(devinette) {
+  state.textDisplay = false;
   let guess = devinette.toLowerCase();
   essai = guess;
   console.log(essai);

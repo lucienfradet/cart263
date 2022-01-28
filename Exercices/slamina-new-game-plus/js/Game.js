@@ -4,6 +4,7 @@ class Game extends State {
     this.reset = false;
     this.counter = 0;
     this.rightAnswers = 0;
+    this.voyons;
 
     animal = new Animaux();
   }
@@ -11,11 +12,11 @@ class Game extends State {
   update() {
     displayIntructions();
     this.displayPoints();
+    this.recommence();
 
     if (this.reset) {
       this.counter++;
     }
-    this.recommence();
 
     push();
     if (essai === animal.selection) {
@@ -28,11 +29,16 @@ class Game extends State {
     }
     else {
       fill(255, 0, 0);
+      if (!this.textDisplay && essai !== '') {
+        this.voyons = new Discouragements();
+        speak(this.voyons.selection, "French Canadian Male");
+      }
     }
     textSize(32);
     textAlign(CENTER, CENTER);
     textFont(font.yoster);
     text(essai, width/2, height/2);
+    this.textDisplay = true;
     pop();
   }
 
@@ -51,7 +57,7 @@ class Game extends State {
   }
 
   recommence() {
-    if (this.counter > 150) {
+    if (this.counter > 150 && this.reset) {
       this.reset = false;
       this.counter = 0;
       essai = '';
