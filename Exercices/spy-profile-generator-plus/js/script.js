@@ -1,6 +1,16 @@
 /**
 Spy profile generator exercice
 Lucien Cusson-Fradet
+
+*These were implemented while doing the activity*
+- added more engaging password system
+- added combination of data for the spy Alias
+- added the ability to delete the profile using the NUMPAD 9 key
+
+- add better visuals
+- add multiple profiles
+- allow for the weapon description to be displayed on clic
+- ask for name and password 
 */
 
 "use strict";
