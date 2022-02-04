@@ -81,7 +81,7 @@ class Game extends State {
       fill(255);
       text(descName, this.textPosX, height/2 + 2 * height/16);
       fill(0, 255, 0);
-      text(spyProfile.weaponDescription, this.textPosX, height/2 + height/7 + 15, width - this.textPosX);
+      text(spyProfile.weaponDescription, this.textPosX, height/2 + height/7 + 15, width - this.textPosX * 2);
     }
     pop();
   }
