@@ -10,7 +10,7 @@ Lucien Cusson-Fradet
 - add better visuals
 - add multiple profiles
 - allow for the weapon description to be displayed on clic
-- ask for name and password 
+- ask for name and password
 */
 
 "use strict";
@@ -25,6 +25,8 @@ let scientistData;
 let font = {
   yoster: undefined
 }
+
+let spyProfiles = [];
 
 let spyProfile = {
   realName: undefined,
@@ -52,16 +54,9 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  let loadedDataString = localStorage.getItem(DATA_NAME);
-  if (loadedDataString != null) {
-    spyProfile = JSON.parse(loadedDataString);
-    if (checkPassword()) {
-      state = new Game();
-    }
-  }
-  else {
-    state = new Initialisation();
-  }
+  spyProfiles = JSON.parse(localStorage.getItem(DATA_NAME));
+  console.log(spyProfiles);
+  state = new Initialisation();
 }
 
 

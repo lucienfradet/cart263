@@ -1,6 +1,10 @@
 class Game extends State {
-  constructor() {
+  constructor({accountJustCreated}) {
     super();
+    this.accountJustCreated = accountJustCreated;
+    if (!this.accountJustCreated) {
+      checkPassword();
+    }
   }
 
   update() {

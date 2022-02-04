@@ -45,8 +45,30 @@ class Initialisation extends State {
       this.usersName = this.usersName.slice(0, this.usersName.length - 1);
     }
     else if (keyCode === ENTER) {
-      this.generateSpyProfile();
-      state = new Game();
+      let repertoire = this.checkProfileNames(this.usersName);
+      if (repertoire !== undefined) {
+        this.loadProfile(repertoire);
+        state = new Game({accountJustCreated: false});
+      }
+      else {
+        this.generateSpyProfile();
+      }
+    }
+  }
+
+  loadProfile(i) {
+    spyProfile = spyProfiles[i];
+  }
+
+  checkProfileNames(name) {
+    if (spyProfiles != null) {
+      for (let i = 0; i < spyProfiles.length; i++) {
+        let profileName = spyProfiles[i].realName;
+        if (name === profileName) {
+          return i;
+        }
+      }
+      return undefined;
     }
   }
 
@@ -61,7 +83,12 @@ class Initialisation extends State {
       password: this.setPassword()
     }
     spyProfile.weaponDescription = religionData[spyProfile.secretWeapon];
-    this.storeData(spyProfile);
+    spyProfiles = spyProfiles || []; //check if array is null and create one if so
+    spyProfiles.push(spyProfile);
+    console.log(spyProfiles);
+    this.storeData(spyProfiles);
+
+    state = new Game({accountJustCreated: true});
   }
 
   storeData(data) {
