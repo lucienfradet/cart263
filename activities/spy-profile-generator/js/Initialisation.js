@@ -45,24 +45,23 @@ class Initialisation extends State {
       this.usersName = this.usersName.slice(0, this.usersName.length - 1);
     }
     else if (keyCode === ENTER) {
-
-      let aliasPart1 = random(objectsData.objects);
-      let aliasPart2 = random(scientistData.scientists);
-
-      spyProfile = {
-        realName: this.usersName,
-        alias: aliasPart1 + ' ' + aliasPart2,
-        secretWeapon: random(Object.keys(religionData)),
-        password: this.setPassword()
-      }
-      spyProfile.weaponDescription = religionData[spyProfile.secretWeapon];
-      console.log(spyProfile);
-
-      this.storeData(spyProfile);
-      this.setPassword();
-
+      this.generateSpyProfile();
       state = new Game();
     }
+  }
+
+  generateSpyProfile() {
+    let aliasPart1 = random(objectsData.objects);
+    let aliasPart2 = random(scientistData.scientists);
+
+    spyProfile = {
+      realName: this.usersName,
+      alias: aliasPart1 + ' ' + aliasPart2,
+      secretWeapon: random(Object.keys(religionData)),
+      password: this.setPassword()
+    }
+    spyProfile.weaponDescription = religionData[spyProfile.secretWeapon];
+    this.storeData(spyProfile);
   }
 
   storeData(data) {
@@ -71,16 +70,16 @@ class Initialisation extends State {
   }
 
   setPassword() {
-    let password = prompt("Entrez un nouveau mot de passe");
-    let passwordConfirmation = prompt("Confirmez votre mot de passe");
+    while (true) {
+      let password = prompt("Entrez un nouveau mot de passe");
+      let passwordConfirmation = prompt("Confirmez votre mot de passe");
 
-    if (password === passwordConfirmation) {
-      return password;
-      break setPassword;
-    }
-    else {
-      alert('Les mots de passes ne correspondent pas!')
-      this.setPassword();
+      if (password === passwordConfirmation) {
+        return password;
+      }
+      else {
+        alert('Les mots de passes ne correspondent pas!')
+      }
     }
   }
 }

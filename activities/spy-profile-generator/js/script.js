@@ -77,8 +77,13 @@ function keyPressed() {
 }
 
 function checkPassword() {
-  let password = prompt("Entrez votre mot de passe");
-  if (password === spyProfile.password) {
-    return true;
+  while (true) {
+    let password = prompt("Entrez votre mot de passe");
+    if (password === spyProfile.password) {
+      return true;
+    }
+    else {
+      alert('Mot de passe incorrect');
+    }
   }
 }
