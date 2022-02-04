@@ -20,6 +20,8 @@ let spyProfile = {
   realName: undefined,
   Alias: undefined,
   secretWeapon: undefined,
+  weaponDescription: undefined,
+  password: undefined
 };
 
 /**
@@ -40,9 +42,12 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  let data = localStorage.getItem(DATA_NAME);
-  if (data != null) {
-    state = new Game();
+  let loadedDataString = localStorage.getItem(DATA_NAME);
+  if (loadedDataString != null) {
+    spyProfile = JSON.parse(loadedDataString);
+    if (checkPassword()) {
+      state = new Game();
+    }
   }
   else {
     state = new Initialisation();
@@ -65,5 +70,15 @@ function keyTyped() {
 }
 
 function keyPressed() {
+  if (keyCode === 105) {
+    localStorage.removeItem(DATA_NAME);
+  }
   state.keyPressed();
+}
+
+function checkPassword() {
+  let password = prompt("Entrez votre mot de passe");
+  if (password === spyProfile.password) {
+    return true;
+  }
 }
