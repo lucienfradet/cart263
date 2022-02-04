@@ -92,3 +92,7 @@ function checkPassword() {
     }
   }
 }
+
+function mousePressed() {
+  state.mousePressed();
+}
