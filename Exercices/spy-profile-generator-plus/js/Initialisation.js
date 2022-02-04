@@ -1,7 +1,9 @@
+//Deals with login screen/ registration if an unknown name is entered
+
 class Initialisation extends State {
   constructor() {
     super();
-    this.usersName = '';
+    this.usersName = ''; //as it's being typed
   }
 
   update() {
@@ -45,21 +47,23 @@ class Initialisation extends State {
       this.usersName = this.usersName.slice(0, this.usersName.length - 1);
     }
     else if (keyCode === ENTER) {
-      let repertoire = this.checkProfileNames(this.usersName);
+      let repertoire = this.checkProfileNames(this.usersName); //check if the name matches any of the saved profiles
       if (repertoire !== undefined) {
         this.loadProfile(repertoire);
-        state = new Game({accountJustCreated: false});
+        state = new Game({accountJustCreated: false}); //YES! start load the next screen but ask for the password
       }
       else {
-        this.generateSpyProfile();
+        this.generateSpyProfile(); //NO! create a new profile
       }
     }
   }
 
+  //load a profile at a perticular index
   loadProfile(i) {
     spyProfile = spyProfiles[i];
   }
 
+  //Go through the array to find matching realNames
   checkProfileNames(name) {
     if (spyProfiles != null) {
       for (let i = 0; i < spyProfiles.length; i++) {
@@ -72,23 +76,26 @@ class Initialisation extends State {
     }
   }
 
+  //Creates a new profile
   generateSpyProfile() {
     let aliasPart1 = random(objectsData.objects);
     let aliasPart2 = random(scientistData.scientists);
 
     spyProfile = {
       realName: this.usersName,
-      alias: aliasPart1 + ' ' + aliasPart2,
-      secretWeapon: random(Object.keys(religionData)),
-      password: this.setPassword()
+      alias: aliasPart1 + ' ' + aliasPart2, //combine two data to generate the alias
+      secretWeapon: random(Object.keys(religionData)), //Secret weapon is a fake ass religion, just like real spies!
+      password: this.setPassword() //create new password
     }
-    spyProfile.weaponDescription = religionData[spyProfile.secretWeapon];
+    spyProfile.weaponDescription = religionData[spyProfile.secretWeapon]; //load the last data from the random secretWeapon
+
     spyProfiles = spyProfiles || []; //check if array is null and create one if so
     spyProfiles.push(spyProfile);
     console.log(spyProfiles);
-    this.storeData(spyProfiles);
 
-    state = new Game({accountJustCreated: true});
+    this.storeData(spyProfiles); //store data in the localStorage
+
+    state = new Game({accountJustCreated: true}); //get to the display screen but don't ask for the password gad damn enough already!
   }
 
   storeData(data) {
@@ -96,6 +103,7 @@ class Initialisation extends State {
     localStorage.setItem(DATA_NAME, dataString);
   }
 
+  //Asks the player to create a new password and confirm it.
   setPassword() {
     while (true) {
       let password = prompt("Entrez un nouveau mot de passe");
