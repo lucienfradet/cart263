@@ -8,7 +8,9 @@ let Engine = Matter.Engine,
     Composite = Matter.Composite,
     Composites = Matter.Composites,
     Runner = Matter.Runner,
-    Constraint = Matter.Constraint;
+    Constraint = Matter.Constraint,
+    Mouse = Matter.Mouse,
+    MouseConstraint = Matter.MouseConstraint;
 
 class Physics {
   constructor() {
