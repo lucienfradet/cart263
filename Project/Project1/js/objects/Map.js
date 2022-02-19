@@ -194,14 +194,98 @@ class Map extends Thing {
       this.anker.body
     ]);
 
-    console.log(this.mapBody);
+    this.addPOI();
+
   }
 
   addToWorld(array) {
     Composite.add(physics.world, array);
   }
 
+  addPOI() { //Add point of interest on the map
+    //The structure of these objects HAS TO BE RESPECTED becaus they are used in an array
+    this.POI = [];
+    //small Shack
+    this.shack = {
+      id: 'shack',
+      active: false,
+      window: undefined,
+      x: undefined,
+      y: undefined,
+      xOffset: this.map.w/2 /10 * 7,
+      yOffset: -this.map.h/2 /10 * 3,
+      w: 75,
+      h: 75
+    }
 
+    //Post office
+    this.postOffice = {
+      id: 'postOffice',
+      active: false,
+      window: undefined,
+      x: undefined,
+      y: undefined,
+      xOffset: -this.map.w/2 /10 * 5,
+      yOffset: +this.map.h/2 /10 * 1,
+      w: 75,
+      h: 75
+    }
+
+    this.POI.push(
+      this.shack,
+      this.postOffice
+    );
+  }
+
+  updatePOI(arrayOfObjects) {
+    for (let i = 0; i < arrayOfObjects.length; i++) {
+      arrayOfObjects[i].x = this.mapBody.position.x + arrayOfObjects[i].xOffset;
+      arrayOfObjects[i].y = this.mapBody.position.y + arrayOfObjects[i].yOffset;
+    }
+  }
+
+  displayPOI() {
+    push();
+    translate(this.mapBody.position.x, this.mapBody.position.y);
+    rotate(this.mapBody.angle); //rotate relative to the map
+    translate(this.shack.xOffset, this.shack.yOffset); //translate to the POI position for displaying
+    rectMode(CENTER);
+    fill(255, 255, 0, 150);
+    noStroke();
+    rect(0, 0, this.shack.w, this.shack.h);
+    pop();
+
+    push();
+    translate(this.mapBody.position.x, this.mapBody.position.y);
+    rotate(this.mapBody.angle);
+    translate(this.postOffice.xOffset, this.postOffice.yOffset);
+    rectMode(CENTER);
+    fill(255, 255, 0, 150);
+    noStroke();
+    rect(0, 0, this.postOffice.w, this.postOffice.h);
+    pop();
+  }
+
+  checkForMouseInteraction(array) {
+    for (let i = 0; i < array.length; i++) {
+      let d = dist(array[i].x, array[i].y, physics.mConstraint.mouse.position.x, physics.mConstraint.mouse.position.y);
+      if (d <= array[i].w) {
+        array[i].active = true;
+      }
+      else {
+        array[i].active = false;
+      }
+    }
+  }
+
+  update() {
+    this.updatePOI(this.POI);
+
+    //Interactions on the map
+    if (this.mapBody.position.y + this.map.h/2 > canvas.h/2) {
+      this.checkForMouseInteraction(this.POI);
+    }
+  }
 
   display() {
     //Map
@@ -273,5 +357,8 @@ class Map extends Thing {
     line(bottomRightX + bottomRightOffsetX, bottomRightY + bottomRightOffsetY, this.constraints.bottomRight.pointB.x, this.constraints.bottomRight.pointB.y);
     line(bottomLeftX + bottomLeftOffsetX, bottomLeftY + bottomLeftOffsetY, this.constraints.bottomRight.pointB.x, this.constraints.bottomRight.pointB.y);
     pop();
+
+    //Display Points of interest on the map
+    this.displayPOI();
   }
 }

@@ -92,10 +92,6 @@ class Game extends State {
     this.setCollisionFilter();
   }
 
-  update() {
-
-  }
-
   setCollisionFilter() {
     //NOTE
     //If mask is zero collision (AND MOUSE CONSTRAINT) is disable unless they have the same positive group!
@@ -107,7 +103,7 @@ class Game extends State {
     }
     this.objects[0].obj.mapBody.collisionFilter.category = 1//map
     this.objects[0].obj.mapBody.collisionFilter.group = 2
-    this.objects[0].obj.mapBody.collisionFilter.mask = 0
+    //this.objects[0].obj.mapBody.collisionFilter.mask = 0
 
     //walls
     for (let i = 0; i < this.walls.length; i++) {
@@ -134,12 +130,18 @@ class Game extends State {
     }
     for (let i = 0; i < this.objects.length; i++) {
       this.objects[i].obj.display();
+      this.objects[i].obj.update();
     }
 
     physics.displayMouseConstraint();
   }
 
   mousePressed() {
-
+    for (let i = 0; i < this.objects[0].obj.POI.length; i++) {
+      let poi = this.objects[0].obj.POI[i];
+      if (poi.active) {
+        console.log('hello');
+      }
+    }
   }
 }

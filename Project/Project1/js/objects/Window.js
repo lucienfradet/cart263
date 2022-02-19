@@ -1,7 +1,6 @@
 class Window extends Thing {
-  constructor({
-    
-  }) {
+  constructor() {
     super();
+    this.test = 'test';
   }
 }
