@@ -74,7 +74,9 @@ class Game extends State {
       name: 'book',
       obj: new Book({
         x: canvas.w/2,
-        y: canvas.h/2
+        y: canvas.h/2,
+        w: 80,
+        h: 120
       })
     };
     this.objects.push(book);
@@ -83,10 +85,15 @@ class Game extends State {
       name: 'book',
       obj: new Book({
         x: canvas.w/2 + 50,
-        y: canvas.h/2 + 50
+        y: canvas.h/2 + 50,
+        w: 80,
+        h: 120
       })
     };
     this.objects.push(book2);
+
+    //Arrays that contain Pop Up windows
+    this.windows = [];
 
     console.log(this.objects);
     this.setCollisionFilter();
@@ -94,16 +101,16 @@ class Game extends State {
 
   setCollisionFilter() {
     //NOTE
-    //If mask is zero collision (AND MOUSE CONSTRAINT) is disable unless they have the same positive group!
+    //If mask is zero, collision (AND MOUSE CONSTRAINT) is disable unless they have the same positive group!
 
     let collisionFilter = { //Fouille moe pourquoi mais ça fait que le truc colide pas...
       category: 2,
       group: -1,
       mask: 0
     }
-    this.objects[0].obj.mapBody.collisionFilter.category = 1//map
-    this.objects[0].obj.mapBody.collisionFilter.group = 2
-    //this.objects[0].obj.mapBody.collisionFilter.mask = 0
+    this.objects[0].obj.mapBody.collisionFilter.category = 1;//map
+    this.objects[0].obj.mapBody.collisionFilter.group = 2;
+    //this.objects[0].obj.mapBody.collisionFilter.mask = 0;
 
     //walls
     for (let i = 0; i < this.walls.length; i++) {
@@ -112,7 +119,7 @@ class Game extends State {
     }
 
     //books
-    this.objects[1].obj.body.collisionFilter.group = 1;
+    this.objects[1].obj.body.collisionFilter.group = 3;
     this.objects[2].obj.body.collisionFilter.group = 1;
   }
 
@@ -133,6 +140,13 @@ class Game extends State {
       this.objects[i].obj.update();
     }
 
+    if (this.windows.length > 0) {
+      for (let i = 0; i < this.windows.length; i++) {
+        this.windows[i].display();
+        this.windows[i].update();
+      }
+    }
+
     physics.displayMouseConstraint();
   }
 
@@ -140,7 +154,11 @@ class Game extends State {
     for (let i = 0; i < this.objects[0].obj.POI.length; i++) {
       let poi = this.objects[0].obj.POI[i];
       if (poi.active) {
-        console.log('hello');
+        let newWindow = new Window({
+          type: 'map',
+          id: poi.id
+        });
+        this.windows.push(newWindow);
       }
     }
   }

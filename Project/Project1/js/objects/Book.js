@@ -1,15 +1,12 @@
 class Book extends Thing {
-  constructor({
-    x,
-    y
-  }) {
+  constructor({x, y, w, h}) {
     super();
     this.pos = {
       x: x,
       y: y
     };
-    this.w = 80;
-    this.h = this.w * 1.5;
+    this.w = w;
+    this.h = h; //w * 1.5
 
     this.body = Bodies.rectangle(this.pos.x, this.pos.y, this.w, this.h, {isStatic: false});
     Body.setMass(this.body, 0.3);
