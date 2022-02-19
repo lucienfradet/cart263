@@ -1,4 +1,4 @@
-class Static {
+class Static extends Thing {
   constructor({
     x,
     y,
@@ -11,6 +11,7 @@ class Static {
       a
     }
   }) {
+    super();
     this.pos = {
       x: x,
       y: y

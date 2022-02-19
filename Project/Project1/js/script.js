@@ -6,7 +6,8 @@ Things ToDo:
   OK Get the physics running
   OK add walls
   OK add book
-  - Add mouse constraints
+  OK Add mouse constraints
+  - Do I need to constrain the mouse constrain?
   - add tableau
   - add basic phone
   - add debris
@@ -25,6 +26,9 @@ Things ToDo:
   Make it a game:
   - add window with boat as timer
   - work on the chain of events
+
+  Bonus:
+  - Cloth over the window
 */
 
 "use strict";
@@ -47,7 +51,6 @@ let img = {
 
 let state;
 let physics;
-let mConstraint;
 
 /**
 Description of preload
@@ -82,38 +85,12 @@ Description of draw()
 function draw() {
   state.update();
   state.display();
-
-
-  //display mConstraint for testing
-  push();
-  let pos = {
-    x: mConstraint.mouse.position.x,
-    y: mConstraint.mouse.position.y
-  }
-  fill(255,255,255,150);
-  noStroke();
-  ellipseMode(CENTER);
-  ellipse(pos.x, pos.y, 10);
-  pop();
 }
 
 function createPhysics() {
   //CreateWorld
   physics = new Physics();
   physics.runWorld();
-
-  //Create MouseConstraint
-  canvas.mouse = Mouse.create(canvas.obj.elt); //canvas element in the P5.js canvas wrapper
-  canvas.mouse.pixelRatio = pixelDensity(); //Adapt to the pixel density of the screen in use
-  let options = {
-    mouse: canvas.mouse
-  }
-  mConstraint = MouseConstraint.create(physics.engine, options);
-  Composite.add(physics.world, mConstraint);
-  //Adjust the offset cause by the canvasTest fuckery
-  mConstraint.mouse.offset.x = -testCanvas.w/2 + canvas.w/2;
-  mConstraint.mouse.offset.y = -testCanvas.h/2 + canvas.h/2;
-  console.log(mConstraint);
 }
 
 function mousePressed() {

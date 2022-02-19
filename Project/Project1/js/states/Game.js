@@ -33,7 +33,7 @@ class Game extends State {
         x: canvas.w + wallSize/2,
         y: canvas.h/2,
         w: wallSize,
-        h: canvas.h,
+        h: canvas.h * 100,
         fill: {
           r: 255,
           g: 0,
@@ -50,7 +50,7 @@ class Game extends State {
         x: 0 - wallSize/2,
         y: canvas.h/2,
         w: wallSize,
-        h: canvas.h,
+        h: canvas.h * 100,
         fill: {
           r: 255,
           g: 0,
@@ -70,8 +70,14 @@ class Game extends State {
         x: canvas.w/2,
         y: canvas.h/2
       })
-    }
+    };
     this.objects.push(book);
+
+    let map = {
+      name: 'map',
+      obj: new Map()
+    };
+    this.objects.push(map);
   }
 
   update() {
@@ -93,6 +99,8 @@ class Game extends State {
     for (let i = 0; i < this.objects.length; i++) {
       this.objects[i].obj.display();
     }
+
+    physics.displayMouseConstraint();
   }
 
   mousePressed() {
