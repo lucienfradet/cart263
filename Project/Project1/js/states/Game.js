@@ -64,6 +64,12 @@ class Game extends State {
     //Create objects
     this.objects = [];
 
+    let map = {
+      name: 'map',
+      obj: new Map()
+    };
+    this.objects.push(map);
+
     let book = {
       name: 'book',
       obj: new Book({
@@ -73,15 +79,45 @@ class Game extends State {
     };
     this.objects.push(book);
 
-    let map = {
-      name: 'map',
-      obj: new Map()
+    let book2 = {
+      name: 'book',
+      obj: new Book({
+        x: canvas.w/2 + 50,
+        y: canvas.h/2 + 50
+      })
     };
-    this.objects.push(map);
+    this.objects.push(book2);
+
+    console.log(this.objects);
+    this.setCollisionFilter();
   }
 
   update() {
 
+  }
+
+  setCollisionFilter() {
+    //NOTE
+    //If mask is zero collision (AND MOUSE CONSTRAINT) is disable unless they have the same positive group!
+
+    let collisionFilter = { //Fouille moe pourquoi mais ça fait que le truc colide pas...
+      category: 2,
+      group: -1,
+      mask: 0
+    }
+    this.objects[0].obj.mapBody.collisionFilter.category = 1//map
+    this.objects[0].obj.mapBody.collisionFilter.group = 2
+    this.objects[0].obj.mapBody.collisionFilter.mask = 0
+
+    //walls
+    for (let i = 0; i < this.walls.length; i++) {
+      this.walls[i].obj.body.collisionFilter.category = 2;
+      this.walls[i].obj.body.collisionFilter.group = 2;
+    }
+
+    //books
+    this.objects[1].obj.body.collisionFilter.group = 1;
+    this.objects[2].obj.body.collisionFilter.group = 1;
   }
 
   display() {
