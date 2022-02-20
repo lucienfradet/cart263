@@ -160,7 +160,7 @@ class Map extends Thing {
         this.rope.push(constrain);
       }
 
-      this.addToWorld([
+      physics.addToWorld([
         segment,
         constrain
       ])
@@ -180,7 +180,7 @@ class Map extends Thing {
         length: this.spaceBetween
       });
     this.rope.push(constrain);
-    this.addToWorld([constrain]);
+    physics.addToWorld([constrain]);
 
     //anker
     this.anker = {
@@ -198,7 +198,7 @@ class Map extends Thing {
     });
 
     //adds the body to matter.js world
-    this.addToWorld([
+    physics.addToWorld([
       this.mapBody,
       this.constraints.bottomRight,
       this.constraints.bottomLeft,
@@ -212,10 +212,6 @@ class Map extends Thing {
 
     this.addPOI();
 
-  }
-
-  addToWorld(array) {
-    Composite.add(physics.world, array);
   }
 
   addPOI() { //Add point of interest on the map

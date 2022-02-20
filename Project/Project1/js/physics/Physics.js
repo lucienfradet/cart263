@@ -42,6 +42,10 @@ class Physics {
     Runner.run(this.engine);
   }
 
+  addToWorld(array) {
+    Composite.add(physics.world, array);
+  }
+
   //next two function are from CART253 - Project 2
   //Creates rectangular matter.js bodies
   addRect({ x, y, w, h, options = {} }) {

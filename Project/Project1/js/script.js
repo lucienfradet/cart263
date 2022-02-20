@@ -18,8 +18,8 @@ Things ToDo:
   - make it possible to get objects in and out of the pop up
 
   work on the phone more:
-  - add cable
-  - add dial and listenner
+  - add cable with an outlet that can be connected if the power is turned on
+  - add dial and listenner (two buttons only!)
   - add handset that can be picked up or put down
   - add popup conversation window (same as map popup)
 
