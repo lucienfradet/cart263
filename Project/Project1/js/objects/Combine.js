@@ -1,4 +1,6 @@
-class Phone extends Thing {
+//Combiné object (Le truc que tu tiens dans ta main pour parlé au télphone. SAVAIS-TU QUE ÇA S'APPELAIT UN COMBINÉ TOI!?!?)
+
+class Combine extends Thing {
   constructor({x, y}) {
     super();
     this.parts = [];
@@ -6,25 +8,47 @@ class Phone extends Thing {
     this.base = {
       x: x,
       y: y,
-      w: 130,
-      h: 50,
+      w: 80,
+      h: 15,
       options: {
         //inertia: Infinity
       }
     }
     this.parts.push(physics.addRect(this.base));
 
-    this.topHeight = 60;
-    this.top = {
-      x: this.base.x,
-      y: this.base.y - this.base.h/2 - this.topHeight/2,
-      w: 70,
-      h: this.topHeight,
+    //config for the left part of combine
+    let leftW = 35,
+        leftH = 35,
+        leftX = this.base.x - this.base.w/2 - leftW/2,
+        leftY = this.base.y + leftH/2;
+
+    this.left = {
+      x: leftX,
+      y: leftY,
+      w: leftW,
+      h: leftH,
       options: {
 
       }
     }
-    this.parts.push(physics.addRect(this.top));
+    this.parts.push(physics.addRect(this.left));
+
+    //config for the right part of combine
+    let rightW = 35,
+        rightH = 35,
+        rightX = this.base.x + this.base.w/2 + rightW/2,
+        rightY = this.base.y + rightH/2;
+
+    this.right = {
+      x: rightX,
+      y: rightY,
+      w: rightW,
+      h: rightH,
+      options: {
+
+      }
+    }
+    this.parts.push(physics.addRect(this.right));
 
     this.compoundBody = physics.createBody(this.parts);
 
@@ -33,22 +57,23 @@ class Phone extends Thing {
     //manualOffset because the Center is not exactly in between the two bodies. It depends on the mass of each one.
     //I'm not sure how to automatise this operation.
     //In the mean time, this value needs to be changed if the size of the Phone is chnaged
-    let manualOffset =  7.5;
+    let manualOffset =  2;
     Body.setCentre(this.compoundBody, {
       x: 0,
-      y: this.top.h/2 - manualOffset
+      y: -this.base.h + manualOffset
     }, true);
+    Body.setMass(this.compoundBody, 1.5);
 
     physics.addToWorld(this.compoundBody);
 
     //plug
-    this.plugStartDistance = this.base.y - 150;
+    this.plugStartDistance = this.left.y - 100;
     this.plug = {
       body: undefined,
-      x: this.base.x + this.base.w/2,
+      x: this.left.x - this.left.w/2,
       y: this.plugStartDistance,
-      w: 15,
-      h: 15,
+      w: 10,
+      h: 10,
       options: {
         collisionFilter: {
           category: defaultCategory,
@@ -64,15 +89,15 @@ class Phone extends Thing {
     //cable
     this.cable = [];
     this.segmentSize = 2
-    const NUM_ROPE_SEGMENTS = 50;
+    const NUM_ROPE_SEGMENTS = 30;
     let cableLength = this.plugStartDistance;
     let start = this.plug.y + this.plug.h/2;
-    let end = this.base.y;
+    let end = this.left.y;
     let spaceBetween = (end - start)/NUM_ROPE_SEGMENTS;
 
     let previous = null;
     for (let y = start + spaceBetween; y < end - spaceBetween - this.segmentSize/2; y += spaceBetween + this.segmentSize/2) {
-      let segment = Bodies.rectangle(this.base.x + this.base.w/2, y, this.segmentSize, this.segmentSize, {
+      let segment = Bodies.rectangle(this.left.x - this.left.w/2, y, this.segmentSize, this.segmentSize, {
         collisionFilter: {
           category: defaultCategory,
           mask: defaultCategory
@@ -85,7 +110,7 @@ class Phone extends Thing {
       if (!previous) {
         constrain = Constraint.create({
           bodyA: this.plug.body,
-          pointA: { x: 0, y: +this.plug.h/2 },
+          pointA: { x: 0, y: this.plug.h/2 },
           bodyB: segment,
           stiffness: 1,
           length: this.spaceBetween
@@ -118,59 +143,20 @@ class Phone extends Thing {
     let constrain = Constraint.create({
         bodyA: this.cable[lastCableID],
         bodyB: this.compoundBody,
-        pointB: { x: this.base.w/2, y: 0 },
+        pointB: { x: -this.base.w/2 - this.left.w, y: this.left.h/2 },
         stiffness: 1,
         length: this.spaceBetween
       });
     this.cable.push(constrain);
     physics.addToWorld([constrain]);
-
-    //outlet
-    this.outlet = {
-      body: undefined,
-      active: false,
-      plugged: false,
-      x: canvas.w - 60,
-      y: canvas.h/10 * 6,
-      w:30,
-      h:30,
-      options: {
-        isStatic: true,
-        collisionFilter: {
-          category: backCategory,
-          mask: defaultCategory
-        }
-      }
-    }
-
-    this.outlet.body = Bodies.rectangle(this.outlet.x, this.outlet.y, this.outlet.w, this.outlet.h, this.outlet.options);
-    physics.addToWorld([this.outlet.body]);
-
   }
 
   checkForMouseInteraction() {
-    //Plug the Plug sti!
-    if (!this.outlet.plugged) {
-      let d = dist(this.outlet.body.position.x, this.outlet.body.position.y, this.plug.body.position.x, this.plug.body.position.y);
-      if (d <= this.outlet.w / 2 && this.outlet.active) {
-        let constraint = Constraint.create({
-            bodyA: this.outlet.body,
-            bodyB: this.plug.body,
-            stiffness: 1,
-            length: 0
-          }
-        );
-        Body.setInertia(this.plug.body, Infinity);
-        Body.setAngle(this.plug.body, 0);
-        Body.setAngularVelocity(this.plug.body, 0);
-        physics.addToWorld([constraint]);
-        this.outlet.plugged = true;
-      }
-    }
+
   }
 
   update() {
-    this.checkForMouseInteraction();
+
   }
 
   display() {
@@ -184,15 +170,25 @@ class Phone extends Thing {
     rect(0, 0, this.base.w, this.base.h);
     pop();
 
-    //top
+    //left and right modules
     push();
     translate(this.compoundBody.position.x, this.compoundBody.position.y);
     rotate(this.compoundBody.angle);
-    translate(0, -this.base.h/2 - this.top.h/2);
+    translate(-this.base.w/2 - this.left.w/2, this.left.h/2);
     rectMode(CENTER);
     fill(255, 150);
     noStroke();
-    rect(0, 0, this.top.w, this.top.h);
+    rect(0, 0, this.left.w, this.left.h);
+    pop();
+
+    push();
+    translate(this.compoundBody.position.x, this.compoundBody.position.y);
+    rotate(this.compoundBody.angle);
+    translate(this.base.w/2 + this.left.w/2, this.right.h/2);
+    rectMode(CENTER);
+    fill(255, 150);
+    noStroke();
+    rect(0, 0, this.right.w, this.right.h);
     pop();
 
     //plug
@@ -218,16 +214,6 @@ class Phone extends Thing {
         pop();
       }
     }
-
-    //outlet
-    push();
-    translate(this.outlet.body.position.x, this.outlet.body.position.y);
-    rotate(this.outlet.body.angle);
-    rectMode(CENTER);
-    fill(200, 125);
-    noStroke();
-    rect(0, 0, this.outlet.w, this.outlet.w);
-    pop();
 
   }
 }

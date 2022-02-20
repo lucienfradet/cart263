@@ -105,6 +105,15 @@ class Game extends State {
     }
     this.objects.push(phone);
 
+    let combine = {
+      name: 'combine',
+      obj: new Combine({
+        x: canvas.w/2 + 200,
+        y: canvas.h/2 - 100,
+      })
+    }
+    this.objects.push(combine);
+
     //Arrays that contain Pop Up windows
     this.POIwindow = undefined;
 
