@@ -76,7 +76,9 @@ class Game extends State {
         x: canvas.w/2,
         y: canvas.h/2,
         w: 80,
-        h: 120
+        h: 120,
+        category: defaultCategory,
+        mask: defaultCategory
       })
     };
     this.objects.push(book);
@@ -87,7 +89,9 @@ class Game extends State {
         x: canvas.w/2 + 50,
         y: canvas.h/2 + 50,
         w: 80,
-        h: 120
+        h: 120,
+        category: defaultCategory,
+        mask: defaultCategory
       })
     };
     this.objects.push(book2);
@@ -100,27 +104,12 @@ class Game extends State {
   }
 
   setCollisionFilter() {
-    //NOTE
-    //If mask is zero, collision (AND MOUSE CONSTRAINT) is disable unless they have the same positive group!
-
-    let collisionFilter = { //Fouille moe pourquoi mais ça fait que le truc colide pas...
-      category: 2,
-      group: -1,
-      mask: 0
-    }
-    this.objects[0].obj.mapBody.collisionFilter.category = 1;//map
-    this.objects[0].obj.mapBody.collisionFilter.group = 2;
+    //map
+    this.objects[0].obj.mapBody.collisionFilter.category = backCategory;
     //this.objects[0].obj.mapBody.collisionFilter.mask = 0;
 
-    //walls
-    for (let i = 0; i < this.walls.length; i++) {
-      this.walls[i].obj.body.collisionFilter.category = 2;
-      this.walls[i].obj.body.collisionFilter.group = 2;
-    }
-
-    //books
-    this.objects[1].obj.body.collisionFilter.group = 3;
-    this.objects[2].obj.body.collisionFilter.group = 1;
+    physics.mConstraint.collisionFilter.mask = defaultCategory | poiCategory | phoneCategory; //objects in the back shall not be draggable
+    console.log(physics.mConstraint);
   }
 
   display() {

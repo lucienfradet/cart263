@@ -1,5 +1,5 @@
 class Book extends Thing {
-  constructor({x, y, w, h}) {
+  constructor({x, y, w, h, category, mask}) {
     super();
     this.pos = {
       x: x,
@@ -7,8 +7,17 @@ class Book extends Thing {
     };
     this.w = w;
     this.h = h; //w * 1.5
+    this.category = category;
+    this.mask = mask;
 
-    this.body = Bodies.rectangle(this.pos.x, this.pos.y, this.w, this.h, {isStatic: false});
+    this.body = Bodies.rectangle(this.pos.x, this.pos.y, this.w, this.h, {
+      isStatic: false,
+      collisionFilter: {
+        category: this.category,
+        mask: this.mask
+        }
+      }
+    );
     Body.setMass(this.body, 0.3);
     Composite.add(physics.world, this.body); //adds the body to matter.js world
   }

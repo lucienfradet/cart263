@@ -11,20 +11,15 @@ class Window {
       }
 
       this.items = [];
-      let collisionConfig = {
-        category: 1,
-        group: 3,
-        mask: 1
-      }
-
       if (id === 'shack') {
         let book = new Book({
           x: this.layout.x,
           y: this.layout.y,
           w: 50,
-          h: 50*1.5
+          h: 50*1.5,
+          category: poiCategory,
+          mask: defaultCategory | poiCategory
         })
-        book.body.collisionFilter = collisionConfig;
         this.items.push(book);
       }
     }
@@ -88,9 +83,6 @@ class Window {
       h: this.layout.h,
       options: {
         isStatic: true,
-        collisionFilter: {
-          group: 3
-        }
       }
     }
     this.partsConfig.push(rightConfig);
@@ -100,8 +92,11 @@ class Window {
     this.composite = Composite.add(physics.world, this.compoundBody);
 
     Body.setStatic(this.compoundBody, true);
-    this.compoundBody.collisionFilter.mask = 0;
-    this.compoundBody.collisionFilter.group = 3;
+
+    //Set collisionFilters
+    this.compoundBody.collisionFilter.category = poiCategory;
+    this.compoundBody.collisionFilter.mask = defaultCategory | poiCategory;
+
     console.log(this.compoundBody);
   }
 
