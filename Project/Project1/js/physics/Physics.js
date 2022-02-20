@@ -30,9 +30,11 @@ class Physics {
     }
     this.mConstraint = MouseConstraint.create(this.engine, options);
     Composite.add(this.world, this.mConstraint);
-    //Adjust the offset cause by the canvasTest fuckery
+    //Adjust the offset caused by the canvasTest fuckery
     this.mConstraint.mouse.offset.x = -testCanvas.w/2 + canvas.w/2;
     this.mConstraint.mouse.offset.y = -testCanvas.h/2 + canvas.h/2;
+
+    this.mConstraint.collisionFilter.mask = defaultCategory | poiCategory | phoneCategory; //objects in the back shall not be draggable
   }
 
   //Run that damn physics engine baby!

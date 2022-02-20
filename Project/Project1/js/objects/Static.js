@@ -25,7 +25,13 @@ class Static extends Thing {
       a: a
     }
 
-    this.body = Bodies.rectangle(this.pos.x, this.pos.y, this.w, this.h, {isStatic: true});
+    this.body = Bodies.rectangle(this.pos.x, this.pos.y, this.w, this.h, {
+      isStatic: true,
+      collisionFilter: {
+        category: defaultCategory,
+        }
+      }
+    );
     Composite.add(physics.world, this.body); //adds the body to matter.js world
   }
 

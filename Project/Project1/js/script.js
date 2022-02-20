@@ -12,9 +12,9 @@ Things ToDo:
   - add basic phone
   - add debris
 
-  - add map with rope that you can get down
-  - add clickable buildings on map
-  - add popup windows with physics inside
+  OK add map with rope that you can get down
+  OK add clickable buildings on map
+  OK add popup windows with physics inside
   - make it possible to get objects in and out of the pop up
 
   work on the phone more:

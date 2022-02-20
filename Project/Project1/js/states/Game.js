@@ -100,16 +100,6 @@ class Game extends State {
     this.windows = [];
 
     console.log(this.objects);
-    this.setCollisionFilter();
-  }
-
-  setCollisionFilter() {
-    //map
-    this.objects[0].obj.mapBody.collisionFilter.category = backCategory;
-    //this.objects[0].obj.mapBody.collisionFilter.mask = 0;
-
-    physics.mConstraint.collisionFilter.mask = defaultCategory | poiCategory | phoneCategory; //objects in the back shall not be draggable
-    console.log(physics.mConstraint);
   }
 
   display() {

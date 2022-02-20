@@ -16,6 +16,10 @@ class Map extends Thing {
 
     this.mapBody = Bodies.rectangle(this.map.x, this.map.y, this.map.w, this.map.h, {
       isStatic: false,
+      collisionFilter: {
+        category: backCategory,
+        matrix: defaultCategory | backCategory
+        }
     });
     Body.setMass(this.mapBody, 1);
 
@@ -66,11 +70,19 @@ class Map extends Thing {
     }
     this.ring.top.body = Bodies.rectangle(this.ring.top.x, this.ring.top.y, this.ring.top.w, this.ring.top.h, {
       friction: 1,
-      frictionStatic: this.frictionStaticForAnker
+      frictionStatic: this.frictionStaticForAnker,
+      collisionFilter: {
+        category: defaultCategory,
+        mask: defaultCategory
+        }
     });
     this.ring.bottom.body = Bodies.rectangle(this.ring.bottom.x, this.ring.bottom.y, this.ring.bottom.w, this.ring.bottom.h, {
       friction: 1,
-      frictionStatic: this.frictionStaticForAnker
+      frictionStatic: this.frictionStaticForAnker,
+      collisionFilter: {
+        category: defaultCategory,
+        mask: defaultCategory
+        }
     });
 
     this.ringConstrain = {
@@ -119,8 +131,12 @@ class Map extends Thing {
 
     let previous = null;
     for (let y = start + spaceBetween; y < end - spaceBetween - this.segmentSize/2; y += spaceBetween + this.segmentSize/2) {
-      let segment = Bodies.rectangle(this.map.x, y, this.segmentSize, this.segmentSize);
-      //Body.setMass(segment, 0.01);
+      let segment = Bodies.rectangle(this.map.x, y, this.segmentSize, this.segmentSize, {
+        collisionFilter: {
+          category: defaultCategory,
+          mask: defaultCategory
+          }
+      });
       this.rope.push(segment);
 
       let constrain = undefined;
@@ -250,9 +266,15 @@ class Map extends Thing {
     rotate(this.mapBody.angle); //rotate relative to the map
     translate(this.shack.xOffset, this.shack.yOffset); //translate to the POI position for displaying
     rectMode(CENTER);
-    fill(255, 255, 0, 150);
     noStroke();
-    rect(0, 0, this.shack.w, this.shack.h);
+    if (this.shack.active) {
+      fill(255, 255, 0, 200);
+      rect(0, 0, this.shack.w, this.shack.h);
+    }
+    else {
+      fill(255, 255, 0, 150);
+      rect(0, 0, this.shack.w, this.shack.h);
+    }
     pop();
 
     push();
@@ -260,16 +282,22 @@ class Map extends Thing {
     rotate(this.mapBody.angle);
     translate(this.postOffice.xOffset, this.postOffice.yOffset);
     rectMode(CENTER);
-    fill(255, 255, 0, 150);
     noStroke();
-    rect(0, 0, this.postOffice.w, this.postOffice.h);
+    if (this.postOffice.active) {
+      fill(255, 255, 0, 200);
+      rect(0, 0, this.postOffice.w, this.postOffice.h);
+    }
+    else {
+      fill(255, 255, 0, 150);
+      rect(0, 0, this.postOffice.w, this.postOffice.h);
+    }
     pop();
   }
 
   checkForMouseInteraction(array) {
     for (let i = 0; i < array.length; i++) {
       let d = dist(array[i].x, array[i].y, physics.mConstraint.mouse.position.x, physics.mConstraint.mouse.position.y);
-      if (d <= array[i].w) {
+      if (d <= array[i].w / 2) {
         array[i].active = true;
       }
       else {
@@ -282,7 +310,7 @@ class Map extends Thing {
     this.updatePOI(this.POI);
 
     //Interactions on the map
-    if (this.mapBody.position.y + this.map.h/2 > canvas.h/2) {
+    if (this.mapBody.position.y + this.map.h/2 > canvas.h/2) { //If the map is lowered
       this.checkForMouseInteraction(this.POI);
     }
   }

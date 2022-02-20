@@ -5,9 +5,9 @@ class Window {
       this.layout = {
         x: canvas.w/2,
         y: canvas.h/2,
-        w: 250,
-        h: 225,
-        thickness: 10
+        w: 270,
+        h: 245,
+        thickness: 30
       }
 
       this.items = [];
@@ -36,12 +36,6 @@ class Window {
       y: this.layout.y - this.layout.h/2 + this.layout.thickness/2,
       w: this.layout.w - 2 * this.layout.thickness,
       h: this.layout.thickness,
-      options: {
-        isStatic: true,
-        collisionFilter: {
-          group: 3
-        }
-      }
     }
     this.partsConfig.push(topConfig);
     this.parts.push(this.addRect(topConfig));
@@ -51,12 +45,6 @@ class Window {
       y: this.layout.y + this.layout.h/2 - this.layout.thickness/2,
       w: this.layout.w - 2 * this.layout.thickness,
       h: this.layout.thickness,
-      options: {
-        isStatic: true,
-        collisionFilter: {
-          group: 3
-        }
-      }
     }
     this.partsConfig.push(bottomConfig);
     this.parts.push(this.addRect(bottomConfig));
@@ -66,12 +54,6 @@ class Window {
       y: this.layout.y,
       w: this.layout.thickness,
       h: this.layout.h,
-      options: {
-        isStatic: true,
-        collisionFilter: {
-          group: 3
-        }
-      }
     }
     this.partsConfig.push(leftConfig);
     this.parts.push(this.addRect(leftConfig));
@@ -81,9 +63,6 @@ class Window {
       y: this.layout.y,
       w: this.layout.thickness,
       h: this.layout.h,
-      options: {
-        isStatic: true,
-      }
     }
     this.partsConfig.push(rightConfig);
     this.parts.push(this.addRect(rightConfig));
