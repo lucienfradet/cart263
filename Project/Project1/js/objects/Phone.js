@@ -146,6 +146,15 @@ class Phone extends Thing {
     this.outlet.body = Bodies.rectangle(this.outlet.x, this.outlet.y, this.outlet.w, this.outlet.h, this.outlet.options);
     physics.addToWorld([this.outlet.body]);
 
+    //phoneOutlet
+    this.phoneOutletSize = 15
+    this.phoneOutlet = {
+      xOffset: - this.base.w/2 + this.phoneOutletSize/2, //offset from the phone.base.postion
+      yOffset: this.base.h/6,
+      active: true,
+      plugged: false
+    }
+
   }
 
   checkForMouseInteraction() {
@@ -165,6 +174,42 @@ class Phone extends Thing {
         Body.setAngularVelocity(this.plug.body, 0);
         physics.addToWorld([constraint]);
         this.outlet.plugged = true;
+      }
+    }
+
+    let doesTheCombineExist = false
+    for (let i = 0; i < state.objects.length; i++) {
+      if (state.objects[i].name === 'combine') {
+        doesTheCombineExist = true;
+      }
+    }
+
+    //check if combine exists
+    if (doesTheCombineExist) {
+      //plug the phoneOutlet sti!
+      if (!this.phoneOutlet.plugged) {
+        let d = dist(
+          this.compoundBody.position.x + this.phoneOutlet.xOffset,
+          this.compoundBody.position.y + this.phoneOutlet.yOffset,
+          state.objects[4].obj.plug.body.position.x,
+          state.objects[4].obj.plug.body.position.y
+        );
+        if (d <= this.phoneOutletSize && this.phoneOutlet.active) {
+          let constraint = Constraint.create({
+              bodyA: this.compoundBody,
+              pointA: { x: this.phoneOutlet.xOffset - this.phoneOutletSize / 4 * 3, y: this.phoneOutlet.yOffset },
+              bodyB: state.objects[4].obj.plug.body,
+              stiffness: 1,
+              length: 0
+            }
+          );
+          Body.setInertia(state.objects[4].obj.plug.body, Infinity);
+          Body.setAngle(state.objects[4].obj.plug.body, 0);
+          Body.setAngularVelocity(state.objects[4].obj.plug.body, 0);
+          state.objects[4].obj.plug.body.collisionFilter.mask = 0;
+          physics.addToWorld([constraint]);
+          this.phoneOutlet.plugged = true;
+        }
       }
     }
   }
@@ -227,6 +272,17 @@ class Phone extends Thing {
     fill(200, 125);
     noStroke();
     rect(0, 0, this.outlet.w, this.outlet.w);
+    pop();
+
+    //phoneOutlet
+    push();
+    translate(this.compoundBody.position.x, this.compoundBody.position.y);
+    rotate(this.compoundBody.angle);
+    translate(this.phoneOutlet.xOffset, this.phoneOutlet.yOffset);
+    rectMode(CENTER);
+    fill(0, 100);
+    noStroke();
+    rect(0, 0, this.phoneOutletSize, this.phoneOutletSize);
     pop();
 
   }
