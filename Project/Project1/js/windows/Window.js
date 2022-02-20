@@ -1,5 +1,7 @@
 class Window {
   constructor({type, id}) {
+    this.items = [];
+
     if (type === 'map') {
 
       this.layout = {
@@ -7,10 +9,10 @@ class Window {
         y: canvas.h/2,
         w: 270,
         h: 245,
-        thickness: 30
+        thickness: 30,
+        buttonRadius: 15
       }
 
-      this.items = [];
       if (id === 'shack') {
         let book = new Book({
           x: this.layout.x,
@@ -77,6 +79,7 @@ class Window {
     this.compoundBody.collisionFilter.mask = defaultCategory | poiCategory;
 
     console.log(this.compoundBody);
+    console.log(this.items);
   }
 
   //next two function are from CART253 - Project 2
@@ -91,6 +94,16 @@ class Window {
     let compoundBody = Body.create({ parts: parts });
     return compoundBody;
   }
+
+  removeFromWorld() {
+    Composite.remove(physics.world, this.compoundBody);
+    for (let i = 0; i < this.items.length; i++) {
+      let itemBody = this.items[i].body; //IMPORTANT to have objects inside body property!
+      Composite.remove(physics.world, itemBody);
+    }
+    state.POIwindow = undefined;
+  }
+
 
   update() {
 
@@ -117,13 +130,26 @@ class Window {
       pop();
     }
 
+    //button
+    push();
+    translate(
+      this.compoundBody.position.x + this.layout.w/2 - this.layout.thickness/2,
+      this.compoundBody.position.y - this.layout.h/2 + this.layout.thickness/2
+    );
+    rotate(this.compoundBody.angle);
+    rectMode(CENTER);
+    fill(255, 200);
+    noStroke();
+    ellipse(0, 0, this.layout.buttonRadius * 2);
+    pop();
+
     //items
-    if (this.items.length > 0) {
+  //  if (this.items.length > 0) { //should I add this back??
       for (let i = 0; i < this.items.length; i++) {
         let item = this.items[i];
         item.display();
         item.update();
       }
-    }
+  //  }
   }
 }

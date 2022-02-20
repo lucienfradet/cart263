@@ -97,7 +97,7 @@ class Game extends State {
     this.objects.push(book2);
 
     //Arrays that contain Pop Up windows
-    this.windows = [];
+    this.POIwindow = undefined;
 
     console.log(this.objects);
   }
@@ -119,25 +119,37 @@ class Game extends State {
       this.objects[i].obj.update();
     }
 
-    if (this.windows.length > 0) {
-      for (let i = 0; i < this.windows.length; i++) {
-        this.windows[i].display();
-        this.windows[i].update();
-      }
+    if (this.POIwindow !== undefined) {
+        this.POIwindow.display();
+        this.POIwindow.update();
     }
 
     physics.displayMouseConstraint();
   }
 
   mousePressed() {
-    for (let i = 0; i < this.objects[0].obj.POI.length; i++) {
-      let poi = this.objects[0].obj.POI[i];
-      if (poi.active) {
-        let newWindow = new Window({
-          type: 'map',
-          id: poi.id
-        });
-        this.windows.push(newWindow);
+    if (this.POIwindow !== undefined) {
+      let d = dist(
+        this.POIwindow.compoundBody.position.x + this.POIwindow.layout.w/2 - this.POIwindow.layout.thickness/2,
+        this.POIwindow.compoundBody.position.y - this.POIwindow.layout.h/2 + this.POIwindow.layout.thickness/2,
+        physics.mConstraint.mouse.position.x,
+        physics.mConstraint.mouse.position.y
+      );
+      if (d <= this.POIwindow.layout.buttonRadius) {
+        this.POIwindow.removeFromWorld();
+        console.log('hello');
+      }
+    }
+    if (this.POIwindow === undefined) {
+      for (let i = 0; i < this.objects[0].obj.POI.length; i++) {
+        let poi = this.objects[0].obj.POI[i];
+        if (poi.active) {
+          let newWindow = new Window({
+            type: 'map',
+            id: 'shack'
+          });
+          this.POIwindow = newWindow;
+        }
       }
     }
   }

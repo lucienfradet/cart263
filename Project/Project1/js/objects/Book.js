@@ -1,3 +1,5 @@
+// !! Important to have the body inside a body property !!
+
 class Book extends Thing {
   constructor({x, y, w, h, category, mask}) {
     super();
