@@ -40,7 +40,7 @@ class Window {
       h: this.layout.thickness,
     }
     this.partsConfig.push(topConfig);
-    this.parts.push(this.addRect(topConfig));
+    this.parts.push(physics.addRect(topConfig));
 
     let bottomConfig = {
       x: this.layout.x,
@@ -49,7 +49,7 @@ class Window {
       h: this.layout.thickness,
     }
     this.partsConfig.push(bottomConfig);
-    this.parts.push(this.addRect(bottomConfig));
+    this.parts.push(physics.addRect(bottomConfig));
 
     let leftConfig = {
       x: this.layout.x - this.layout.w/2 + this.layout.thickness/2,
@@ -58,7 +58,7 @@ class Window {
       h: this.layout.h,
     }
     this.partsConfig.push(leftConfig);
-    this.parts.push(this.addRect(leftConfig));
+    this.parts.push(physics.addRect(leftConfig));
 
     let rightConfig = {
       x: this.layout.x + this.layout.w/2 - this.layout.thickness/2,
@@ -67,10 +67,10 @@ class Window {
       h: this.layout.h,
     }
     this.partsConfig.push(rightConfig);
-    this.parts.push(this.addRect(rightConfig));
+    this.parts.push(physics.addRect(rightConfig));
 
-    this.compoundBody = this.createBody(this.parts);
-    this.composite = Composite.add(physics.world, this.compoundBody);
+    this.compoundBody = physics.createBody(this.parts);
+    Composite.add(physics.world, this.compoundBody);
 
     Body.setStatic(this.compoundBody, true);
 
@@ -80,19 +80,6 @@ class Window {
 
     console.log(this.compoundBody);
     console.log(this.items);
-  }
-
-  //next two function are from CART253 - Project 2
-  //Creates rectangular matter.js bodies
-  addRect({ x, y, w, h, options = {} }) {
-	let body = Bodies.rectangle(x, y, w, h, options);
-	return body;
-  }
-
-  //Create the compoundBody with the different parts
-  createBody(parts) {
-    let compoundBody = Body.create({ parts: parts });
-    return compoundBody;
   }
 
   removeFromWorld() {

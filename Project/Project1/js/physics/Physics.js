@@ -42,6 +42,19 @@ class Physics {
     Runner.run(this.engine);
   }
 
+  //next two function are from CART253 - Project 2
+  //Creates rectangular matter.js bodies
+  addRect({ x, y, w, h, options = {} }) {
+	let body = Bodies.rectangle(x, y, w, h, options);
+	return body;
+  }
+
+  //Create the compoundBody with the different parts
+  createBody(parts) {
+    let compoundBody = Body.create({ parts: parts });
+    return compoundBody;
+  }
+
   //display mConstraint for testing
   displayMouseConstraint() {
     push();

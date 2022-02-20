@@ -7,9 +7,9 @@ Things ToDo:
   OK add walls
   OK add book
   OK Add mouse constraints
-  - Do I need to constrain the mouse constrain?
+  NO Do I need to constrain the mouse constrain?
   - add tableau
-  - add basic phone
+  OK add basic phone
   - add debris
 
   OK add map with rope that you can get down

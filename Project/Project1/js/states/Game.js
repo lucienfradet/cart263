@@ -67,34 +67,43 @@ class Game extends State {
     let map = {
       name: 'map',
       obj: new Map()
-    };
+    }
     this.objects.push(map);
 
     let book = {
       name: 'book',
       obj: new Book({
-        x: canvas.w/2,
+        x: canvas.w/2 - 300,
         y: canvas.h/2,
         w: 80,
         h: 120,
         category: defaultCategory,
         mask: defaultCategory
       })
-    };
+    }
     this.objects.push(book);
 
     let book2 = {
       name: 'book',
       obj: new Book({
-        x: canvas.w/2 + 50,
+        x: canvas.w/2 - 100,
         y: canvas.h/2 + 50,
         w: 80,
         h: 120,
         category: defaultCategory,
         mask: defaultCategory
       })
-    };
+    }
     this.objects.push(book2);
+
+    let phone = {
+      name: 'phone',
+      obj: new Phone({
+        x: canvas.w/2 + 200,
+        y: canvas.h/2 + 200,
+      })
+    }
+    this.objects.push(phone);
 
     //Arrays that contain Pop Up windows
     this.POIwindow = undefined;
