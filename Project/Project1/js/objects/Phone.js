@@ -110,8 +110,6 @@ class Phone extends Thing {
       previous = segment;
     }
 
-    console.log(this.cable);
-
     //Attach the last segment to the phone
     let lastCableID = this.cable.length - 1;
     if (this.cable[lastCableID].label === 'Constraint') {
@@ -126,10 +124,52 @@ class Phone extends Thing {
       });
     this.cable.push(constrain);
     physics.addToWorld([constrain]);
+
+    //outlet
+    this.outlet = {
+      body: undefined,
+      active: false,
+      plugged: false,
+      x: canvas.w - 60,
+      y: canvas.h/10 * 6,
+      w:30,
+      h:30,
+      options: {
+        isStatic: true,
+        collisionFilter: {
+          category: backCategory,
+          //mask: defaultCategory
+        }
+      }
+    }
+
+    this.outlet.body = Bodies.rectangle(this.outlet.x, this.outlet.y, this.outlet.w, this.outlet.h, this.outlet.options);
+    physics.addToWorld([this.outlet.body]);
+
+  }
+
+  checkForMouseInteraction() {
+    if (!this.outlet.plugged) {
+      let d = dist(this.outlet.body.position.x, this.outlet.body.position.y, this.plug.body.position.x, this.plug.body.position.y);
+      if (d <= this.outlet.w / 2 && this.outlet.active) {
+        let constraint = Constraint.create({
+            bodyA: this.outlet.body,
+            bodyB: this.plug.body,
+            stiffness: 1,
+            length: 0
+          }
+        );
+        Body.setInertia(this.plug.body, Infinity);
+        Body.setAngle(this.plug.body, 0);
+        Body.setAngularVelocity(this.plug.body, 0);
+        physics.addToWorld([constraint]);
+        this.outlet.plugged = true;
+      }
+    }
   }
 
   update() {
-
+    this.checkForMouseInteraction();
   }
 
   display() {
@@ -177,6 +217,16 @@ class Phone extends Thing {
         pop();
       }
     }
+
+    //outlet
+    push();
+    translate(this.outlet.body.position.x, this.outlet.body.position.y);
+    rotate(this.outlet.body.angle);
+    rectMode(CENTER);
+    fill(200, 125);
+    noStroke();
+    rect(0, 0, this.outlet.w, this.outlet.w);
+    pop();
 
   }
 }
