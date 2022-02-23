@@ -91,9 +91,65 @@ class Window {
     state.POIwindow = undefined;
   }
 
+  //Function to get bodies outside the windows and into the real world
+  getOutOfBox(body) {
+    //check if the mouse is grabbing something and return the body's ID
+    let isItDragging = function() {
+      if (physics.mConstraint.constraint.bodyB !== null) {
+        return physics.mConstraint.constraint.bodyB.id;
+      }
+    }
+
+    if (isItDragging() === body.id) {
+      let mPos = physics.mConstraint.mouse.position;
+      let lay = this.layout;
+      let offset = -this.layout.thickness;
+      if (
+        mPos.x > lay.x + lay.w/2 - offset //to the right
+        || mPos.x < lay.x - lay.w/2 + offset //to the left
+        || mPos.y < lay.y - lay.h/2 + offset //above
+        || mPos.y > lay.y + lay.h/2 - offset //under
+      ) {
+        //its trying to GET OUT!!!
+        body.collisionFilter.category = defaultCategory;
+        body.collisionFilter.mask = defaultCategory;
+      }
+    }
+  }
+
+  //Function to get bodies inside the windows and out the real world
+  getInTheBox(body) {
+    //check if the mouse is grabbing something and return the body's ID
+    let isItDragging = function() {
+      if (physics.mConstraint.constraint.bodyB !== null) {
+        return physics.mConstraint.constraint.bodyB.id;
+      }
+    }
+
+    if (isItDragging() === body.id) {
+      let mPos = physics.mConstraint.mouse.position;
+      let lay = this.layout;
+      let offset = this.layout.thickness;
+      if (
+        mPos.x > lay.x + lay.w/2 - offset //to the right
+        || mPos.x < lay.x - lay.w/2 + offset //to the left
+        || mPos.y < lay.y - lay.h/2 + offset //above
+        || mPos.y > lay.y + lay.h/2 - offset //under
+      ) {
+
+      }
+      else {
+        //its trying to GET IN!!!
+        body.collisionFilter.category = poiCategory;
+        body.collisionFilter.mask = defaultCategory | poiCategory;
+      }
+    }
+  }
+
 
   update() {
-
+    this.getOutOfBox(this.items[0].body);
+    this.getInTheBox(state.objects[state.findArrayID('book')].obj.body);
   }
 
   display() {

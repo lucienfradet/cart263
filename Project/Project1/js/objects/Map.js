@@ -194,7 +194,11 @@ class Map extends Thing {
     this.anker.body = Bodies.rectangle(this.anker.x, this.anker.y, this.anker.w, this.anker.h, {
       isStatic: true,
       friction: 1,
-      frictionStatic: this.frictionStaticForAnker
+      frictionStatic: this.frictionStaticForAnker,
+      collisionFilter: {
+        category: defaultCategory,
+        mask: defaultCategory
+      }
     });
 
     //adds the body to matter.js world
