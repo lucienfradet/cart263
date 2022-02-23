@@ -64,11 +64,21 @@ class Game extends State {
     //Create objects
     this.objects = [];
 
+    //THE ORDER OF THESE MATTERS!
     let map = {
       name: 'map',
       obj: new Map()
     }
     this.objects.push(map);
+
+    let phone = {
+      name: 'phone',
+      obj: new Phone({
+        x: canvas.w/2 + 200,
+        y: canvas.h/2 + 200,
+      })
+    }
+    this.objects.push(phone);
 
     let book = {
       name: 'book',
@@ -95,15 +105,6 @@ class Game extends State {
       })
     }
     this.objects.push(book2);
-
-    let phone = {
-      name: 'phone',
-      obj: new Phone({
-        x: canvas.w/2 + 200,
-        y: canvas.h/2 + 200,
-      })
-    }
-    this.objects.push(phone);
 
     let combine = {
       name: 'combine',
@@ -145,7 +146,19 @@ class Game extends State {
     physics.displayMouseConstraint();
   }
 
+  //Function to find the id of a specifc object in the objects array
+  findArrayID(name) {
+    for (let i = 0; i < this.objects.length; i++) {
+      let objectName = this.objects[i].name;
+      if (objectName === name) {
+        return i;
+      }
+    }
+    console.log("ERROR: the array doen't contain the name you are looking for");
+  }
+
   mousePressed() {
+    //POI for the map
     if (this.POIwindow !== undefined) {
       let d = dist(
         this.POIwindow.compoundBody.position.x + this.POIwindow.layout.w/2 - this.POIwindow.layout.thickness/2,
@@ -168,6 +181,24 @@ class Game extends State {
           });
           this.POIwindow = newWindow;
         }
+      }
+    }
+
+    //Phone dial
+    let phoneID = this.findArrayID('phone');
+    if (
+      this.objects[phoneID].obj.outlet.plugged //power is plugged?
+      && this.objects[phoneID].obj.phoneOutlet.plugged //combine is plugged?
+      && !this.objects[phoneID].obj.detector.collisionDetector() //Nothing is on top i.e. the line is open
+      && this.objects[phoneID].obj.dial.state !== 'sending'
+    ) {
+      if (this.objects[phoneID].obj.dial.button0.active) {
+        this.objects[phoneID].obj.dial.timer = this.objects[phoneID].obj.dial.timerValue; //reset the dial timer
+        this.objects[phoneID].obj.dial.sequence += this.objects[phoneID].obj.dial.button0.value;
+      }
+      else if (this.objects[phoneID].obj.dial.button1.active) {
+        this.objects[phoneID].obj.dial.timer = this.objects[phoneID].obj.dial.timerValue; //reset the dial timer
+        this.objects[phoneID].obj.dial.sequence += this.objects[phoneID].obj.dial.button1.value;
       }
     }
   }

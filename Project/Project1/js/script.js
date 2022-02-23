@@ -82,6 +82,7 @@ function setup() {
   pop();
 
   state = new Game();
+  console.log(physics);
 }
 
 

@@ -51,6 +51,7 @@ class Combine extends Thing {
     this.parts.push(physics.addRect(this.right));
 
     this.compoundBody = physics.createBody(this.parts);
+    this.compoundBody.collisionFilter.mask = defaultCategory;
 
     //Set center of gravity in the middle of the base
 

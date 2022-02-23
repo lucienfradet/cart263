@@ -27,6 +27,7 @@ class Phone extends Thing {
     this.parts.push(physics.addRect(this.top));
 
     this.compoundBody = physics.createBody(this.parts);
+    this.compoundBody.collisionFilter.mask = defaultCategory; //set mask
 
     //Set center of gravity in the middle of the base
 
@@ -40,6 +41,54 @@ class Phone extends Thing {
     }, true);
 
     physics.addToWorld(this.compoundBody);
+
+    //phone detector to check if the hand piece is picked up or not
+    this.detector = {
+      body: undefined,
+      xOff: 0,
+      yOff: -this.base.h/2 - this.top.h - 3,
+      h: 1,
+      w: this.top.w - 50,
+      options: {
+        isSensor: true,
+        isStatic: true,
+        collisionFilter: {
+          category: defaultCategory,
+          mask: defaultCategory
+        }
+      },
+      active: false, //not used at the moment
+      collisionDetector: function() {
+        let phoneID = state.findArrayID('phone');
+        let phone = state.objects[phoneID].obj;
+        let detectorID = this.body.id;
+        let compoundBodyID = phone.compoundBody.id;
+        let compoundBodyPart1ID = phone.compoundBody.parts[1].id;
+        let compoundBodyPart2ID = phone.compoundBody.parts[2].id;
+
+        for (let i = 0; i < physics.engine.pairs.collisionActive.length; i++) { //check if a body is colliding with the detector
+          let bodyA = physics.engine.pairs.collisionActive[i].bodyA;
+          let bodyB = physics.engine.pairs.collisionActive[i].bodyB
+          if (bodyA.id === detectorID || bodyB.id === detectorID) {
+            if ( //ommit collisions with the phone compoundBody and it's parts
+              bodyA.id !== compoundBodyID
+              && bodyA.id !== compoundBodyPart1ID
+              && bodyA.id !== compoundBodyPart2ID
+              && bodyB.id !== compoundBodyID
+              && bodyB.id !== compoundBodyPart1ID
+              && bodyB.id !== compoundBodyPart2ID
+            ) {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+    }
+
+    this.detector.body = Bodies.rectangle(this.detector.xOff, this.detector.yOff, this.detector.w, this.detector.h, this.detector.options);
+    physics.addToWorld([this.detector.body]);
+    console.log(this.detector.body.id);
 
     //plug
     this.plugStartDistance = this.base.y - 150;
@@ -128,7 +177,7 @@ class Phone extends Thing {
     //outlet
     this.outlet = {
       body: undefined,
-      active: false,
+      active: true,
       plugged: false,
       x: canvas.w - 60,
       y: canvas.h/10 * 6,
@@ -149,13 +198,37 @@ class Phone extends Thing {
     //phoneOutlet
     this.phoneOutletSize = 15
     this.phoneOutlet = {
-      xOffset: - this.base.w/2 + this.phoneOutletSize/2, //offset from the phone.base.postion
+      xOffset: - this.base.w/2 + this.phoneOutletSize/2, //offset from the phone.base.position
       yOffset: this.base.h/6,
       active: true,
       plugged: false
     }
 
+    //Phone dial
+    this.dial = {
+      button0: {
+        value: '0',
+        xOff: -15,  //diplay from compoundBody.position
+        yOff: -50,
+        radius: 12.5,
+        active: false
+      },
+      button1: {
+        value: '1',
+        xOff: 15,
+        yOff: -50,
+        radius: 12.5,
+        active: false
+      },
+      interacting: false,
+      state: '',
+      timer: 180, //3 seconds
+      timerValue: 180,
+      sequence: '', //test sequence 101
+    }
+
   }
+  //END OF CONSTRUCTOR
 
   checkForMouseInteraction() {
     //Plug the Plug sti!
@@ -177,15 +250,17 @@ class Phone extends Thing {
       }
     }
 
-    let doesTheCombineExist = false
-    for (let i = 0; i < state.objects.length; i++) {
-      if (state.objects[i].name === 'combine') {
-        doesTheCombineExist = true;
+    let doesTheCombineExist = function() {
+      for (let i = 0; i < state.objects.length; i++) {
+        if (state.objects[i].name === 'combine') {
+          return true;
+        }
       }
+      return false;
     }
 
     //check if combine exists
-    if (doesTheCombineExist) {
+    if (doesTheCombineExist()) {
       //plug the phoneOutlet sti!
       if (!this.phoneOutlet.plugged) {
         let d = dist(
@@ -212,10 +287,84 @@ class Phone extends Thing {
         }
       }
     }
+
+    //dial
+    let d0 = dist(
+      this.compoundBody.position.x + this.dial.button0.xOff,
+      this.compoundBody.position.y + this.dial.button0.yOff,
+      physics.mConstraint.mouse.position.x,
+      physics.mConstraint.mouse.position.y
+    );
+    let d1 = dist(
+      this.compoundBody.position.x + this.dial.button1.xOff,
+      this.compoundBody.position.y + this.dial.button1.yOff,
+      physics.mConstraint.mouse.position.x,
+      physics.mConstraint.mouse.position.y
+    );
+
+    if (d0 <= this.dial.button0.radius) {
+      this.dial.button0.active = true;
+    }
+    else {
+      this.dial.button0.active = false;
+    }
+
+    if (d1 <= this.dial.button1.radius) {
+      this.dial.button1.active = true;
+    }
+    else {
+      this.dial.button1.active = false;
+    }
+
   }
 
   update() {
     this.checkForMouseInteraction();
+
+    //update the detector position according to this.compoundBody.position
+    angleMode(RADIANS);
+    let origin = {
+      x: this.compoundBody.position.x,
+      y: this.compoundBody.position.y
+    }
+    let r = abs(this.detector.yOff);
+    let angle = this.compoundBody.angle;
+    Body.setPosition(this.detector.body, {
+      x: origin.x + (r * cos(angle - PI/2)),
+      y: origin.y + (r * sin(angle - PI/2))
+    });
+    Body.setAngle(this.detector.body, this.compoundBody.angle);
+
+    //dialing statements
+    if (this.dial.sequence !== '' && this.dial.state !== 'calling' && this.dial.state !== 'sending') {
+      this.dial.state = 'composing';
+      this.dial.timer--;
+      if (this.detector.collisionDetector()) {
+        this.dial.state = 'hungup'
+        this.dial.sequence = '';
+      }
+    }
+
+    if (this.dial.timer < 0 && this.dial.state !== 'fail') {
+      if (this.dial.sequence === '101') {
+        this.dial.timer = this.dial.timerValue;
+        this.dial.state = 'sending';
+      }
+      else {
+        this.dial.timer = this.dial.timerValue;
+        this.dial.sequence = '';
+        this.dial.state = 'fail';
+      }
+    }
+
+    if (this.dial.state === 'fail') {
+      this.dial.timer--;
+      if (this.dial.timer < 0) {
+        this.dial.timer = this.dial.timerValue; //or when sound finishes
+        this.dial.state = '';
+      }
+    }
+
   }
 
   display() {
@@ -238,6 +387,16 @@ class Phone extends Thing {
     fill(255, 150);
     noStroke();
     rect(0, 0, this.top.w, this.top.h);
+    pop();
+
+    //detector
+    push();
+    translate(this.detector.body.position.x, this.detector.body.position.y);
+    rotate(this.detector.body.angle);
+    rectMode(CENTER);
+    fill(255, 50);
+    noStroke();
+    rect(0, 0, this.detector.w, this.detector.h);
     pop();
 
     //plug
@@ -284,6 +443,40 @@ class Phone extends Thing {
     noStroke();
     rect(0, 0, this.phoneOutletSize, this.phoneOutletSize);
     pop();
+
+    //dial buttons
+    //button0
+    push();
+    translate(this.compoundBody.position.x, this.compoundBody.position.y);
+    rotate(this.compoundBody.angle);
+    translate(this.dial.button0.xOff, this.dial.button0.yOff);
+    ellipseMode(CENTER);
+    if (this.dial.button0.active) {
+      fill(255, 255, 0, 200);
+    }
+    else {
+      fill(255, 255, 0, 150);
+    }
+    noStroke();
+    ellipse(0, 0, this.dial.button0.radius*2, this.dial.button0.radius*2 - 10);
+    pop();
+
+    //button1
+    push();
+    translate(this.compoundBody.position.x, this.compoundBody.position.y);
+    rotate(this.compoundBody.angle);
+    translate(this.dial.button1.xOff, this.dial.button1.yOff);
+    ellipseMode(CENTER);
+    if (this.dial.button1.active) {
+      fill(255, 255, 0, 200);
+    }
+    else {
+      fill(255, 255, 0, 150);
+    }
+    noStroke();
+    ellipse(0, 0, this.dial.button1.radius*2, this.dial.button1.radius*2 - 10);
+    pop();
+
 
   }
 }
