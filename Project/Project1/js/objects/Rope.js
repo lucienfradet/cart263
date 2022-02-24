@@ -1,30 +1,51 @@
 class Rope extends Thing {
   constructor({x, y, w, h, category, mask}) {
     super();
-    this.pos = {
+    this.pos = { //pos of the start of the rope
       x: x,
       y: y
     };
-    this.w = w;
-    this.h = h; //w * 1.5
+    this.w = w; //width of the base
+    this.h = h; //length of the rope
     this.category = category;
     this.mask = mask;
 
+    this.baseHeightRatio = 1.5;
     //base
+    this.base = {
+      body: undefined,
+      x: this.pos.x,
+      y: this.pos.y + this.h + this.w*this.baseHeightRatio/2,
+      w: this.w,
+      h: this.w*this.baseHeightRatio
+    }
 
+    this.base.body = Bodies.rectangle(this.base.x, this.base.y, this.base.w, this.base.h, {
+      collisionFilter: {
+        category: this.category,
+        mask: this.mask
+      }
+    });
+    Composite.add(physics.world, this.base.body);
 
-
-    //rope thing
+    //rope
     this.rope = [];
     this.segmentSize = 10
     const NUM_ROPE_SEGMENTS = 15;
-    let start = this.map.y + this.map.h/2;
-    let end = this.ring.top.y - this.ring.top.h/2;
+    let start = this.pos.y;
+    let end = this.pos.y + this.h;
     let spaceBetween = (end - start)/NUM_ROPE_SEGMENTS;
 
     let previous = null;
     for (let y = start + spaceBetween; y < end - spaceBetween - this.segmentSize/2; y += spaceBetween + this.segmentSize/2) {
-      let segment = Bodies.rectangle(this.map.x, y, this.segmentSize, this.segmentSize, {
+
+      let fixed = false;
+      if (!previous) { //make the first one static
+        fixed = true;
+      }
+
+      let segment = Bodies.rectangle(this.pos.x, y, this.segmentSize, this.segmentSize, {
+        isStatic: fixed,
         collisionFilter: {
           category: defaultCategory,
           mask: defaultCategory
@@ -32,34 +53,29 @@ class Rope extends Thing {
       });
       this.rope.push(segment);
 
-      let constrain = undefined;
-      if (!previous) {
-        constrain = Constraint.create({
-          bodyA: this.mapBody,
-          pointA: { x: 0, y: this.mapBody.position.y + this.map.h },
-          bodyB: segment,
-          stiffness: 1,
-          length: this.spaceBetween
-        });
-        this.rope.push(constrain);
-      }
-      else {
+      if (previous) {
+        let constrain = undefined;
         constrain = Constraint.create({
           bodyA: previous,
           bodyB: segment,
           stiffness: 1,
-          length: this.spaceBetween
+          length: spaceBetween
         });
         this.rope.push(constrain);
+
+        physics.addToWorld([
+          segment,
+          constrain
+        ])
       }
-
-      physics.addToWorld([
-        segment,
-        constrain
-      ])
-
+      else {
+        physics.addToWorld([
+          segment
+        ])
+      }
       previous = segment;
     }
+    console.log(this.rope);
 
     //Attach the last segment to the ring
     let lastRopeID = this.rope.length - 1;
@@ -68,9 +84,10 @@ class Rope extends Thing {
     }
     let constrain = Constraint.create({
         bodyA: this.rope[lastRopeID],
-        bodyB: this.ring.top.body,
+        bodyB: this.base.body,
+        pointB: { x: 0, y: -this.base.h/2 },
         stiffness: 1,
-        length: this.spaceBetween
+        length: spaceBetween
       });
     this.rope.push(constrain);
     physics.addToWorld([constrain]);
@@ -81,15 +98,28 @@ class Rope extends Thing {
   }
 
   display() {
-    let pos = this.body.position;
-    let angle = this.body.angle;
-
+    //base
     push();
-    translate(pos.x, pos.y);
-    rotate(angle);
-
-    imageMode(CENTER);
-    image(img.book, 0, 0, this.w, this.h);
+    translate(this.base.body.position.x, this.base.body.position.y);
+    rotate(this.base.body.angle);
+    rectMode(CENTER);
+    fill(255, 150);
+    noStroke();
+    rect(0, 0, this.base.w, this.base.h);
     pop();
+
+    //Rope segments
+    for (let i = 0; i < this.rope.length; i++) { //Every other is a constraint in the rope array
+      if (this.rope[i].label !== 'Constraint') {
+        push();
+        translate(this.rope[i].position.x, this.rope[i].position.y);
+        rotate(this.rope[i].angle);
+        rectMode(CENTER);
+        fill(255, 150);
+        noStroke();
+        rect(0, 0, this.segmentSize, this.segmentSize);
+        pop();
+      }
+    }
   }
 }

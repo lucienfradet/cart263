@@ -80,6 +80,19 @@ class Game extends State {
     }
     this.objects.push(phone);
 
+    let rope = {
+      name: 'rope',
+      obj: new Rope({
+        x: 30,
+        y: -50,
+        w: 22,
+        h: 150,
+        category: defaultCategory,
+        mask: defaultCategory
+      })
+    }
+    this.objects.push(rope);
+
     let book = {
       name: 'book',
       obj: new Book({
