@@ -223,5 +223,20 @@ class Game extends State {
       });
       this.phoneWindow = newWindow;
     }
+
+    if (keyCode === 98) {
+      let tableau = {
+        name: 'tableau',
+        obj: new Tableau({
+          x: undefined,
+          y: undefined,
+          w: undefined,
+          h: undefined,
+          category: defaultCategory,
+          mask: defaultCategory
+        })
+      }
+      this.objects.push(tableau);
+    }
   }
 }
