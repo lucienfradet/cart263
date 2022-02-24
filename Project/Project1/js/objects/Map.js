@@ -224,7 +224,8 @@ class Map extends Thing {
     //small Shack
     this.shack = {
       id: 'shack',
-      active: false,
+      active: true,
+      mouseOver: false,
       window: undefined,
       x: undefined,
       y: undefined,
@@ -237,7 +238,8 @@ class Map extends Thing {
     //Post office
     this.postOffice = {
       id: 'postOffice',
-      active: false,
+      active: true,
+      mouseOver: false,
       window: undefined,
       x: undefined,
       y: undefined,
@@ -247,9 +249,24 @@ class Map extends Thing {
       h: 75
     }
 
+    //phoneBooth
+    this.phoneBooth = {
+      id: 'phoneBooth',
+      active: true,
+      mouseOver: false,
+      window: undefined,
+      x: undefined,
+      y: undefined,
+      xOffset: -this.map.w/2 /10 * 2,
+      yOffset: this.map.h/2 /10 * 3,
+      w: 50,
+      h: 50
+    }
+
     this.POI.push(
       this.shack,
-      this.postOffice
+      this.postOffice,
+      this.phoneBooth
     );
   }
 
@@ -260,6 +277,18 @@ class Map extends Thing {
     }
   }
 
+  //Function to find the id of a specifc object in the POI array
+  findPOIID(name) {
+    for (let i = 0; i < this.POI.length; i++) {
+      let poiName = this.POI[i].id;
+      if (poiName === name) {
+        return i;
+      }
+    }
+    return undefined;
+    console.log("ERROR: the array doen't contain the name you are looking for");
+  }
+
   displayPOI() {
     push();
     translate(this.mapBody.position.x, this.mapBody.position.y);
@@ -267,7 +296,7 @@ class Map extends Thing {
     translate(this.shack.xOffset, this.shack.yOffset); //translate to the POI position for displaying
     rectMode(CENTER);
     noStroke();
-    if (this.shack.active) {
+    if (this.shack.mouseOver && this.shack.active) {
       fill(255, 255, 0, 200);
       rect(0, 0, this.shack.w, this.shack.h);
     }
@@ -283,7 +312,7 @@ class Map extends Thing {
     translate(this.postOffice.xOffset, this.postOffice.yOffset);
     rectMode(CENTER);
     noStroke();
-    if (this.postOffice.active) {
+    if (this.postOffice.mouseOver && this.postOffice.active) {
       fill(255, 255, 0, 200);
       rect(0, 0, this.postOffice.w, this.postOffice.h);
     }
@@ -292,16 +321,32 @@ class Map extends Thing {
       rect(0, 0, this.postOffice.w, this.postOffice.h);
     }
     pop();
+
+    push();
+    translate(this.mapBody.position.x, this.mapBody.position.y);
+    rotate(this.mapBody.angle);
+    translate(this.phoneBooth.xOffset, this.phoneBooth.yOffset);
+    rectMode(CENTER);
+    noStroke();
+    if (this.phoneBooth.mouseOver && this.phoneBooth.active) {
+      fill(255, 255, 0, 200);
+      rect(0, 0, this.phoneBooth.w, this.phoneBooth.h);
+    }
+    else {
+      fill(255, 255, 0, 150);
+      rect(0, 0, this.phoneBooth.w, this.phoneBooth.h);
+    }
+    pop();
   }
 
   checkForMouseInteraction(array) {
     for (let i = 0; i < array.length; i++) {
       let d = dist(array[i].x, array[i].y, physics.mConstraint.mouse.position.x, physics.mConstraint.mouse.position.y);
       if (d <= array[i].w / 2) {
-        array[i].active = true;
+        array[i].mouseOver = true;
       }
       else {
-        array[i].active = false;
+        array[i].mouseOver = false;
       }
     }
   }

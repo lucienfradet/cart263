@@ -1,7 +1,7 @@
 //Combiné object (Le truc que tu tiens dans ta main pour parlé au télphone. SAVAIS-TU QUE ÇA S'APPELAIT UN COMBINÉ TOI!?!?)
 
 class Combine extends Thing {
-  constructor({x, y}) {
+  constructor({x, y, category, mask}) {
     super();
     this.parts = [];
 
@@ -11,7 +11,8 @@ class Combine extends Thing {
       w: 80,
       h: 15,
       options: {
-        //inertia: Infinity
+        category: category,
+        mask: mask
       }
     }
     this.parts.push(physics.addRect(this.base));
@@ -28,7 +29,8 @@ class Combine extends Thing {
       w: leftW,
       h: leftH,
       options: {
-
+        category: category,
+        mask: mask
       }
     }
     this.parts.push(physics.addRect(this.left));
@@ -45,13 +47,15 @@ class Combine extends Thing {
       w: rightW,
       h: rightH,
       options: {
-
+        category: category,
+        mask: mask
       }
     }
     this.parts.push(physics.addRect(this.right));
 
     this.compoundBody = physics.createBody(this.parts);
-    this.compoundBody.collisionFilter.mask = defaultCategory;
+    this.compoundBody.collisionFilter.category = category;
+    this.compoundBody.collisionFilter.mask = mask;
 
     //Set center of gravity in the middle of the base
 
@@ -77,8 +81,8 @@ class Combine extends Thing {
       h: 10,
       options: {
         collisionFilter: {
-          category: defaultCategory,
-          mask: defaultCategory
+          category: category,
+          mask: mask
         }
       }
     }
@@ -100,9 +104,9 @@ class Combine extends Thing {
     for (let y = start + spaceBetween; y < end - spaceBetween - this.segmentSize/2; y += spaceBetween + this.segmentSize/2) {
       let segment = Bodies.rectangle(this.left.x - this.left.w/2, y, this.segmentSize, this.segmentSize, {
         collisionFilter: {
-          category: defaultCategory,
-          mask: defaultCategory
-          }
+          category: category,
+          mask: mask
+        }
       });
       Body.setMass(segment, 0.001);
       this.cable.push(segment);

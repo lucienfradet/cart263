@@ -106,15 +106,6 @@ class Game extends State {
     }
     this.objects.push(book2);
 
-    let combine = {
-      name: 'combine',
-      obj: new Combine({
-        x: canvas.w/2 + 200,
-        y: canvas.h/2 - 100,
-      })
-    }
-    this.objects.push(combine);
-
     //Arrays that contain Pop Up windows
     this.POIwindow = undefined;
 
@@ -155,6 +146,7 @@ class Game extends State {
       }
     }
     console.log("ERROR: the array doen't contain the name you are looking for");
+    return undefined;
   }
 
   mousePressed() {
@@ -168,16 +160,16 @@ class Game extends State {
       );
       if (d <= this.POIwindow.layout.buttonRadius) {
         this.POIwindow.removeFromWorld();
-        console.log('hello');
+        return //stops the function so a window is not triggered while the user is trying to close one
       }
     }
     if (this.POIwindow === undefined) {
       for (let i = 0; i < this.objects[0].obj.POI.length; i++) {
         let poi = this.objects[0].obj.POI[i];
-        if (poi.active) {
+        if (poi.mouseOver && poi.active) {
           let newWindow = new Window({
             type: 'map',
-            id: 'shack'
+            id: poi.id
           });
           this.POIwindow = newWindow;
         }
