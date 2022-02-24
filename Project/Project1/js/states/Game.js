@@ -93,18 +93,18 @@ class Game extends State {
     }
     this.objects.push(book);
 
-    let book2 = {
-      name: 'book',
-      obj: new Book({
-        x: canvas.w/2 - 100,
-        y: canvas.h/2 + 50,
+    let bucket = {
+      name: 'bucket',
+      obj: new Bucket({
+        x: canvas.w/2 - 20,
+        y: canvas.h/2 + 115,
         w: 80,
         h: 120,
         category: defaultCategory,
         mask: defaultCategory
       })
     }
-    this.objects.push(book2);
+    this.objects.push(bucket);
 
     //contain Pop Up windows
     this.POIwindow = undefined;

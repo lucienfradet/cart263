@@ -21,6 +21,7 @@ class Book extends Thing {
       }
     );
     Body.setMass(this.body, 0.3);
+    Body.setAngle(this.body, PI/3)
     Composite.add(physics.world, this.body); //adds the body to matter.js world
   }
 

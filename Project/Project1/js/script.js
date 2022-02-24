@@ -15,13 +15,13 @@ Things ToDo:
   OK add map with rope that you can get down
   OK add clickable buildings on map
   OK add popup windows with physics inside
-  - make it possible to get objects in and out of the pop up
+  OK make it possible to get objects in and out of the pop up
 
   work on the phone more:
-  - add cable with an outlet that can be connected if the power is turned on
-  - add dial and listenner (two buttons only!)
-  - add handset that can be picked up or put down
-  - add popup conversation window (same as map popup)
+  OK add cable with an outlet that can be connected if the power is turned on
+  OK add dial and listenner (two buttons only!)
+  OK add handset that can be picked up or put down
+  KINDA add popup conversation window (same as map popup)
 
   Make it a game:
   - add window with boat as timer
