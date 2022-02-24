@@ -106,8 +106,9 @@ class Game extends State {
     }
     this.objects.push(book2);
 
-    //Arrays that contain Pop Up windows
+    //contain Pop Up windows
     this.POIwindow = undefined;
+    this.phoneWindow = undefined;
 
     console.log(this.objects);
   }
@@ -132,6 +133,11 @@ class Game extends State {
     if (this.POIwindow !== undefined) {
         this.POIwindow.display();
         this.POIwindow.update();
+    }
+
+    if (this.phoneWindow !== undefined) {
+        this.phoneWindow.display();
+        this.phoneWindow.update();
     }
 
     physics.displayMouseConstraint();
@@ -192,6 +198,16 @@ class Game extends State {
         this.objects[phoneID].obj.dial.timer = this.objects[phoneID].obj.dial.timerValue; //reset the dial timer
         this.objects[phoneID].obj.dial.sequence += this.objects[phoneID].obj.dial.button1.value;
       }
+    }
+  }
+
+  keyPressed() {
+    if (keyCode === 97) {
+      let newWindow = new Window({
+        type: 'phone',
+        id: 'hospital'
+      });
+      this.phoneWindow = newWindow;
     }
   }
 }

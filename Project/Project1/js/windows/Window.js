@@ -12,23 +12,24 @@ class Window {
         w: 400,
         h: 300,
         thickness: 30,
-        buttonRadius: 15
+        buttonRadius: 15,
+        category: poiCategory,
+        mask: defaultCategory | poiCategory
       }
 
       if (id === 'shack') {
-        let book = {
-          name: 'book',
-          obj: new Book({
+        let rat = {
+          name: 'rat',
+          obj: new Rat({
             x: this.layout.x,
             y: this.layout.y,
             w: 50,
-            h: 50*1.5,
+            h: 25,
             category: poiCategory,
             mask: defaultCategory | poiCategory
           })
         }
-
-        this.items.push(book);
+        this.items.push(rat);
       }
 
       if (id === 'phoneBooth') {
@@ -46,7 +47,16 @@ class Window {
     }
 
     if (type === 'phone') {
-
+      this.layout = {
+        x: canvas.w - canvas.w/4,
+        y: canvas.h/2 - canvas.h/4,
+        w: 200,
+        h: 200,
+        thickness: 30,
+        buttonRadius: 0,
+        category: phoneCategory,
+        mask: defaultCategory | phoneCategory
+      }
     }
 
     this.partsConfig = [];
@@ -94,8 +104,8 @@ class Window {
     Body.setStatic(this.compoundBody, true);
 
     //Set collisionFilters
-    this.compoundBody.collisionFilter.category = poiCategory;
-    this.compoundBody.collisionFilter.mask = defaultCategory | poiCategory;
+    this.compoundBody.collisionFilter.category = this.layout.category;
+    this.compoundBody.collisionFilter.mask = this.layout.mask;
   }
 
   //Removes bodies from the physics and clears the POIwindow object
@@ -106,8 +116,13 @@ class Window {
     if (this.id !== 'phoneBooth') {
       for (let i = 0; i < this.items.length; i++) {
         let itemBody = this.items[i].obj.body; //IMPORTANT to have objects inside body property!
-        if (itemBody.collisionFilter.category !== defaultCategory) { //check if it's in the main world or still in the window
+        if (itemBody.collisionFilter.category === poiCategory) { //check if it's in the main world or still in the window
           Composite.remove(physics.world, itemBody);
+        }
+        else if (itemBody.collisionFilter.category === poiCategory) { //check if item is in the phone window
+          if (this.type === 'phone') {
+            Composite.remove(physics.world, itemBody); //remove items if a phoneWindow is being closed
+          }
         }
         else {
           this.turnOffMapPOI();
@@ -180,9 +195,6 @@ class Window {
     }
   }
 
-
-
-
   //Function to get bodies inside the windows and out the real world
   getInTheBox(body) {
     //check if the mouse is grabbing something and return the body's ID
@@ -207,8 +219,9 @@ class Window {
         }
         else {
           //its trying to GET IN!!!
-          body.collisionFilter.category = poiCategory;
-          body.collisionFilter.mask = defaultCategory | poiCategory;
+          Body.setPosition(body, { x: mPos.x, y: mPos.y});
+          body.collisionFilter.category = phoneCategory;
+          body.collisionFilter.mask = defaultCategory | phoneCategory;
         }
       }
     }
@@ -217,10 +230,10 @@ class Window {
     }
   }
 
-  //Function to find the id of a specifc object in the objects array
+  //Function to find the id of a specifc object in the items array
   findArrayID(name) {
     for (let i = 0; i < this.items.length; i++) {
-      let objectName = this.objects[i].name;
+      let objectName = this.items[i].name;
       if (objectName === name) {
         return i;
       }
@@ -232,8 +245,23 @@ class Window {
     if (this.id === 'phoneBooth') {
       this.getOutOfBox(this.items[0].obj.compoundBody);
     }
-    //these are for testing and should be removed!
-    //else {this.getOutOfBox(this.items[0].obj.body);}
+
+    if (this.id === 'shack') {
+      this.getOutOfBox(this.items[0].obj.body);
+    }
+
+    if (this.id === 'hospital') {
+      //is the rat in the main world or in an open POI?
+      let objID = state.findArrayID('rat');
+      if (objID !== undefined) {
+        this.getInTheBox(state.objects[objID].obj.body);
+      }
+      if (state.POIwindow !== undefined && state.POIwindow.id === 'shack') {
+        let ratID = state.POIwindow.findArrayID('rat');
+        this.getInTheBox(state.POIwindow.items[ratID].obj.body);
+      }
+    }
+
     //this.getInTheBox(state.objects[state.findArrayID('book')].obj.body);
   }
 

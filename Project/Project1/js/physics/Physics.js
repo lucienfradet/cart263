@@ -12,6 +12,12 @@ let Engine = Matter.Engine,
     Mouse = Matter.Mouse,
     MouseConstraint = Matter.MouseConstraint;
 
+//collision categories (collisionFilter uses these damned bitmasks...)
+let defaultCategory = 0x0001, //walls and unspecified bodies
+    backCategory = 0x0002, //background
+    poiCategory = 0x0004, //point of interest windows
+    phoneCategory = 0x0008; //telephone windows
+
 class Physics {
   constructor() {
     this.engine = Engine.create({ gravity: {y: 1} }); //creates a world with default settings

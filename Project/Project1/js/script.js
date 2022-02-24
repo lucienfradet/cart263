@@ -52,11 +52,7 @@ let img = {
 let state;
 let physics;
 
-//collision categories (collisionFilter uses these damned bitmasks...)
-let defaultCategory = 0x0001, //walls and unspesefied bodies
-    backCategory = 0x0002, //background
-    poiCategory = 0x0004, //point of interest windows
-    phoneCategory = 0x0008; //telephone windows
+
 
 /**
 Description of preload
@@ -103,4 +99,8 @@ function createPhysics() {
 
 function mousePressed() {
   state.mousePressed();
+}
+
+function keyPressed() {
+  state.keyPressed();
 }
