@@ -48,14 +48,27 @@ let canvas = {
 let loadImg = {
   array: [],
   path: [
-    'assets/images/placeHolders/book.png',
+    'assets/images/book.png',
+    'assets/images/backgroundMain.png',
+    'assets/images/map.png',
+    'assets/images/phone.png',
+    'assets/images/combine.png',
+    'assets/images/bucket.png',
+    'assets/images/window0.png',
+    'assets/images/window1.png',
+    'assets/images/window2.png',
+    'assets/images/window3.png',
+    'assets/images/window4.png',
+    'assets/images/window5.png', //11
+    'assets/images/ringTop.png', //12
+    'assets/images/ropeHead.png',
+    'assets/images/ropePiece.png',
+    'assets/images/ringBottom.png', //15
+    'assets/images/anker.png',
   ]
 }
 
-let img = {
-  array: [],
-  book: undefined,
-}
+let img = [];
 
 let risoBlack;
 
@@ -63,26 +76,31 @@ let state;
 let physics;
 
 
-
-/**
-Description of preload
-*/
-function preload() {
-
-}
-
+//All of the dither function were designed to transform the original images into
+//dithered version but the library slows down the frameRate to much so I'll
+//dither the images manually instead
 function toDither(img, threshold) {
+  //clearRiso();
   let ditherType = 'bayer';
   let dithered = ditherImage(img, ditherType, threshold);
+  risoBlack.image(dithered, 0, 0);
+  //drawRiso();
+  //exportRiso();
+
   return dithered;
 }
 
 function createDithering() {
-  risoBlack = new Riso('black', canvas.w, canvas.h);
+  // risoBlack = new Riso('black', canvas.w, canvas.h);
+  //
+  // img.array[0] = toDither(loadImg.array[0], 75); //book
+  // img.array[1] = toDither(loadImg.array[1], 35); //mainbackground
+  // img.array[2] = toDither(loadImg.array[2], 80); //map
+  // img.array[3] = toDither(loadImg.array[3], 75); //phone
+  // img.array[4] = toDither(loadImg.array[4], 75); //combine
 
-  img.array[0] = toDither(loadImg.array[0], 75);
 
-  state.state = 'over';
+  state.state = 'over'; //skip to the next part
 }
 
 

@@ -103,10 +103,9 @@ class Rope extends Thing {
     push();
     translate(this.base.body.position.x, this.base.body.position.y);
     rotate(this.base.body.angle);
-    rectMode(CENTER);
-    fill(255, 150);
+    imageMode(CENTER);
     noStroke();
-    rect(0, 0, this.base.w, this.base.h);
+    image(img[13], 0, 0);
     pop();
 
     //Rope segments
@@ -115,10 +114,9 @@ class Rope extends Thing {
         push();
         translate(this.rope[i].position.x, this.rope[i].position.y);
         rotate(this.rope[i].angle);
-        rectMode(CENTER);
-        fill(255, 150);
+        imageMode(CENTER);
         noStroke();
-        rect(0, 0, this.segmentSize, this.segmentSize);
+        image(img[14], 0, 0);
         pop();
       }
     }

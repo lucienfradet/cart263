@@ -140,6 +140,13 @@ class Game extends State {
     rect(0, 0, canvas.w, canvas.h);
     pop();
 
+    //displayBackgroundMain
+    push();
+    imageMode(CENTER);
+    translate(canvas.w/2, canvas.h/2);
+    image(img[1], 0, 0, canvas.w, canvas.h);
+    pop();
+
     this.timer.display();
     this.timer.update();
 

@@ -91,33 +91,33 @@ class Bucket extends Thing {
     push();
     translate(this.body.position.x, this.body.position.y);
     rotate(this.body.angle);
-    rectMode(CENTER);
+    imageMode(CENTER);
     fill(255, 150);
     noStroke();
-    rect(0, 0, this.base.w, this.base.h);
+    image(img[5], 0, 0, img[5].width * 0.9, img[5].height * 0.9);
     pop();
 
     //left and right modules
-    push();
-    translate(this.body.position.x, this.body.position.y);
-    rotate(this.body.angle);
-    translate(-this.base.w/2 - this.sideOffset, -this.left.h/2);
-    rotate(-this.angleOffset);
-    rectMode(CENTER);
-    fill(255, 150);
-    noStroke();
-    rect(0, 0, this.left.w, this.left.h);
-    pop();
-
-    push();
-    translate(this.body.position.x, this.body.position.y);
-    rotate(this.body.angle);
-    translate(this.base.w/2 + this.sideOffset, -this.right.h/2);
-    rotate(this.angleOffset);
-    rectMode(CENTER);
-    fill(255, 150);
-    noStroke();
-    rect(0, 0, this.right.w, this.right.h);
-    pop();
+    // push();
+    // translate(this.body.position.x, this.body.position.y);
+    // rotate(this.body.angle);
+    // translate(-this.base.w/2 - this.sideOffset, -this.left.h/2);
+    // rotate(-this.angleOffset);
+    // rectMode(CENTER);
+    // fill(255, 150);
+    // noStroke();
+    // rect(0, 0, this.left.w, this.left.h);
+    // pop();
+    //
+    // push();
+    // translate(this.body.position.x, this.body.position.y);
+    // rotate(this.body.angle);
+    // translate(this.base.w/2 + this.sideOffset, -this.right.h/2);
+    // rotate(this.angleOffset);
+    // rectMode(CENTER);
+    // fill(255, 150);
+    // noStroke();
+    // rect(0, 0, this.right.w, this.right.h);
+    // pop();
   }
 }

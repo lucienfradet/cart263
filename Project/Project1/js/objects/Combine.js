@@ -171,37 +171,38 @@ class Combine extends Thing {
     rotate(this.compoundBody.angle);
     rectMode(CENTER);
     fill(255, 150);
-    noStroke();
-    rect(0, 0, this.base.w, this.base.h);
+    imageMode(CENTER);
+    //translate(-img.array[4].width/2 + 80, img.array[4].height/2 - 125);
+    image(img[4], 0, 0);
     pop();
 
     //left and right modules
-    push();
-    translate(this.compoundBody.position.x, this.compoundBody.position.y);
-    rotate(this.compoundBody.angle);
-    translate(-this.base.w/2 - this.left.w/2, this.left.h/2);
-    rectMode(CENTER);
-    fill(255, 150);
-    noStroke();
-    rect(0, 0, this.left.w, this.left.h);
-    pop();
-
-    push();
-    translate(this.compoundBody.position.x, this.compoundBody.position.y);
-    rotate(this.compoundBody.angle);
-    translate(this.base.w/2 + this.left.w/2, this.right.h/2);
-    rectMode(CENTER);
-    fill(255, 150);
-    noStroke();
-    rect(0, 0, this.right.w, this.right.h);
-    pop();
+    // push();
+    // translate(this.compoundBody.position.x, this.compoundBody.position.y);
+    // rotate(this.compoundBody.angle);
+    // translate(-this.base.w/2 - this.left.w/2, this.left.h/2);
+    // rectMode(CENTER);
+    // fill(255, 150);
+    // noStroke();
+    // rect(0, 0, this.left.w, this.left.h);
+    // pop();
+    //
+    // push();
+    // translate(this.compoundBody.position.x, this.compoundBody.position.y);
+    // rotate(this.compoundBody.angle);
+    // translate(this.base.w/2 + this.left.w/2, this.right.h/2);
+    // rectMode(CENTER);
+    // fill(255, 150);
+    // noStroke();
+    // rect(0, 0, this.right.w, this.right.h);
+    // pop();
 
     //plug
     push();
     translate(this.plug.body.position.x, this.plug.body.position.y);
     rotate(this.plug.body.angle);
     rectMode(CENTER);
-    fill(200, 125);
+    fill(0, 125);
     noStroke();
     rect(0, 0, this.plug.w, this.plug.w);
     pop();
@@ -213,7 +214,7 @@ class Combine extends Thing {
         translate(this.cable[i].position.x, this.cable[i].position.y);
         rotate(this.cable[i].angle);
         rectMode(CENTER);
-        fill(200, 125);
+        fill(0, 125);
         noStroke();
         rect(0, 0, this.segmentSize * 2.5, this.segmentSize * 2.5);
         pop();

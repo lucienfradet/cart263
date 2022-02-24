@@ -229,10 +229,10 @@ class Map extends Thing {
       window: undefined,
       x: undefined,
       y: undefined,
-      xOffset: this.map.w/2 /10 * 7,
-      yOffset: -this.map.h/2 /10 * 3,
-      w: 75,
-      h: 75
+      xOffset: this.map.w/2 /10 * 1.3,
+      yOffset: this.map.h/2 /10 * 0.1,
+      w: 60,
+      h: 60
     }
 
     //Post office
@@ -243,10 +243,10 @@ class Map extends Thing {
       window: undefined,
       x: undefined,
       y: undefined,
-      xOffset: -this.map.w/2 /10 * 5,
-      yOffset: +this.map.h/2 /10 * 1,
-      w: 75,
-      h: 75
+      xOffset: -this.map.w/2 /10 * 5.7,
+      yOffset: -this.map.h/2 /10 * 1.5,
+      w: 40,
+      h: 40
     }
 
     //phoneBooth
@@ -257,10 +257,10 @@ class Map extends Thing {
       window: undefined,
       x: undefined,
       y: undefined,
-      xOffset: -this.map.w/2 /10 * 2,
-      yOffset: this.map.h/2 /10 * 3,
-      w: 50,
-      h: 50
+      xOffset: -this.map.w/2 /10 * 0.8,
+      yOffset: -this.map.h/2 /10 * 1,
+      w: 25,
+      h: 25
     }
 
     //phoneLine
@@ -271,10 +271,10 @@ class Map extends Thing {
       window: undefined,
       x: undefined,
       y: undefined,
-      xOffset: -this.map.w/2 /10 * 8,
-      yOffset: this.map.h/2 /10 * 5,
-      w: 40,
-      h: 40
+      xOffset: -this.map.w/2 /10 * 9,
+      yOffset: this.map.h/2 /10 * 2.7,
+      w: 20,
+      h: 20
     }
 
     this.POI.push(
@@ -309,15 +309,14 @@ class Map extends Thing {
     translate(this.mapBody.position.x, this.mapBody.position.y);
     rotate(this.mapBody.angle); //rotate relative to the map
     translate(this.shack.xOffset, this.shack.yOffset); //translate to the POI position for displaying
-    rectMode(CENTER);
+    ellipseMode(CENTER);
     noStroke();
     if (this.shack.mouseOver && this.shack.active) {
-      fill(255, 255, 0, 200);
-      rect(0, 0, this.shack.w, this.shack.h);
+      fill(255, 200);
+      ellipse(0, 0, this.shack.w, this.shack.h);
     }
     else {
-      fill(255, 255, 0, 150);
-      rect(0, 0, this.shack.w, this.shack.h);
+
     }
     pop();
 
@@ -325,15 +324,14 @@ class Map extends Thing {
     translate(this.mapBody.position.x, this.mapBody.position.y);
     rotate(this.mapBody.angle);
     translate(this.postOffice.xOffset, this.postOffice.yOffset);
-    rectMode(CENTER);
+    ellipseMode(CENTER);
     noStroke();
     if (this.postOffice.mouseOver && this.postOffice.active) {
-      fill(255, 255, 0, 200);
-      rect(0, 0, this.postOffice.w, this.postOffice.h);
+      fill(255, 200);
+      ellipse(0, 0, this.postOffice.w, this.postOffice.h);
     }
     else {
-      fill(255, 255, 0, 150);
-      rect(0, 0, this.postOffice.w, this.postOffice.h);
+
     }
     pop();
 
@@ -341,15 +339,14 @@ class Map extends Thing {
     translate(this.mapBody.position.x, this.mapBody.position.y);
     rotate(this.mapBody.angle);
     translate(this.phoneBooth.xOffset, this.phoneBooth.yOffset);
-    rectMode(CENTER);
+    ellipseMode(CENTER);
     noStroke();
     if (this.phoneBooth.mouseOver && this.phoneBooth.active) {
-      fill(255, 255, 0, 200);
-      rect(0, 0, this.phoneBooth.w, this.phoneBooth.h);
+      fill(255, 200);
+      ellipse(0, 0, this.phoneBooth.w, this.phoneBooth.h);
     }
     else {
-      fill(255, 255, 0, 150);
-      rect(0, 0, this.phoneBooth.w, this.phoneBooth.h);
+
     }
     pop();
 
@@ -357,15 +354,14 @@ class Map extends Thing {
     translate(this.mapBody.position.x, this.mapBody.position.y);
     rotate(this.mapBody.angle);
     translate(this.phoneLine.xOffset, this.phoneLine.yOffset);
-    rectMode(CENTER);
+    ellipseMode(CENTER);
     noStroke();
     if (this.phoneLine.mouseOver && this.phoneLine.active) {
-      fill(255, 255, 0, 200);
-      rect(0, 0, this.phoneLine.w, this.phoneLine.h);
+      fill(255, 200);
+      ellipse(0, 0, this.phoneLine.w, this.phoneLine.h);
     }
     else {
-      fill(255, 255, 0, 150);
-      rect(0, 0, this.phoneLine.w, this.phoneLine.h);
+
     }
     pop();
   }
@@ -397,28 +393,32 @@ class Map extends Thing {
     translate(this.mapBody.position.x, this.mapBody.position.y);
     rotate(this.mapBody.angle);
     rectMode(CENTER);
+    imageMode(CENTER);
     fill(255, 150);
     noStroke();
     rect(0, 0, this.map.w, this.map.h);
+    //translate(0 -img.array[2].width + 30, 0 -img.array[2].height + 30);
+    image(img[2], 0, 0, this.map.w, this.map.h);
+
+
+
     pop();
 
     //ring
     push(); //Top
     translate(this.ring.top.body.position.x, this.ring.top.body.position.y);
     rotate(this.ring.top.body.angle);
-    rectMode(CENTER);
-    fill(255, 150);
+    imageMode(CENTER);
     noStroke();
-    rect(0, 0, this.ring.top.w, this.ring.top.h);
+    image(img[12], 0, 0);
     pop();
 
     push(); //Bottom
     translate(this.ring.bottom.body.position.x, this.ring.bottom.body.position.y);
     rotate(this.ring.bottom.body.angle);
-    rectMode(CENTER);
-    fill(255, 150);
+    imageMode(CENTER);
     noStroke();
-    rect(0, 0, this.ring.bottom.w, this.ring.bottom.h);
+    image(img[15], 0, 0);
     pop();
 
     //Rope segments
@@ -428,7 +428,7 @@ class Map extends Thing {
         translate(this.rope[i].position.x, this.rope[i].position.y);
         rotate(this.rope[i].angle);
         rectMode(CENTER);
-        fill(255, 150);
+        fill(0, 150);
         noStroke();
         rect(0, 0, this.segmentSize, this.segmentSize);
         pop();
@@ -439,10 +439,9 @@ class Map extends Thing {
     push();
     translate(this.anker.body.position.x, this.anker.body.position.y);
     rotate(this.anker.body.angle);
-    rectMode(CENTER);
-    fill(255, 150);
+    imageMode(CENTER);
     noStroke();
-    rect(0, 0, this.anker.w, this.anker.h);
+    image(img[16], 0, 0);
     pop();
 
     //constraints

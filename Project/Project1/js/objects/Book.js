@@ -36,12 +36,9 @@ class Book extends Thing {
     push();
     translate(pos.x, pos.y);
     rotate(angle);
-
     imageMode(CENTER);
-    clearRiso();
-    translate(this.w/2, this.h/2);
-    risoBlack.image(img.array[0], 0, 0, this.w, this.h);
-    drawRiso();
+    translate(0, 0);
+    image(img[0], 0, 0, this.w, this.h);
     pop();
   }
 }

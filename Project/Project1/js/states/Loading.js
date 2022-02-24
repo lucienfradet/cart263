@@ -6,12 +6,12 @@ class Loading extends State {
     this.totalToLoad = loadImg.path.length;
   }
 
-  loadImages(filePath) {
+  loadImages(filePath, index) {
     loadImage(filePath, imagesLoaded);
 
-    function imagesLoaded(img) {
+    function imagesLoaded(cliché) {
       //console.log(filePath);
-      loadImg.array.push(img)
+      img[index] = cliché;
       state.counter++;
     }
   }
@@ -20,7 +20,7 @@ class Loading extends State {
     switch (this.state) {
       case 'loadingImages':
       for (let i = 0; i < loadImg.path.length; i++) {
-        this.loadImages(loadImg.path[i]);
+        this.loadImages(loadImg.path[i] , i);
       }
       break;
 

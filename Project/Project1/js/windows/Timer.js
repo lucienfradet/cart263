@@ -1,7 +1,7 @@
 class Timer {
   constructor() {
-    this.w = 350;
-    this.h = 125;
+    this.w = 400;
+    this.h = 175;
     this.pos = {
       x: canvas.w - this.w/2,
       y: this.h/2
@@ -11,11 +11,12 @@ class Timer {
     this.timer = this.timerValue;
 
     this.frames = [
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined
+      img[6],
+      img[7],
+      img[8],
+      img[9],
+      img[10],
+      img[11]
     ];
   }
 
@@ -28,27 +29,31 @@ class Timer {
 
   display() {
     push();
+    rectMode(CENTER);
+    imageMode(CENTER);
     noStroke();
+    fill(230);
+    rect(this.pos.x, this.pos.y, this.w, this.h);
 
     let step = this.timerValue / this.frames.length;
-    if (this.timer <= this.timerValue && this.timer > step * 4) {
-      fill(0, 100, 111);
+    if (this.timer <= this.timerValue && this.timer > step * 5) {
+      image(this.frames[0], this.pos.x, this.pos.y);
+    }
+    else if (this.timer <= step * 5 && this.timer > step * 4) {
+      image(this.frames[1], this.pos.x, this.pos.y);
     }
     else if (this.timer <= step * 4 && this.timer > step * 3) {
-      fill(0, 128, 142);
+      image(this.frames[2], this.pos.x, this.pos.y);
     }
     else if (this.timer <= step * 3 && this.timer > step * 2) {
-      fill(0, 160, 178);
+      image(this.frames[3], this.pos.x, this.pos.y);
     }
     else if (this.timer <= step * 2 && this.timer > step * 1) {
-      fill(0, 200, 222);
+      image(this.frames[4], this.pos.x, this.pos.y);
     }
     else if (this.timer <= step) {
-      fill(0, 230, 255);
+      image(this.frames[5], this.pos.x, this.pos.y);
     }
-
-    rectMode(CENTER);
-    rect(this.pos.x, this.pos.y, this.w, this.h);
     pop();
   }
 }

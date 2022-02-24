@@ -262,25 +262,26 @@ class Phone extends Thing {
     if (doesTheCombineExist()) {
       //plug the phoneOutlet sti!
       if (!this.phoneOutlet.plugged) {
+        let phoneID = state.findArrayID('phone');
         let d = dist(
           this.compoundBody.position.x + this.phoneOutlet.xOffset,
           this.compoundBody.position.y + this.phoneOutlet.yOffset,
-          state.objects[4].obj.plug.body.position.x,
-          state.objects[4].obj.plug.body.position.y
+          state.objects[phoneID].obj.plug.body.position.x,
+          state.objects[phoneID].obj.plug.body.position.y
         );
         if (d <= this.phoneOutletSize && this.phoneOutlet.active) {
           let constraint = Constraint.create({
               bodyA: this.compoundBody,
               pointA: { x: this.phoneOutlet.xOffset - this.phoneOutletSize / 4 * 3, y: this.phoneOutlet.yOffset },
-              bodyB: state.objects[4].obj.plug.body,
+              bodyB: state.objects[phoneID].obj.plug.body,
               stiffness: 1,
               length: 0
             }
           );
-          Body.setInertia(state.objects[4].obj.plug.body, Infinity);
-          Body.setAngle(state.objects[4].obj.plug.body, 0);
-          Body.setAngularVelocity(state.objects[4].obj.plug.body, 0);
-          state.objects[4].obj.plug.body.collisionFilter.mask = 0;
+          Body.setInertia(state.objects[phoneID].obj.plug.body, Infinity);
+          Body.setAngle(state.objects[phoneID].obj.plug.body, 0);
+          Body.setAngularVelocity(state.objects[phoneID].obj.plug.body, 0);
+          state.objects[phoneID].obj.plug.body.collisionFilter.mask = 0;
           physics.addToWorld([constraint]);
           this.phoneOutlet.plugged = true;
         }
@@ -371,39 +372,40 @@ class Phone extends Thing {
     push();
     translate(this.compoundBody.position.x, this.compoundBody.position.y);
     rotate(this.compoundBody.angle);
-    rectMode(CENTER);
+    imageMode(CENTER);
     fill(255, 150);
     noStroke();
-    rect(0, 0, this.base.w, this.base.h);
+    //translate(0 -img.array[3].width - 155, 0 -img.array[3].height +5);
+    image(img[3], 7, 0);
     pop();
 
-    //top
-    push();
-    translate(this.compoundBody.position.x, this.compoundBody.position.y);
-    rotate(this.compoundBody.angle);
-    translate(0, -this.base.h/2 - this.top.h/2);
-    rectMode(CENTER);
-    fill(255, 150);
-    noStroke();
-    rect(0, 0, this.top.w, this.top.h);
-    pop();
-
-    //detector
-    push();
-    translate(this.detector.body.position.x, this.detector.body.position.y);
-    rotate(this.detector.body.angle);
-    rectMode(CENTER);
-    fill(255, 50);
-    noStroke();
-    rect(0, 0, this.detector.w, this.detector.h);
-    pop();
+    // //top
+    // push();
+    // translate(this.compoundBody.position.x, this.compoundBody.position.y);
+    // rotate(this.compoundBody.angle);
+    // translate(0, -this.base.h/2 - this.top.h/2);
+    // rectMode(CENTER);
+    // fill(255, 150);
+    // noStroke();
+    // rect(0, 0, this.top.w, this.top.h);
+    // pop();
+    //
+    // //detector
+    // push();
+    // translate(this.detector.body.position.x, this.detector.body.position.y);
+    // rotate(this.detector.body.angle);
+    // rectMode(CENTER);
+    // fill(255, 50);
+    // noStroke();
+    // rect(0, 0, this.detector.w, this.detector.h);
+    // pop();
 
     //plug
     push();
     translate(this.plug.body.position.x, this.plug.body.position.y);
     rotate(this.plug.body.angle);
     rectMode(CENTER);
-    fill(200, 125);
+    fill(0, 200);
     noStroke();
     rect(0, 0, this.plug.w, this.plug.w);
     pop();
@@ -415,7 +417,7 @@ class Phone extends Thing {
         translate(this.cable[i].position.x, this.cable[i].position.y);
         rotate(this.cable[i].angle);
         rectMode(CENTER);
-        fill(200, 125);
+        fill(0, 125);
         noStroke();
         rect(0, 0, this.segmentSize * 2.5, this.segmentSize * 2.5);
         pop();
@@ -427,7 +429,7 @@ class Phone extends Thing {
     translate(this.outlet.body.position.x, this.outlet.body.position.y);
     rotate(this.outlet.body.angle);
     rectMode(CENTER);
-    fill(200, 125);
+    fill(0, 150);
     noStroke();
     rect(0, 0, this.outlet.w, this.outlet.w);
     pop();
@@ -443,39 +445,39 @@ class Phone extends Thing {
     rect(0, 0, this.phoneOutletSize, this.phoneOutletSize);
     pop();
 
-    //dial buttons
-    //button0
-    push();
-    translate(this.compoundBody.position.x, this.compoundBody.position.y);
-    rotate(this.compoundBody.angle);
-    translate(this.dial.button0.xOff, this.dial.button0.yOff);
-    ellipseMode(CENTER);
-    if (this.dial.button0.active) {
-      fill(255, 255, 0, 200);
-    }
-    else {
-      fill(255, 255, 0, 150);
-    }
-    noStroke();
-    ellipse(0, 0, this.dial.button0.radius*2, this.dial.button0.radius*2 - 10);
-    pop();
+    if (this.outlet.plugged) {
+      //dial buttons
+      //button0
+      push();
+      translate(this.compoundBody.position.x, this.compoundBody.position.y);
+      rotate(this.compoundBody.angle);
+      translate(this.dial.button0.xOff, this.dial.button0.yOff);
+      ellipseMode(CENTER);
+      noStroke();
+      if (this.dial.button0.active) {
+        fill(255, 200);
+        ellipse(0, 0, this.dial.button0.radius*2, this.dial.button0.radius*2);
+      }
+      else {
 
-    //button1
-    push();
-    translate(this.compoundBody.position.x, this.compoundBody.position.y);
-    rotate(this.compoundBody.angle);
-    translate(this.dial.button1.xOff, this.dial.button1.yOff);
-    ellipseMode(CENTER);
-    if (this.dial.button1.active) {
-      fill(255, 255, 0, 200);
-    }
-    else {
-      fill(255, 255, 0, 150);
-    }
-    noStroke();
-    ellipse(0, 0, this.dial.button1.radius*2, this.dial.button1.radius*2 - 10);
-    pop();
+      }
+      pop();
 
+      //button1
+      push();
+      translate(this.compoundBody.position.x, this.compoundBody.position.y);
+      rotate(this.compoundBody.angle);
+      translate(this.dial.button1.xOff, this.dial.button1.yOff);
+      ellipseMode(CENTER);
+      noStroke();
+      if (this.dial.button1.active) {
+        fill(255, 200);
+        ellipse(0, 0, this.dial.button1.radius*2, this.dial.button1.radius*2);
+      }
+      else {
 
+      }
+      pop();
+    }
   }
 }
