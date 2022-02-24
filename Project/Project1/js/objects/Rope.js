@@ -10,6 +10,8 @@ class Rope extends Thing {
     this.category = category;
     this.mask = mask;
 
+    this.delay = 0;
+
     this.baseHeightRatio = 1.5;
     //base
     this.base = {
@@ -94,7 +96,18 @@ class Rope extends Thing {
 
   update() {
     if (this.base.body.position.y + this.base.h/2 > canvas.h/2 -25) {
-      console.log('end game?');
+      this.delay = 0;
+      let tableau = state.findArrayID('tableau');
+      if (tableau) {
+        console.log('win');
+      }
+      else {
+        console.log('lost');
+        if (this.delay === 0) {
+          //play sound
+          this.delay++;
+        }
+      }
     }
   }
 

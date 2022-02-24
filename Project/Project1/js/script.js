@@ -99,7 +99,7 @@ function createDithering() {
   // img.array[3] = toDither(loadImg.array[3], 75); //phone
   // img.array[4] = toDither(loadImg.array[4], 75); //combine
 
-
+  console.log("yo la form")
   state.state = 'over'; //skip to the next part
 }
 

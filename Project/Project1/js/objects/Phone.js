@@ -197,7 +197,7 @@ class Phone extends Thing {
     //phoneOutlet
     this.phoneOutletSize = 15
     this.phoneOutlet = {
-      xOffset: - this.base.w/2 + this.phoneOutletSize/2, //offset from the phone.base.position
+      xOffset: - this.base.w/2 + this.phoneOutletSize/2 - 5, //offset from the phone.base.position
       yOffset: this.base.h/6,
       active: true,
       plugged: false
@@ -224,6 +224,19 @@ class Phone extends Thing {
       timer: 180, //3 seconds
       timerValue: 180,
       sequence: '', //test sequence 101
+      hospitalSequence: '1000101'
+    }
+
+    //phoneCall with hospital
+    this.phoneCallHospital = {
+      spawnWindow: function() {
+        let newWindow = new Window({
+          type: 'phone',
+          id: 'hospital'
+        });
+        state.phoneWindow = newWindow;
+      },
+      happy: false
     }
 
   }
@@ -262,26 +275,27 @@ class Phone extends Thing {
     if (doesTheCombineExist()) {
       //plug the phoneOutlet sti!
       if (!this.phoneOutlet.plugged) {
-        let phoneID = state.findArrayID('phone');
+        let combineID = state.findArrayID('combine');
         let d = dist(
           this.compoundBody.position.x + this.phoneOutlet.xOffset,
           this.compoundBody.position.y + this.phoneOutlet.yOffset,
-          state.objects[phoneID].obj.plug.body.position.x,
-          state.objects[phoneID].obj.plug.body.position.y
+          state.objects[combineID].obj.plug.body.position.x,
+          state.objects[combineID].obj.plug.body.position.y
         );
-        if (d <= this.phoneOutletSize && this.phoneOutlet.active) {
+        console.log(d);
+        if (d <= this.phoneOutletSize) {
           let constraint = Constraint.create({
               bodyA: this.compoundBody,
               pointA: { x: this.phoneOutlet.xOffset - this.phoneOutletSize / 4 * 3, y: this.phoneOutlet.yOffset },
-              bodyB: state.objects[phoneID].obj.plug.body,
+              bodyB: state.objects[combineID].obj.plug.body,
               stiffness: 1,
               length: 0
             }
           );
-          Body.setInertia(state.objects[phoneID].obj.plug.body, Infinity);
-          Body.setAngle(state.objects[phoneID].obj.plug.body, 0);
-          Body.setAngularVelocity(state.objects[phoneID].obj.plug.body, 0);
-          state.objects[phoneID].obj.plug.body.collisionFilter.mask = 0;
+          Body.setInertia(state.objects[combineID].obj.plug.body, Infinity);
+          Body.setAngle(state.objects[combineID].obj.plug.body, 0);
+          Body.setAngularVelocity(state.objects[combineID].obj.plug.body, 0);
+          state.objects[combineID].obj.plug.body.collisionFilter.mask = 0;
           physics.addToWorld([constraint]);
           this.phoneOutlet.plugged = true;
         }
@@ -336,19 +350,25 @@ class Phone extends Thing {
     Body.setAngle(this.detector.body, this.compoundBody.angle);
 
     //dialing statements
-    if (this.dial.sequence !== '' && this.dial.state !== 'calling' && this.dial.state !== 'sending') {
-      this.dial.state = 'composing';
-      this.dial.timer--;
-      if (this.detector.collisionDetector()) {
-        this.dial.state = 'hungup'
-        this.dial.sequence = '';
+    if (this.detector.collisionDetector()) {
+      this.dial.state = 'hungup'
+      this.dial.sequence = '';
+      this.dial.timer = this.dial.timerValue;
+      if (this.state === 'calling') {
+        this.phoneCall.angry = true;
       }
     }
 
+    if (this.dial.sequence !== '' && this.dial.state !== 'calling' && this.dial.state !== 'sending') {
+      this.dial.state = 'composing';
+      this.dial.timer--;
+    }
+
     if (this.dial.timer < 0 && this.dial.state !== 'fail') {
-      if (this.dial.sequence === '101') {
+      if (this.dial.sequence === this.dial.hospitalSequence) { //good number was composed
         this.dial.timer = this.dial.timerValue;
-        this.dial.state = 'sending';
+        this.dial.state = 'sending'; //set to sending
+        //play ending sound
       }
       else {
         this.dial.timer = this.dial.timerValue;
@@ -365,7 +385,25 @@ class Phone extends Thing {
       }
     }
 
+    if (this.dial.state === 'sending') {
+      this.dial.timer--;
+      if (this.dial.timer < 0) {
+        this.dial.timer = this.dial.timerValue;
+        this.state = 'calling'
+        this.callEnCours();
+      }
+    }
   }
+
+  callEnCours() {
+    if (this.phoneCall.happy) {
+      //play aggreement sequence
+    }
+    if (!this.phoneCall.happy) {
+      //play requesting sequence
+    }
+  }
+
 
   display() {
     //base

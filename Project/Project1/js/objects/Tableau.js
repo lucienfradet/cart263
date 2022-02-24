@@ -38,7 +38,7 @@ class Tableau extends Thing {
     rotate(angle);
 
     imageMode(CENTER);
-    image(img.array[0], 0, 0, this.w, this.h);
+    image(img[0], 0, 0, this.w, this.h);
     pop();
   }
 }

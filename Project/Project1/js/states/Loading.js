@@ -4,6 +4,10 @@ class Loading extends State {
     this.state = 'loadingImages'
     this.counter = 0;
     this.totalToLoad = loadImg.path.length;
+
+    for (let i = 0; i < loadImg.path.length; i++) {
+      this.loadImages(loadImg.path[i] , i);
+    }
   }
 
   loadImages(filePath, index) {
@@ -17,10 +21,11 @@ class Loading extends State {
   }
 
   update() {
+    console.log(this.state);
     switch (this.state) {
       case 'loadingImages':
-      for (let i = 0; i < loadImg.path.length; i++) {
-        this.loadImages(loadImg.path[i] , i);
+      if (this.counter === this.totalToLoad) {
+        this.state = 'dithering';
       }
       break;
 
@@ -33,9 +38,7 @@ class Loading extends State {
       console.log(physics);
     }
 
-    if (this.counter === loadImg.path.length) {
-      this.state = 'dithering';
-    }
+
   }
 
   display() {
@@ -43,16 +46,16 @@ class Loading extends State {
     push();
     stroke(255);
     textSize(32);
-    text(this.state, width/2, height/2)
+    text(this.state, canvas.w/2, canvas.h/2)
 
     stroke(255);
     noFill();
-    rect(width/2, height/2 + 50, 200, 20);
+    rect(canvas.w/2, canvas.h/2 + 50, 200, 20);
 
     noStroke();
     fill(255, 100);
     let w = (200 * this.counter) / this.totalToLoad;
-    rect(width/2, height/2 + 50, w, 20);
+    rect(canvas.w/2, canvas.h/2 + 50, w, 20);
     pop();
   }
 }

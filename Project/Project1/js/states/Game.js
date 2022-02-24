@@ -7,6 +7,7 @@ class Game extends State {
     //background
     this.background = undefined;
     this.timer = new Timer;
+    this.generalDelay = 0;
 
     createPhysics();
 
@@ -224,7 +225,7 @@ class Game extends State {
       }
     }
 
-    //Phone dial
+    //Phone dial (WHY IS THIS HERE?) THIS SHOULD BE DELETED (I Think, pretty sure it was an extensive test lol)
     let phoneID = this.findArrayID('phone');
     if (
       this.objects[phoneID].obj.outlet.plugged //power is plugged?
@@ -244,7 +245,7 @@ class Game extends State {
   }
 
   keyPressed() {
-    if (keyCode === 97) {
+    if (keyCode === 49) { //1
       let newWindow = new Window({
         type: 'phone',
         id: 'hospital'
@@ -252,7 +253,7 @@ class Game extends State {
       this.phoneWindow = newWindow;
     }
 
-    if (keyCode === 98) {
+    if (keyCode === 50) { //2
       let tableau = {
         name: 'tableau',
         obj: new Tableau({
