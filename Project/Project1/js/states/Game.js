@@ -4,6 +4,10 @@ class Game extends State {
   constructor() {
     super();
 
+    //background
+    this.background = undefined;
+    this.timer = new Timer;
+
     createPhysics();
 
     //Create walls
@@ -134,6 +138,9 @@ class Game extends State {
     fill(0);
     rect(0, 0, canvas.w, canvas.h);
     pop();
+
+    this.timer.display();
+    this.timer.update();
 
     for (let i = 0; i < this.walls.length; i++) {
       this.walls[i].obj.display();

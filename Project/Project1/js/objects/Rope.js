@@ -94,7 +94,9 @@ class Rope extends Thing {
   }
 
   update() {
-
+    if (this.base.body.position.y + this.base.h/2 > canvas.h/2 -25) {
+      console.log('end game?');
+    }
   }
 
   display() {
