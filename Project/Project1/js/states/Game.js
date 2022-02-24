@@ -158,6 +158,20 @@ class Game extends State {
   mousePressed() {
     //POI for the map
     if (this.POIwindow !== undefined) {
+      if (this.POIwindow.id === 'phoneLine') {
+        let d = dist(
+          this.POIwindow.layout.x + this.POIwindow.switch.xOff,
+          this.POIwindow.layout.y + this.POIwindow.switch.yOff,
+          physics.mConstraint.mouse.position.x,
+          physics.mConstraint.mouse.position.y
+        );
+        if (d <= this.POIwindow.switch.radius) {
+          this.POIwindow.switch.active = true;
+          this.POIwindow.switch.activate();
+          this.POIwindow.turnOffMapPOI();
+          return //stops the function so a window is not triggered while the user is trying to close one
+        }
+      }
       let d = dist(
         this.POIwindow.compoundBody.position.x + this.POIwindow.layout.w/2 - this.POIwindow.layout.thickness/2,
         this.POIwindow.compoundBody.position.y - this.POIwindow.layout.h/2 + this.POIwindow.layout.thickness/2,

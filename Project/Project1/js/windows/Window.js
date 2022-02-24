@@ -44,6 +44,24 @@ class Window {
           }
           this.items.push(combine);
       }
+
+      if (id === 'postOffice') {
+        this.background = undefined;
+      }
+
+      if (id === 'phoneLine') {
+        this.background = undefined;
+        this.switch = {
+          xOff: 15, //from this.layout position
+          yOff: 0,
+          radius: 50,
+          active: false,
+          activate: function() { //turn the phone outlet on!
+            let phoneID = state.findArrayID('phone');
+            state.objects[phoneID].obj.outlet.active = true;
+          }
+        }
+      }
     }
 
     if (type === 'phone') {
@@ -298,6 +316,22 @@ class Window {
     noStroke();
     ellipse(0, 0, this.layout.buttonRadius * 2);
     pop();
+
+    if (this.id === 'phoneLine') {
+      //display phoneSwitch
+      push();
+      translate(this.layout.x + this.switch.xOff, this.layout.y + this.switch.yOff);
+      ellipseMode(CENTER);
+      if (this.switch.active) {
+        fill(0, 255, 0, 200);
+      }
+      else {
+        fill(255, 0, 0, 200);
+      }
+      noStroke();
+      ellipse(0, 0, this.switch.radius*2);
+      pop();
+    }
 
     for (let i = 0; i < this.items.length; i++) {
       let item = this.items[i].obj;

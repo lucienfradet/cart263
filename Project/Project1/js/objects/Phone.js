@@ -177,7 +177,7 @@ class Phone extends Thing {
     //outlet
     this.outlet = {
       body: undefined,
-      active: true,
+      active: false,
       plugged: false,
       x: canvas.w - 60,
       y: canvas.h/10 * 6,

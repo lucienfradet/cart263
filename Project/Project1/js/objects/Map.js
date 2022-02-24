@@ -263,10 +263,25 @@ class Map extends Thing {
       h: 50
     }
 
+    //phoneLine
+    this.phoneLine = {
+      id: 'phoneLine',
+      active: true,
+      mouseOver: false,
+      window: undefined,
+      x: undefined,
+      y: undefined,
+      xOffset: -this.map.w/2 /10 * 8,
+      yOffset: this.map.h/2 /10 * 5,
+      w: 40,
+      h: 40
+    }
+
     this.POI.push(
       this.shack,
       this.postOffice,
-      this.phoneBooth
+      this.phoneBooth,
+      this.phoneLine
     );
   }
 
@@ -335,6 +350,22 @@ class Map extends Thing {
     else {
       fill(255, 255, 0, 150);
       rect(0, 0, this.phoneBooth.w, this.phoneBooth.h);
+    }
+    pop();
+
+    push();
+    translate(this.mapBody.position.x, this.mapBody.position.y);
+    rotate(this.mapBody.angle);
+    translate(this.phoneLine.xOffset, this.phoneLine.yOffset);
+    rectMode(CENTER);
+    noStroke();
+    if (this.phoneLine.mouseOver && this.phoneLine.active) {
+      fill(255, 255, 0, 200);
+      rect(0, 0, this.phoneLine.w, this.phoneLine.h);
+    }
+    else {
+      fill(255, 255, 0, 150);
+      rect(0, 0, this.phoneLine.w, this.phoneLine.h);
     }
     pop();
   }
