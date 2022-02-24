@@ -180,7 +180,7 @@ class Game extends State {
         return i;
       }
     }
-    console.log("ERROR: the array doen't contain the name you are looking for");
+    console.error("ERROR: the array doen't contain the name you are looking for");
     return undefined;
   }
 
