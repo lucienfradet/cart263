@@ -75,7 +75,6 @@ class Rope extends Thing {
       }
       previous = segment;
     }
-    console.log(this.rope);
 
     //Attach the last segment to the ring
     let lastRopeID = this.rope.length - 1;

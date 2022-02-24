@@ -177,9 +177,12 @@ class Riso extends p5.Graphics {
 }
 
 function drawRiso() {
+  push();
+  translate(testCanvas.w/2 - canvas.w/2, testCanvas.h/2 - canvas.h/2); //!!! BEcause of my canvas bullshit lol
   blendMode(MULTIPLY);
   Riso.channels.forEach(c => c.draw());
   blendMode(BLEND);
+  pop();
 }
 
 function exportRiso() {

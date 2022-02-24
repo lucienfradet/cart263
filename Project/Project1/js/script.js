@@ -45,9 +45,19 @@ let canvas = {
   h: 480
 }
 
+let loadImg = {
+  array: [],
+  path: [
+    'assets/images/placeHolders/book.png',
+  ]
+}
+
 let img = {
+  array: [],
   book: undefined,
 }
+
+let risoBlack;
 
 let state;
 let physics;
@@ -58,7 +68,21 @@ let physics;
 Description of preload
 */
 function preload() {
-  img.book = loadImage('assets/images/placeHolders/book.png');
+
+}
+
+function toDither(img, threshold) {
+  let ditherType = 'bayer';
+  let dithered = ditherImage(img, ditherType, threshold);
+  return dithered;
+}
+
+function createDithering() {
+  risoBlack = new Riso('black', canvas.w, canvas.h);
+
+  img.array[0] = toDither(loadImg.array[0], 75);
+
+  state.state = 'over';
 }
 
 
@@ -68,7 +92,7 @@ Description of setup
 function setup() {
   canvas.obj = createCanvas(testCanvas.w, testCanvas.h);
   //Display testCanvas
-  background(100);
+  background(255);
   translate(testCanvas.w/2 - canvas.w/2, testCanvas.h/2 - canvas.h/2);
   //display real canvas
   // !! USE canvas.w instead of width !!
@@ -77,9 +101,7 @@ function setup() {
   rect(0, 0, canvas.w, canvas.h);
   pop();
 
-  state = new Game();
-  console.log(physics);
-
+  state = new Loading();
 }
 
 

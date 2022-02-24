@@ -88,7 +88,6 @@ class Phone extends Thing {
 
     this.detector.body = Bodies.rectangle(this.detector.xOff, this.detector.yOff, this.detector.w, this.detector.h, this.detector.options);
     physics.addToWorld([this.detector.body]);
-    console.log(this.detector.body.id);
 
     //plug
     this.plugStartDistance = this.base.y - 150;

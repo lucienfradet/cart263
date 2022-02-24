@@ -135,7 +135,8 @@ class Game extends State {
     translate(testCanvas.w/2 - canvas.w/2, testCanvas.h/2 - canvas.h/2);
     //display real canvas
     push();
-    fill(0);
+    fill(200);
+    noStroke();
     rect(0, 0, canvas.w, canvas.h);
     pop();
 
