@@ -3,7 +3,7 @@ class Loading extends State {
     super();
     this.state = 'loadingImages'
     this.counter = 0;
-    this.totalToLoad = loadImg.path.length;
+    this.totalToLoad = loadImg.path.length + loadSnd.path.length;
 
     for (let i = 0; i < loadImg.path.length; i++) {
       this.loadImages(loadImg.path[i] , i);
@@ -20,9 +20,28 @@ class Loading extends State {
     }
   }
 
+  loadSounds(filePath, index) {
+    loadSound(filePath, soundsLoaded);
+
+    function soundsLoaded(son) {
+      //console.log(filePath);
+      snd[index] = son;
+      state.counter++;
+    }
+  }
+
   update() {
     switch (this.state) {
       case 'loadingImages':
+      if (this.counter === loadImg.path.length) {
+        for (let i = 0; i < loadSnd.path.length; i++) {
+          this.loadSounds(loadSnd.path[i] , i);
+        }
+        this.state = 'loadingSounds';
+      }
+      break;
+
+      case 'loadingSounds':
       if (this.counter === this.totalToLoad) {
         this.state = 'dithering';
       }
@@ -53,10 +72,15 @@ class Loading extends State {
     noFill();
     rect(width/2, height/2 + 50, 200, 20);
 
+    let loadingRecPos = {
+      x: width/2 - 200/2,
+      y: height/2 + 50 - 20/2
+    }
     noStroke();
+    rectMode(CORNER);
     fill(255, 100);
     let w = (200 * this.counter) / this.totalToLoad;
-    rect(width/2, height/2 + 50, w, 20);
+    rect(loadingRecPos.x, loadingRecPos.y, w, 20);
     pop();
   }
 }

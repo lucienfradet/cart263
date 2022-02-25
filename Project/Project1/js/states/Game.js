@@ -128,6 +128,10 @@ class Game extends State {
     this.POIwindow = undefined;
     this.phoneWindow = undefined;
 
+    //PlaySounds
+    snd[6].loop(); //roomTone
+    //snd[2].loop(); //Jazz
+
     console.log(this.objects);
   }
 
@@ -200,10 +204,11 @@ class Game extends State {
           physics.mConstraint.mouse.position.x,
           physics.mConstraint.mouse.position.y
         );
-        if (d <= this.POIwindow.switch.radius) {
+        if (d <= this.POIwindow.switch.radius && !this.POIwindow.switch.active) {
           this.POIwindow.switch.active = true;
           this.POIwindow.switch.activate();
           this.POIwindow.turnOffMapPOI();
+          snd[5].play(); //plug
           return //stops the function so a window is not triggered while the user is trying to close one
         }
       }
@@ -232,7 +237,7 @@ class Game extends State {
       }
     }
 
-    //Phone dial (WHY IS THIS HERE?) THIS SHOULD BE DELETED (I Think, pretty sure it was an extensive test lol)
+    //Phone dial: check mousePressed with the dial
     let phoneID = this.findArrayID('phone');
     if (
       this.objects[phoneID].obj.outlet.plugged //power is plugged?
@@ -241,10 +246,12 @@ class Game extends State {
       && this.objects[phoneID].obj.dial.state !== 'sending'
     ) {
       if (this.objects[phoneID].obj.dial.button0.active) {
+        snd[0].play(); //buttonPress
         this.objects[phoneID].obj.dial.timer = this.objects[phoneID].obj.dial.timerValue; //reset the dial timer
         this.objects[phoneID].obj.dial.sequence += this.objects[phoneID].obj.dial.button0.value;
       }
       else if (this.objects[phoneID].obj.dial.button1.active) {
+        snd[0].play(); //buttonPress
         this.objects[phoneID].obj.dial.timer = this.objects[phoneID].obj.dial.timerValue; //reset the dial timer
         this.objects[phoneID].obj.dial.sequence += this.objects[phoneID].obj.dial.button1.value;
       }

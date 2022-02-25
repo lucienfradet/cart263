@@ -258,6 +258,7 @@ class Phone extends Thing {
         Body.setAngle(this.plug.body, 0);
         Body.setAngularVelocity(this.plug.body, 0);
         physics.addToWorld([constraint]);
+        snd[5].play(); //plug
         this.outlet.plugged = true;
       }
     }
@@ -282,7 +283,7 @@ class Phone extends Thing {
           state.objects[combineID].obj.plug.body.position.x,
           state.objects[combineID].obj.plug.body.position.y
         );
-        if (d <= this.phoneOutletSize) {
+        if (d <= this.phoneOutletSize && !this.phoneOutlet.plugged) {
           let constraint = Constraint.create({
               bodyA: this.compoundBody,
               pointA: { x: this.phoneOutlet.xOffset - this.phoneOutletSize / 4 * 3, y: this.phoneOutlet.yOffset },
@@ -296,6 +297,7 @@ class Phone extends Thing {
           Body.setAngularVelocity(state.objects[combineID].obj.plug.body, 0);
           state.objects[combineID].obj.plug.body.collisionFilter.mask = 0;
           physics.addToWorld([constraint]);
+          snd[5].play(); //plug
           this.phoneOutlet.plugged = true;
         }
       }
@@ -349,47 +351,60 @@ class Phone extends Thing {
     Body.setAngle(this.detector.body, this.compoundBody.angle);
 
     //dialing statements
-    if (this.detector.collisionDetector()) {
-      this.dial.state = 'hungup'
-      this.dial.sequence = '';
-      this.dial.timer = this.dial.timerValue;
-      if (this.state === 'calling') {
-        this.phoneCall.angry = true;
-      }
-    }
-
-    if (this.dial.sequence !== '' && this.dial.state !== 'calling' && this.dial.state !== 'sending') {
-      this.dial.state = 'composing';
-      this.dial.timer--;
-    }
-
-    if (this.dial.timer < 0 && this.dial.state !== 'fail') {
-      if (this.dial.sequence === this.dial.hospitalSequence) { //good number was composed
-        this.dial.timer = this.dial.timerValue;
-        this.dial.state = 'sending'; //set to sending
-        //play ending sound
-      }
-      else {
-        this.dial.timer = this.dial.timerValue;
+    if (this.outlet.plugged && this.phoneOutlet.plugged) {//Check if phone is fully plugged
+      if (this.detector.collisionDetector() && this.dial.state !== 'hungup') {
+        snd[1].play(); //hungUp
+        snd[3].stop(); //openLine
+        this.dial.state = 'hungup'
         this.dial.sequence = '';
-        this.dial.state = 'fail';
-      }
-    }
-
-    if (this.dial.state === 'fail') {
-      this.dial.timer--;
-      if (this.dial.timer < 0) {
-        this.dial.timer = this.dial.timerValue; //or when sound finishes
-        this.dial.state = '';
-      }
-    }
-
-    if (this.dial.state === 'sending') {
-      this.dial.timer--;
-      if (this.dial.timer < 0) {
         this.dial.timer = this.dial.timerValue;
-        this.state = 'calling'
-        this.callEnCours();
+        if (this.state === 'calling') {
+          this.phoneCall.angry = true;
+        }
+      }
+
+      if (!this.detector.collisionDetector() && this.dial.state === 'hungup' || this.dial.state === '') {
+        snd[4].play(); //pickedUp
+        snd[3].loop(); //openLine
+        this.dial.state = 'open';
+      }
+
+      if (this.dial.sequence !== '' && this.dial.state !== 'calling' && this.dial.state !== 'sending') {
+        snd[3].stop(); //openLine
+        this.dial.state = 'composing';
+        this.dial.timer--;
+      }
+
+      if (this.dial.timer < 0 && this.dial.state !== 'fail') {
+        if (this.dial.sequence === this.dial.hospitalSequence) { //good number was composed
+          this.dial.timer = this.dial.timerValue;
+          snd[7].loop(); //sending
+          this.dial.state = 'sending'; //set to sending
+          //play ending sound
+        }
+        else {
+          this.dial.timer = this.dial.timerValue;
+          this.dial.sequence = '';
+          this.dial.state = 'fail';
+        }
+      }
+
+      if (this.dial.state === 'fail') {
+        this.dial.timer--;
+        if (this.dial.timer < 0) {
+          this.dial.timer = this.dial.timerValue; //or when sound finishes
+          this.dial.state = '';
+        }
+      }
+
+      if (this.dial.state === 'sending') {
+        this.dial.timer--;
+        if (this.dial.timer < 0) {
+          snd[7].stop();
+          this.dial.timer = this.dial.timerValue;
+          this.state = 'calling'
+          this.callEnCours();
+        }
       }
     }
   }

@@ -73,11 +73,26 @@ let loadImg = {
     'assets/images/mapColor.png', //22
     'assets/images/rat.png', //23
     'assets/images/outlet.png',
-    'assets/images/hide.png',
+    'assets/images/hide.png'
   ]
 }
-
 let img = [];
+
+let loadSnd = {
+  path: [
+    'assets/sounds/dialing.mp3', //0
+    'assets/sounds/hangUp.mp3',
+    'assets/sounds/jazz.mp3',
+    'assets/sounds/openLine.mp3', //3
+    'assets/sounds/pickedUp.mp3',
+    'assets/sounds/plug.mp3',
+    'assets/sounds/roomTone.mp3', //6
+    'assets/sounds/sending.mp3'
+  ]
+}
+let snd = [];
+
+
 
 let risoBlack;
 
@@ -126,7 +141,7 @@ function setup() {
   rect(0, 0, canvas.w, canvas.h);
   pop();
 
-  state = new Loading();
+  state = new PressAnyKey();
 }
 
 
