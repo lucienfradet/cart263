@@ -1,3 +1,5 @@
+//The game is on a timer represented by a window and a boat approaching
+
 class Timer {
   constructor() {
     this.w = 400;
@@ -21,8 +23,10 @@ class Timer {
   }
 
   update() {
+    //Checks if the timer is over or not
     this.timer--;
     if (this.timer < 0) {
+      //spawning the tableau is the end goal
       let tableau = state.findArrayID('tableau');
       if (tableau !== undefined) {
         snd[16].play(); //bells

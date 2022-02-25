@@ -1,3 +1,5 @@
+//get input from the player
+
 class PressAnyKey extends State {
   constructor() {
     super();

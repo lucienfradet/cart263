@@ -1,3 +1,5 @@
+//Rope that the player pulls once he has the tableau. Instead of waiting for the timer to funish
+
 class Rope extends Thing {
   constructor({x, y, w, h, category, mask}) {
     super();
@@ -78,7 +80,7 @@ class Rope extends Thing {
       previous = segment;
     }
 
-    //Attach the last segment to the ring
+    //Attach the last segment to the ropeHead
     let lastRopeID = this.rope.length - 1;
     if (this.rope[lastRopeID].label === 'Constraint') {
       lastRopeID = this.rope.length - 2;
@@ -94,6 +96,7 @@ class Rope extends Thing {
     physics.addToWorld([constrain]);
   }
 
+  //check if the rope is pulled
   update() {
     if (this.base.body.position.y + this.base.h/2 > canvas.h/2 -25) {
       this.delay = 0;

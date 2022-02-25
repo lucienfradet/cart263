@@ -1,5 +1,6 @@
 // !! Important to have the body inside a body property !!
 
+//Bucket Object
 class Bucket extends Thing {
   constructor({x, y, w, h, category, mask}) {
     super();
@@ -29,7 +30,7 @@ class Bucket extends Thing {
     }
     this.parts.push(physics.addRect(this.base));
 
-    //config for the left part of combine
+    //config for the left part of bucket
     let leftW = this.thickness,
         leftH = this.h,
         leftX = this.base.x - this.base.w/2 - this.sideOffset,
@@ -48,7 +49,7 @@ class Bucket extends Thing {
     this.parts.push(physics.addRect(this.left));
     Body.setAngle(this.parts[1], -this.angleOffset);
 
-    //config for the right part of combine
+    //config for the right part of bucket
     let rightW = this.thickness,
         rightH = this.h,
         rightX = this.base.x + this.base.w/2 + this.sideOffset,
@@ -86,7 +87,6 @@ class Bucket extends Thing {
   }
 
   display() {
-
     //base
     push();
     translate(this.body.position.x, this.body.position.y);
@@ -97,6 +97,7 @@ class Bucket extends Thing {
     image(img[5], 0, 0, img[5].width * 0.9, img[5].height * 0.9);
     pop();
 
+    //displays matter.s bodies
     //left and right modules
     // push();
     // translate(this.body.position.x, this.body.position.y);

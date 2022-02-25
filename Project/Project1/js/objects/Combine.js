@@ -5,6 +5,7 @@ class Combine extends Thing {
     super();
     this.parts = [];
 
+    //base of the combine
     this.base = {
       x: x,
       y: y,
@@ -71,7 +72,7 @@ class Combine extends Thing {
 
     physics.addToWorld(this.compoundBody);
 
-    //plug
+    //create plug
     this.plugStartDistance = this.left.y - 100;
     this.plug = {
       body: undefined,
@@ -91,7 +92,7 @@ class Combine extends Thing {
     physics.addToWorld([this.plug.body]);
 
 
-    //cable
+    //create and attach a cable
     this.cable = [];
     this.segmentSize = 2
     const NUM_ROPE_SEGMENTS = 30;
@@ -112,7 +113,7 @@ class Combine extends Thing {
       this.cable.push(segment);
 
       let constrain = undefined;
-      if (!previous) {
+      if (!previous) { //first constrain to the main body
         constrain = Constraint.create({
           bodyA: this.plug.body,
           pointA: { x: 0, y: this.plug.h/2 },
@@ -156,10 +157,6 @@ class Combine extends Thing {
     physics.addToWorld([constrain]);
   }
 
-  checkForMouseInteraction() {
-
-  }
-
   update() {
 
   }
@@ -172,11 +169,10 @@ class Combine extends Thing {
     rectMode(CENTER);
     fill(255, 150);
     imageMode(CENTER);
-    //translate(-img.array[4].width/2 + 80, img.array[4].height/2 - 125);
     image(img[4], 0, 0);
     pop();
 
-    //left and right modules
+    //left and right modules (matter.js Bodies)
     // push();
     // translate(this.compoundBody.position.x, this.compoundBody.position.y);
     // rotate(this.compoundBody.angle);

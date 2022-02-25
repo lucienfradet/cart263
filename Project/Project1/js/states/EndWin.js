@@ -1,3 +1,6 @@
+  //State if the game is won!
+  //meaning runnin out of time or pulling the rope while the tableau has spawned
+
 class EndWin extends State {
   constructor() {
     super();

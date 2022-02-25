@@ -1,3 +1,5 @@
+//Allows to display a talking mouth somewhere
+
 class Mouth {
   constructor({x, y, w, angle}) {
     this.img = {

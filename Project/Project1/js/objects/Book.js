@@ -1,5 +1,6 @@
 // !! Important to have the body inside a body property !!
 
+//book object
 class Book extends Thing {
   constructor({x, y, w, h, category, mask}) {
     super();
@@ -20,7 +21,7 @@ class Book extends Thing {
         }
       }
     );
-    Body.setMass(this.body, 0.3);
+    Body.setMass(this.body, 0.3); //less heavy god... it'a book
     Body.setAngle(this.body, PI/3)
     Composite.add(physics.world, this.body); //adds the body to matter.js world
   }

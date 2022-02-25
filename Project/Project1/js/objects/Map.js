@@ -1,4 +1,6 @@
-//I just realised I really don't need all these damn this and should really use non global variables for the constructor...
+//Map class
+//suspanded map with points of interest and interactions with them
+
 class Map extends Thing {
   constructor() {
     super();
@@ -23,13 +25,14 @@ class Map extends Thing {
     });
     Body.setMass(this.mapBody, 1);
 
-    //Map Attach
+    //Map Attach way above the canvas
     this.attach = {
       x: this.map.x,
       y: this.map.y - this.map.h/2 - 3000,
       stiffness: 0.00035
     }
 
+    //lines connecting the map and the attach
     this.constraints = {
       bottomRight: undefined,
       bottomRightConfig: {
@@ -50,7 +53,7 @@ class Map extends Thing {
     this.constraints.bottomRight = Constraint.create(this.constraints.bottomRightConfig);
     this.constraints.bottomLeft = Constraint.create(this.constraints.bottomLeftConfig);
 
-    //ring
+    //ring object that the player can grab to pull the map
     this.ringDistance = 30;
     this.ring = {
       top: {
@@ -85,6 +88,7 @@ class Map extends Thing {
         }
     });
 
+    //you need three for a solid link because "angularRotationFriction" is not implemented on constrains
     this.ringConstrain = {
       left: {
         constrain: undefined,
@@ -121,7 +125,7 @@ class Map extends Thing {
     this.ringConstrain.right.constrain = Constraint.create(this.ringConstrain.right.constrainConfig);
     this.ringConstrain.middle.constrain = Constraint.create(this.ringConstrain.middle.constrainConfig);
 
-    //rope thing
+    //rope thing linking the ring and the map
     this.rope = [];
     this.segmentSize = 4
     const NUM_ROPE_SEGMENTS = 15;
@@ -140,7 +144,7 @@ class Map extends Thing {
       this.rope.push(segment);
 
       let constrain = undefined;
-      if (!previous) {
+      if (!previous) { //first one connects to the map
         constrain = Constraint.create({
           bodyA: this.mapBody,
           pointA: { x: 0, y: this.mapBody.position.y + this.map.h },
@@ -182,7 +186,7 @@ class Map extends Thing {
     this.rope.push(constrain);
     physics.addToWorld([constrain]);
 
-    //anker
+    //anker at the bottom of the screen that can be used to keep the map down0
     this.anker = {
       body: undefined,
       x: canvas.w / 2 - 25,
@@ -219,7 +223,7 @@ class Map extends Thing {
   }
 
   addPOI() { //Add point of interest on the map
-    //The structure of these objects HAS TO BE RESPECTED becaus they are used in an array
+    //The structure of these objects HAS TO BE RESPECTED because they might be used with hard coded array IDs
     this.POI = [];
     //small Shack
     this.shack = {
@@ -370,7 +374,7 @@ class Map extends Thing {
     pop();
   }
 
-  checkForMouseInteraction(array) {
+  checkForMouseInteraction(array) { //concerning POI hover
     for (let i = 0; i < array.length; i++) {
       let d = dist(array[i].x, array[i].y, physics.mConstraint.mouse.position.x, physics.mConstraint.mouse.position.y);
       if (d <= array[i].w / 2) {
@@ -402,11 +406,7 @@ class Map extends Thing {
     noStroke();
     tint(255, 200);
     image(img[22], 0, 0, this.map.w, this.map.h);
-    //translate(0 -img.array[2].width + 30, 0 -img.array[2].height + 30);
     image(img[2], 12, 3); //manual Offset because my pictures are janky :(
-
-
-
     pop();
 
     //ring

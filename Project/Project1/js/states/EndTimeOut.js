@@ -1,3 +1,5 @@
+//State if the game is lost from running out of time
+
 class EndTimeOut extends State {
   constructor() {
     super();

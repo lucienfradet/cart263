@@ -1,5 +1,7 @@
 // !! Important to have the body inside a body property !!
 
+//Rat object
+
 class Rat extends Thing {
   constructor({x, y, w, h, category, mask}) {
     super();

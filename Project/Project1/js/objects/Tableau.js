@@ -1,4 +1,6 @@
 // !! Important to have the body inside a body property !!
+//Tableau is the treasure of the game and allows you to complete the game
+//the chain of events is working towards getting it
 
 class Tableau extends Thing {
   constructor({x, y, w, h, category, mask}) {

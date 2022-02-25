@@ -1,3 +1,5 @@
+//Intro of the game
+
 class Intro extends State {
   constructor() {
     super();
@@ -14,6 +16,7 @@ class Intro extends State {
     this.entering.play();
   }
 
+  //switches the intro.state
   update() {
     if (!this.entering.isPlaying()) {
       if (this.state === '') {
@@ -36,6 +39,7 @@ class Intro extends State {
   display() {
     background(0);
 
+    //only display when the guy is talking
     if (this.state === 'intro') {
       push();
       rectMode(CENTER);
@@ -52,6 +56,7 @@ class Intro extends State {
     }
   }
 
+  //allows to skip the sequence
   mousePressed() {
     if (this.state === '') {
       this.entering.stop();

@@ -1,3 +1,7 @@
+//Class that creates pop up windows with physics inside.
+//it wasn't used to it's full capacity but the idea was for this class to be versatile and allow
+//interactions inside them
+
 class Window {
   constructor({type, id, cliché}) {
     this.id = id;
@@ -5,8 +9,10 @@ class Window {
     this.type = type;
     this.items = [];
 
+    //Windows for map points of interest or phone calls
     if (type === 'map') {
 
+      //basic layout of the window
       this.layout = {
         x: canvas.w/2,
         y: canvas.h/2,
@@ -18,6 +24,7 @@ class Window {
         mask: defaultCategory | poiCategory
       }
 
+      //id specific actions
       if (id === 'shack') {
         let rat = {
           name: 'rat',
@@ -65,6 +72,7 @@ class Window {
       }
     }
 
+    //if the window is created for a phone call
     if (type === 'phone') {
       this.layout = {
         x: canvas.w - canvas.w/4 + 25,
@@ -78,6 +86,7 @@ class Window {
       }
     }
 
+    //create the walls of the window
     this.partsConfig = [];
     this.parts = [];
 
@@ -129,7 +138,7 @@ class Window {
 
   //Removes bodies from the physics and clears the POIwindow object
   //ALSO pushes objects to the main objects array if they've been taken out the POI
-  //AND deactivate the POI if the object of interest is out of it
+  //AND deactivates the POI if the object of interest is out of it
   removeFromWorld() {
     Composite.remove(physics.world, this.compoundBody);
     if (this.id !== 'phoneBooth') {
@@ -149,7 +158,7 @@ class Window {
         }
       }
     }
-    else { //special case for the complicated phone compoundbody...
+    else { //special case for the complicated phone compoundbody... (more parts to remove)
       let combine = this.items[0].obj;
       if (combine.compoundBody.collisionFilter.category !== defaultCategory) {
         Composite.remove(physics.world, [combine.compoundBody, combine.plug.body]);
@@ -184,6 +193,7 @@ class Window {
       }
     }
 
+    //check the position of the mouse if it's dragging
     if (isItDragging() === body.id) {
       let mPos = physics.mConstraint.mouse.position;
       let lay = this.layout;
@@ -215,6 +225,7 @@ class Window {
   }
 
   //Function to get bodies inside the windows and out the real world
+  //ended up being used once for the phoneCallHospital
   getInTheBox(body) {
     //check if the mouse is grabbing something and return the body's ID
     let isItDragging = function() {
@@ -244,9 +255,6 @@ class Window {
         }
       }
     }
-    else {  //special case for the complicated combine...
-
-    }
   }
 
   //Function to find the id of a specifc object in the items array
@@ -257,9 +265,10 @@ class Window {
         return i;
       }
     }
-    console.log("ERROR: the array doen't contain the name you are looking for");
+    console.error("ERROR: the array doen't contain the name you are looking for");
   }
 
+  //depending on the ID activates the getOutOfBox and getInTheBox functions
   update() {
     if (this.id === 'phoneBooth') {
       this.getOutOfBox(this.items[0].obj.compoundBody);
@@ -281,11 +290,10 @@ class Window {
         state.objects.push(state.POIwindow.items[ratID]); //push the object inside the main world
       }
     }
-
-    //this.getInTheBox(state.objects[state.findArrayID('book')].obj.body);
   }
 
   display() {
+    //Displays the matter.js bodies
     //Cadre if needed
     // for (let i = 1; i < this.parts.length; i++) { //the first element in a compound Body is a reference body that shouldn't be displayed
     //   let part = this.parts[i];
@@ -332,6 +340,12 @@ class Window {
       }
       pop();
     }
+    else if (this.type === 'phone') {
+      push();
+      imageMode(CENTER);
+      image(img[31], this.layout.x, this.layout.y);
+      pop();
+    }
     else {
       push();
       imageMode(CENTER);
@@ -339,13 +353,7 @@ class Window {
       pop();
     }
 
-    if (this.type === 'phone') {
-      push();
-      imageMode(CENTER);
-      image(img[31], this.layout.x, this.layout.y);
-      pop();
-    }
-
+    //displays the items
     for (let i = 0; i < this.items.length; i++) {
       let item = this.items[i].obj;
       item.display();

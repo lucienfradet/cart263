@@ -1,3 +1,5 @@
+//phone class
+
 class Phone extends Thing {
   constructor({x, y}) {
     super();
@@ -58,7 +60,7 @@ class Phone extends Thing {
         }
       },
       active: false, //not used at the moment
-      collisionDetector: function() {
+      collisionDetector: function() { //return a bool telling if the detector is colliding
         let phoneID = state.findArrayID('phone');
         let phone = state.objects[phoneID].obj;
         let detectorID = this.body.id;
@@ -89,7 +91,7 @@ class Phone extends Thing {
     this.detector.body = Bodies.rectangle(this.detector.xOff, this.detector.yOff, this.detector.w, this.detector.h, this.detector.options);
     physics.addToWorld([this.detector.body]);
 
-    //plug
+    //power plug for the telephone
     this.plugStartDistance = this.base.y - 150;
     this.plug = {
       body: undefined,
@@ -109,7 +111,7 @@ class Phone extends Thing {
     physics.addToWorld([this.plug.body]);
 
 
-    //cable
+    //phone cable
     this.cable = [];
     this.segmentSize = 2
     const NUM_ROPE_SEGMENTS = 50;
@@ -130,7 +132,7 @@ class Phone extends Thing {
       this.cable.push(segment);
 
       let constrain = undefined;
-      if (!previous) {
+      if (!previous) { //first on attached to the plug
         constrain = Constraint.create({
           bodyA: this.plug.body,
           pointA: { x: 0, y: +this.plug.h/2 },
@@ -173,7 +175,7 @@ class Phone extends Thing {
     this.cable.push(constrain);
     physics.addToWorld([constrain]);
 
-    //outlet
+    //outlet in the wall that can be made active by the phoneLine POI
     this.outlet = {
       body: undefined,
       active: false,
@@ -203,7 +205,7 @@ class Phone extends Thing {
       plugged: false
     }
 
-    //Phone dial
+    //Phone dial to compose and keep track of numbers
     this.dial = {
       button0: {
         value: '0',
@@ -223,13 +225,13 @@ class Phone extends Thing {
       state: '',
       timer: 180, //3 seconds
       timerValue: 180,
-      sequence: '', //test sequence 101
-      hospitalSequence: '1000101'
+      sequence: '',
+      hospitalSequence: '1000101' //to call the hospital. Ended up being the only place you call
     }
 
     //phoneCall with hospital
     this.phoneCallHospital = {
-      spawnWindow: function() {
+      spawnWindow: function() { //spawns the phone window
         let newWindow = new Window({
           type: 'phone',
           id: 'hospital',
@@ -256,7 +258,7 @@ class Phone extends Thing {
             length: 0
           }
         );
-        Body.setInertia(this.plug.body, Infinity);
+        Body.setInertia(this.plug.body, Infinity); //stops it from moving/spinning after it's plugged
         Body.setAngle(this.plug.body, 0);
         Body.setAngularVelocity(this.plug.body, 0);
         physics.addToWorld([constraint]);
@@ -265,7 +267,7 @@ class Phone extends Thing {
       }
     }
 
-    let doesTheCombineExist = function() {
+    let doesTheCombineExist = function() { //check if combine exists
       for (let i = 0; i < state.objects.length; i++) {
         if (state.objects[i].name === 'combine') {
           return true;
@@ -305,7 +307,7 @@ class Phone extends Thing {
       }
     }
 
-    //dial
+    //dial checek mouse hover over buttons
     let d0 = dist(
       this.compoundBody.position.x + this.dial.button0.xOff,
       this.compoundBody.position.y + this.dial.button0.yOff,
@@ -346,13 +348,14 @@ class Phone extends Thing {
     }
     let r = abs(this.detector.yOff);
     let angle = this.compoundBody.angle;
-    Body.setPosition(this.detector.body, {
+    Body.setPosition(this.detector.body, { //manually because the bodies are not connected with Matter.js
       x: origin.x + (r * cos(angle - PI/2)),
       y: origin.y + (r * sin(angle - PI/2))
     });
     Body.setAngle(this.detector.body, this.compoundBody.angle);
 
-    //dialing statements
+    //Statements dealing with the phone interactions
+    //I think I could have used more "if else" statements to make the code less messy
     if (this.outlet.plugged && this.phoneOutlet.plugged) {//Check if phone is fully plugged
       if (this.detector.collisionDetector() && this.dial.state !== 'hungup') {
         snd[1].play(); //hungUp
@@ -360,9 +363,6 @@ class Phone extends Thing {
         this.dial.state = 'hungup'
         this.dial.sequence = '';
         this.dial.timer = this.dial.timerValue;
-        if (this.state === 'calling') {
-          //this.phoneCall.angry = true;
-        }
       }
 
       if (!this.detector.collisionDetector() && this.dial.state === 'hungup' || this.dial.state === '') {
@@ -413,6 +413,7 @@ class Phone extends Thing {
     }
   }
 
+  //Deals with the phone call
   callEnCours() {
     if (this.phoneCallHospital.state === '') {
       this.phoneCallHospital.spawnWindow();
@@ -479,10 +480,10 @@ class Phone extends Thing {
     imageMode(CENTER);
     fill(255, 150);
     noStroke();
-    //translate(0 -img.array[3].width - 155, 0 -img.array[3].height +5);
     image(img[3], 7, 0);
     pop();
 
+    //matter js bodies
     // //top
     // push();
     // translate(this.compoundBody.position.x, this.compoundBody.position.y);

@@ -1,4 +1,5 @@
 //Game class
+//The whole game happens here
 
 class Game extends State {
   constructor() {
@@ -74,6 +75,7 @@ class Game extends State {
     this.objects = [];
 
     //THE ORDER OF THESE MATTERS!
+    //(well, only the first two I ended using functions so I don't hard code array id)
     let map = {
       name: 'map',
       obj: new Map()
@@ -135,8 +137,7 @@ class Game extends State {
     //PlaySounds
     snd[6].loop(); //roomTone
     //snd[2].loop(); //Jazz
-
-    console.log(this.objects);
+    //who likes jazz anyway
   }
 
   display() {
@@ -201,7 +202,7 @@ class Game extends State {
   mousePressed() {
     //POI for the map
     if (this.POIwindow !== undefined) {
-      if (this.POIwindow.id === 'phoneLine') {
+      if (this.POIwindow.id === 'phoneLine') { //allows mouse interaction on the phoneLine POI
         let d = dist(
           this.POIwindow.layout.x + this.POIwindow.switch.xOff,
           this.POIwindow.layout.y + this.POIwindow.switch.yOff,
@@ -222,12 +223,12 @@ class Game extends State {
         physics.mConstraint.mouse.position.x,
         physics.mConstraint.mouse.position.y
       );
-      if (d <= this.POIwindow.layout.buttonRadius) {
+      if (d <= this.POIwindow.layout.buttonRadius) { //exit button
         this.POIwindow.removeFromWorld();
         return //stops the function so a window is not triggered while the user is trying to close one
       }
     }
-    if (this.POIwindow === undefined) {
+    else if (this.POIwindow === undefined) { //checks if the mouse clics on a POI on the map
       for (let i = 0; i < this.objects[0].obj.POI.length; i++) {
         let poi = this.objects[0].obj.POI[i];
         if (poi.mouseOver && poi.active) {
@@ -262,7 +263,7 @@ class Game extends State {
     }
   }
 
-  keyPressed() {
+  keyPressed() { //for testing
     if (keyCode === 49) { //1
       let newWindow = new Window({
         type: 'phone',

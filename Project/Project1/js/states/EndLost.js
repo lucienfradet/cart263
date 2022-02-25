@@ -1,3 +1,5 @@
+//State if the game is lost from a rope pull
+
 class EndLost extends State {
   constructor() {
     super();

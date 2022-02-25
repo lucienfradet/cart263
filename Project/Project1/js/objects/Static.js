@@ -1,16 +1,6 @@
+//static (walls) class
 class Static extends Thing {
-  constructor({
-    x,
-    y,
-    w,
-    h,
-    fill: {
-      r,
-      g,
-      b,
-      a
-    }
-  }) {
+  constructor({x, y, w, h, fill: { r, g, b, a }}) {
     super();
     this.pos = {
       x: x,

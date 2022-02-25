@@ -1,3 +1,5 @@
+//objects super class
+
 class Thing {
   constructor() {
 

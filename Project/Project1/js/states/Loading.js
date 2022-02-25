@@ -1,10 +1,13 @@
-class Loading extends State {
+//Load assets while displaying a loading bar
+
+ class Loading extends State {
   constructor() {
     super();
     this.state = 'loadingImages'
-    this.counter = 0;
+    this.counter = 0; //keep track of the number of things loaded
     this.totalToLoad = loadImg.path.length + loadSnd.path.length;
 
+    //firsts thing to load is images. start the loading for all of them
     for (let i = 0; i < loadImg.path.length; i++) {
       this.loadImages(loadImg.path[i] , i);
     }
@@ -13,7 +16,7 @@ class Loading extends State {
   loadImages(filePath, index) {
     loadImage(filePath, imagesLoaded);
 
-    function imagesLoaded(cliché) {
+    function imagesLoaded(cliché) { //push loaded images into the array while keeping their respective position
       //console.log(filePath);
       img[index] = cliché;
       state.counter++;
@@ -48,12 +51,11 @@ class Loading extends State {
       break;
 
       case 'dithering':
-      createDithering();
+      createDithering(); //this skips to 'over' because the function is desabled
       break;
 
       case 'over':
       state = new Intro();
-      console.log(physics);
     }
 
 

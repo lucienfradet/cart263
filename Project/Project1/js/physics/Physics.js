@@ -65,7 +65,7 @@ class Physics {
     return compoundBody;
   }
 
-  //display mConstraint for testing
+  //display mConstraint for testing (ended up leaving them lol)
   displayMouseConstraint() {
     push();
     let pos = {
@@ -84,7 +84,7 @@ class Physics {
       let offset = this.mConstraint.constraint.pointB;
       let mouse = this.mConstraint.mouse.position;
       push();
-      stroke(0, 255, 0);
+      stroke(255, 230);
       line(pos.x + offset.x, pos.y + offset.y, mouse.x, mouse.y);
       pop();
     }
