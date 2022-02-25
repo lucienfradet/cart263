@@ -1,6 +1,7 @@
 class Window {
-  constructor({type, id}) {
+  constructor({type, id, cliché}) {
     this.id = id;
+    this.img = cliché;
     this.type = type;
     this.items = [];
 
@@ -284,52 +285,56 @@ class Window {
   }
 
   display() {
-    //background
-    push();
-    rectMode(CENTER);
-    fill(0, 150);
-    rect(this.layout.x, this.layout.y, this.layout.w, this.layout.h);
-    pop();
     //Cadre if needed
-    for (let i = 1; i < this.parts.length; i++) { //the first element in a compound Body is a reference body that shouldn't be displayed
-      let part = this.parts[i];
-      let partConfig = this.partsConfig[i - 1];
-      push();
-      translate(part.position.x, part.position.y);
-      rotate(part.angle);
-      rectMode(CENTER);
-      fill(255, 150);
-      noStroke();
-      rect(0, 0, partConfig.w, partConfig.h);
-      pop();
-    }
+    // for (let i = 1; i < this.parts.length; i++) { //the first element in a compound Body is a reference body that shouldn't be displayed
+    //   let part = this.parts[i];
+    //   let partConfig = this.partsConfig[i - 1];
+    //   push();
+    //   translate(part.position.x, part.position.y);
+    //   rotate(part.angle);
+    //   rectMode(CENTER);
+    //   fill(255, 150);
+    //   noStroke();
+    //   rect(0, 0, partConfig.w, partConfig.h);
+    //   pop();
+    // }
 
     //button
+    // push();
+    // translate(
+    //   this.compoundBody.position.x + this.layout.w/2 - this.layout.thickness/2,
+    //   this.compoundBody.position.y - this.layout.h/2 + this.layout.thickness/2
+    // );
+    // rotate(this.compoundBody.angle);
+    // rectMode(CENTER);
+    // fill(255, 200);
+    // noStroke();
+    // ellipse(0, 0, this.layout.buttonRadius * 2);
+    // pop();
+
     push();
-    translate(
-      this.compoundBody.position.x + this.layout.w/2 - this.layout.thickness/2,
-      this.compoundBody.position.y - this.layout.h/2 + this.layout.thickness/2
-    );
-    rotate(this.compoundBody.angle);
-    rectMode(CENTER);
-    fill(255, 200);
     noStroke();
-    ellipse(0, 0, this.layout.buttonRadius * 2);
+    rectMode(CENTER);
+    fill(255, 230);
+    rect(this.layout.x, this.layout.y, this.layout.w - 10, this.layout.h - 10);
     pop();
 
     if (this.id === 'phoneLine') {
       //display phoneSwitch
       push();
-      translate(this.layout.x + this.switch.xOff, this.layout.y + this.switch.yOff);
-      ellipseMode(CENTER);
+      imageMode(CENTER);
       if (this.switch.active) {
-        fill(0, 255, 0, 200);
+        image(this.img, this.layout.x, this.layout.y);
       }
       else {
-        fill(255, 0, 0, 200);
+        image(img[19], this.layout.x, this.layout.y);
       }
-      noStroke();
-      ellipse(0, 0, this.switch.radius*2);
+      pop();
+    }
+    else {
+      push();
+      imageMode(CENTER);
+      image(this.img, this.layout.x, this.layout.y);
       pop();
     }
 

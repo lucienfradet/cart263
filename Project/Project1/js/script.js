@@ -50,7 +50,7 @@ let loadImg = {
   path: [
     'assets/images/book.png',
     'assets/images/backgroundMain.png',
-    'assets/images/map.png',
+    'assets/images/mapCadre.png',
     'assets/images/phone.png',
     'assets/images/combine.png',
     'assets/images/bucket.png',
@@ -65,6 +65,12 @@ let loadImg = {
     'assets/images/ropePiece.png',
     'assets/images/ringBottom.png', //15
     'assets/images/anker.png',
+    'assets/images/phoneBooth.png', //17
+    'assets/images/plugActive.png', //18
+    'assets/images/plugInactive.png', //19
+    'assets/images/shack.png',  //20
+    'assets/images/postOfficeTest.png', //21
+    'assets/images/mapColor.png', //22
   ]
 }
 
@@ -98,8 +104,6 @@ function createDithering() {
   // img.array[2] = toDither(loadImg.array[2], 80); //map
   // img.array[3] = toDither(loadImg.array[3], 75); //phone
   // img.array[4] = toDither(loadImg.array[4], 75); //combine
-
-  console.log("yo la form")
   state.state = 'over'; //skip to the next part
 }
 

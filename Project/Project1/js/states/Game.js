@@ -218,7 +218,8 @@ class Game extends State {
         if (poi.mouseOver && poi.active) {
           let newWindow = new Window({
             type: 'map',
-            id: poi.id
+            id: poi.id,
+            cliché: poi.img
           });
           this.POIwindow = newWindow;
         }
@@ -248,7 +249,7 @@ class Game extends State {
     if (keyCode === 49) { //1
       let newWindow = new Window({
         type: 'phone',
-        id: 'hospital'
+        id: 'hospital',
       });
       this.phoneWindow = newWindow;
     }

@@ -282,7 +282,6 @@ class Phone extends Thing {
           state.objects[combineID].obj.plug.body.position.x,
           state.objects[combineID].obj.plug.body.position.y
         );
-        console.log(d);
         if (d <= this.phoneOutletSize) {
           let constraint = Constraint.create({
               bodyA: this.compoundBody,

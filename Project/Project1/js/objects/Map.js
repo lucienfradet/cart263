@@ -232,7 +232,8 @@ class Map extends Thing {
       xOffset: this.map.w/2 /10 * 1.3,
       yOffset: this.map.h/2 /10 * 0.1,
       w: 60,
-      h: 60
+      h: 60,
+      img: img[20]
     }
 
     //Post office
@@ -246,7 +247,8 @@ class Map extends Thing {
       xOffset: -this.map.w/2 /10 * 5.7,
       yOffset: -this.map.h/2 /10 * 1.5,
       w: 40,
-      h: 40
+      h: 40,
+      img: img[21]
     }
 
     //phoneBooth
@@ -260,7 +262,8 @@ class Map extends Thing {
       xOffset: -this.map.w/2 /10 * 0.8,
       yOffset: -this.map.h/2 /10 * 1,
       w: 25,
-      h: 25
+      h: 25,
+      img: img[17]
     }
 
     //phoneLine
@@ -274,7 +277,8 @@ class Map extends Thing {
       xOffset: -this.map.w/2 /10 * 9,
       yOffset: this.map.h/2 /10 * 2.7,
       w: 20,
-      h: 20
+      h: 20,
+      img: img[18]
     }
 
     this.POI.push(
@@ -394,11 +398,12 @@ class Map extends Thing {
     rotate(this.mapBody.angle);
     rectMode(CENTER);
     imageMode(CENTER);
-    fill(255, 150);
+    fill(255, 230);
     noStroke();
-    rect(0, 0, this.map.w, this.map.h);
+    tint(255, 200);
+    image(img[22], 0, 0, this.map.w, this.map.h);
     //translate(0 -img.array[2].width + 30, 0 -img.array[2].height + 30);
-    image(img[2], 0, 0, this.map.w, this.map.h);
+    image(img[2], 12, 3); //manual Offset because my pictures are janky :(
 
 
 
