@@ -232,10 +232,12 @@ class Phone extends Thing {
       spawnWindow: function() {
         let newWindow = new Window({
           type: 'phone',
-          id: 'hospital'
+          id: 'hospital',
+          cliché: img[33]
         });
         state.phoneWindow = newWindow;
       },
+      state: '',
       happy: false
     }
 
@@ -359,7 +361,7 @@ class Phone extends Thing {
         this.dial.sequence = '';
         this.dial.timer = this.dial.timerValue;
         if (this.state === 'calling') {
-          this.phoneCall.angry = true;
+          //this.phoneCall.angry = true;
         }
       }
 
@@ -375,7 +377,7 @@ class Phone extends Thing {
         this.dial.timer--;
       }
 
-      if (this.dial.timer < 0 && this.dial.state !== 'fail') {
+      if (this.dial.timer < 0 && this.dial.state !== 'fail' && this.dial.state !== 'sending') {
         if (this.dial.sequence === this.dial.hospitalSequence) { //good number was composed
           this.dial.timer = this.dial.timerValue;
           snd[7].loop(); //sending
@@ -402,19 +404,69 @@ class Phone extends Thing {
         if (this.dial.timer < 0) {
           snd[7].stop();
           this.dial.timer = this.dial.timerValue;
-          this.state = 'calling'
-          this.callEnCours();
+          this.dial.state = 'calling';
         }
+      }
+      if (this.dial.state === 'calling') {
+        this.callEnCours();
       }
     }
   }
 
   callEnCours() {
-    if (this.phoneCall.happy) {
-      //play aggreement sequence
+    if (this.phoneCallHospital.state === '') {
+      this.phoneCallHospital.spawnWindow();
+      snd[10].play(); //notHappy
+      this.phoneCallHospital.state = 'talking';
     }
-    if (!this.phoneCall.happy) {
-      //play requesting sequence
+    if (this.phoneCallHospital.state === 'talking' && !snd[10].isPlaying()) {
+      snd[12].loop(); //attente
+      this.phoneCallHospital.state = 'attente';
+    }
+
+    //check if the rat is in the phoneBox
+    //is the rat in the main world or in an open POI?
+    let objID = state.findArrayID('rat');
+    if (objID !== undefined) {
+      if (state.objects[objID].obj.body.collisionFilter.category === phoneCategory) {
+        this.phoneCallHospital.happy = true;
+      }
+    }
+    if (state.POIwindow !== undefined && state.POIwindow.id === 'shack') {
+      let ratID = state.POIwindow.findArrayID('rat');
+      if (state.POIwindow.items[ratID].obj.body.collisionFilter.category === phoneCategory) {
+        this.phoneCallHospital.happy = true;
+      }
+    }
+
+    if (this.phoneCallHospital.happy && this.phoneCallHospital.state !== 'talkingHappy') {
+      snd[12].stop();
+      snd[10].stop();
+      snd[11].play(); //phoneHappy
+      this.phoneCallHospital.state = 'talkingHappy';
+    }
+
+    if (this.phoneCallHospital.state === 'talkingHappy' && !snd[11].isPlaying()) {
+      //close Everything
+      this.dial.state = '';
+      this.phoneCallHospital.state = '';
+      this.dial.sequence = '';
+      snd[13].play();
+      let ratID = state.findArrayID('rat');
+      state.objects.splice(ratID);
+      state.phoneWindow = undefined;
+      let tableau = {
+        name: 'tableau',
+        obj: new Tableau({
+          x: undefined,
+          y: undefined,
+          w: undefined,
+          h: undefined,
+          category: defaultCategory,
+          mask: defaultCategory
+        })
+      }
+      state.objects.push(tableau);
     }
   }
 

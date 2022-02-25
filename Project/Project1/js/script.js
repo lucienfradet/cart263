@@ -73,7 +73,15 @@ let loadImg = {
     'assets/images/mapColor.png', //22
     'assets/images/rat.png', //23
     'assets/images/outlet.png',
-    'assets/images/hide.png'
+    'assets/images/hide.png',
+    'assets/images/mouth1.png', //26
+    'assets/images/mouth2.png',
+    'assets/images/mouth3.png',
+    'assets/images/mouth4.png', //29
+    'assets/images/leBoy.png',
+    'assets/images/phoneCadre.png', //31
+    'assets/images/tableau.png', //32
+    'assets/images/hospitalWorker.png' //33
   ]
 }
 let img = [];
@@ -87,7 +95,17 @@ let loadSnd = {
     'assets/sounds/pickedUp.mp3',
     'assets/sounds/plug.mp3',
     'assets/sounds/roomTone.mp3', //6
-    'assets/sounds/sending.mp3'
+    'assets/sounds/sending.mp3',  //7
+    'assets/sounds/entering.mp3', //8
+    'assets/sounds/intro.mp3', //9
+    'assets/sounds/phoneNotHappy.mp3', //10
+    'assets/sounds/phoneHappy.mp3', //11
+    'assets/sounds/phoneAttente.mp3', //12
+    'assets/sounds/bird.mp3', //13
+    'assets/sounds/break.mp3', //14
+    'assets/sounds/yes.mp3',
+    'assets/sounds/bells.wav',
+    'assets/sounds/boat.mp3'
   ]
 }
 let snd = [];
@@ -143,7 +161,6 @@ function setup() {
 
   state = new PressAnyKey();
 }
-
 
 /**
 Description of draw()

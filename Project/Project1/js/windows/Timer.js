@@ -7,7 +7,7 @@ class Timer {
       y: this.h/2
     };
 
-    this.timerValue = 120 * 60; //(seconds * frames)
+    this.timerValue = 3 * 60 * 60; //(minutes * seconds * frames)
     this.timer = this.timerValue;
 
     this.frames = [
@@ -24,11 +24,14 @@ class Timer {
     this.timer--;
     if (this.timer < 0) {
       let tableau = state.findArrayID('tableau');
-      if (tableau) {
-        console.log('win');
+      if (tableau !== undefined) {
+        snd[16].play(); //bells
+        snd[15].play(); //yes
+        state = new EndWin();
       }
       else {
-        console.log('lost');
+        snd[17].play();
+        state = new EndTimeOut();
       }
     }
   }

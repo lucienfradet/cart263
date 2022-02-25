@@ -98,13 +98,15 @@ class Rope extends Thing {
     if (this.base.body.position.y + this.base.h/2 > canvas.h/2 -25) {
       this.delay = 0;
       let tableau = state.findArrayID('tableau');
-      if (tableau) {
-        console.log('win');
+      if (tableau !== undefined) {
+        snd[16].play(); //bells
+        snd[15].play(); //yes
+        state = new EndWin();
       }
       else {
-        console.log('lost');
         if (this.delay === 0) {
-          //play sound
+          snd[16].play(); //bells
+          state = new EndLost();
           this.delay++;
         }
       }

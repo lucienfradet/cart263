@@ -3,6 +3,10 @@
 class Game extends State {
   constructor() {
     super();
+    //stop ending sounds
+    snd[16].stop(); //bells
+    snd[15].stop(); //yes
+    snd[17].stop(); //boat
 
     //background
     this.background = undefined;
@@ -153,7 +157,6 @@ class Game extends State {
     pop();
 
     this.timer.display();
-    this.timer.update();
 
     for (let i = 0; i < this.walls.length; i++) {
       this.walls[i].obj.display();
@@ -173,6 +176,7 @@ class Game extends State {
         this.phoneWindow.update();
     }
 
+    this.timer.update();
     physics.displayMouseConstraint();
 
     //hide the exterior of the true canvas
@@ -263,11 +267,13 @@ class Game extends State {
       let newWindow = new Window({
         type: 'phone',
         id: 'hospital',
+        cliché: img[33]
       });
       this.phoneWindow = newWindow;
     }
 
     if (keyCode === 50) { //2
+      snd[13].play();
       let tableau = {
         name: 'tableau',
         obj: new Tableau({

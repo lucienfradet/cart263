@@ -67,8 +67,8 @@ class Window {
 
     if (type === 'phone') {
       this.layout = {
-        x: canvas.w - canvas.w/4,
-        y: canvas.h/2 - canvas.h/4,
+        x: canvas.w - canvas.w/4 + 25,
+        y: canvas.h/2 - canvas.h/4 + 25,
         w: 200,
         h: 200,
         thickness: 30,
@@ -278,6 +278,7 @@ class Window {
       if (state.POIwindow !== undefined && state.POIwindow.id === 'shack') {
         let ratID = state.POIwindow.findArrayID('rat');
         this.getInTheBox(state.POIwindow.items[ratID].obj.body);
+        state.objects.push(state.POIwindow.items[ratID]); //push the object inside the main world
       }
     }
 
@@ -335,6 +336,13 @@ class Window {
       push();
       imageMode(CENTER);
       image(this.img, this.layout.x, this.layout.y);
+      pop();
+    }
+
+    if (this.type === 'phone') {
+      push();
+      imageMode(CENTER);
+      image(img[31], this.layout.x, this.layout.y);
       pop();
     }
 

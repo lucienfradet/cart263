@@ -52,7 +52,7 @@ class Loading extends State {
       break;
 
       case 'over':
-      state = new Game();
+      state = new Intro();
       console.log(physics);
     }
 
