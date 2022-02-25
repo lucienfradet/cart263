@@ -38,7 +38,7 @@ class Book extends Thing {
     rotate(angle);
     imageMode(CENTER);
     translate(0, 0);
-    image(img[0], 0, 0, this.w, this.h);
+    image(img[0], 0, 0);
     pop();
   }
 }

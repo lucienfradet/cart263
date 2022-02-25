@@ -89,7 +89,7 @@ class Game extends State {
       name: 'rope',
       obj: new Rope({
         x: 30,
-        y: -50,
+        y: -10,
         w: 22,
         h: 150,
         category: defaultCategory,
@@ -170,6 +170,12 @@ class Game extends State {
     }
 
     physics.displayMouseConstraint();
+
+    //hide the exterior of the true canvas
+    push();
+    imageMode(CENTER);
+    image(img[25], canvas.w/2, canvas.h/2);
+    pop();
   }
 
   //Function to find the id of a specifc object in the objects array

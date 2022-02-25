@@ -465,10 +465,10 @@ class Phone extends Thing {
     push();
     translate(this.outlet.body.position.x, this.outlet.body.position.y);
     rotate(this.outlet.body.angle);
-    rectMode(CENTER);
+    imageMode(CENTER);
     fill(0, 150);
     noStroke();
-    rect(0, 0, this.outlet.w, this.outlet.w);
+    image(img[24], 0, 0);
     pop();
 
     //phoneOutlet

@@ -24,7 +24,7 @@ Things ToDo:
   KINDA add popup conversation window (same as map popup)
 
   Make it a game:
-  - add window with boat as timer
+  OK add window with boat as timer
   - work on the chain of events
 
   Bonus:
@@ -71,6 +71,9 @@ let loadImg = {
     'assets/images/shack.png',  //20
     'assets/images/postOfficeTest.png', //21
     'assets/images/mapColor.png', //22
+    'assets/images/rat.png', //23
+    'assets/images/outlet.png',
+    'assets/images/hide.png',
   ]
 }
 

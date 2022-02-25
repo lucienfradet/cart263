@@ -37,8 +37,8 @@ class Rat extends Thing {
     rotate(angle);
     noStroke();
     fill(200, 200);
-    rectMode(CENTER);
-    rect(0, 0, this.w, this.h);
+    imageMode(CENTER);
+    image(img[23], 0, 0);
     pop();
   }
 }

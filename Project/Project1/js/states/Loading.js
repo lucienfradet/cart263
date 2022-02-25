@@ -21,7 +21,6 @@ class Loading extends State {
   }
 
   update() {
-    console.log(this.state);
     switch (this.state) {
       case 'loadingImages':
       if (this.counter === this.totalToLoad) {
@@ -46,16 +45,18 @@ class Loading extends State {
     push();
     stroke(255);
     textSize(32);
-    text(this.state, canvas.w/2, canvas.h/2)
+    rectMode(CENTER);
+    textAlign(CENTER, CENTER);
+    text(this.state, width/2, height/2)
 
     stroke(255);
     noFill();
-    rect(canvas.w/2, canvas.h/2 + 50, 200, 20);
+    rect(width/2, height/2 + 50, 200, 20);
 
     noStroke();
     fill(255, 100);
     let w = (200 * this.counter) / this.totalToLoad;
-    rect(canvas.w/2, canvas.h/2 + 50, w, 20);
+    rect(width/2, height/2 + 50, w, 20);
     pop();
   }
 }
