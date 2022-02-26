@@ -360,9 +360,17 @@ class Phone extends Thing {
       if (this.detector.collisionDetector() && this.dial.state !== 'hungup') {
         snd[1].play(); //hungUp
         snd[3].stop(); //openLine
+        if (this.dial.state === `calling`) {
+          snd[10].stop();
+          snd[11].stop();
+          snd[12].stop();
+          this.phoneCallHospital.state = '';
+          state.phoneWindow = undefined;
+        }
         this.dial.state = 'hungup'
         this.dial.sequence = '';
         this.dial.timer = this.dial.timerValue;
+
       }
 
       if (!this.detector.collisionDetector() && this.dial.state === 'hungup' || this.dial.state === '') {

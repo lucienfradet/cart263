@@ -340,16 +340,17 @@ class Window {
       }
       pop();
     }
-    else if (this.type === 'phone') {
-      push();
-      imageMode(CENTER);
-      image(img[31], this.layout.x, this.layout.y);
-      pop();
-    }
     else {
       push();
       imageMode(CENTER);
       image(this.img, this.layout.x, this.layout.y);
+      pop();
+    }
+
+    if (this.type === 'phone') {
+      push();
+      imageMode(CENTER);
+      image(img[31], this.layout.x, this.layout.y);
       pop();
     }
 
