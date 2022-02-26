@@ -180,6 +180,9 @@ class Phone extends Thing {
       body: undefined,
       active: false,
       plugged: false,
+      partialPlug: false, //interaction for partial plugging to give feedback to the player
+      delay: 0,
+      constraint: undefined,
       x: canvas.w - 60,
       y: canvas.h/10 * 6,
       w:30,
@@ -250,8 +253,8 @@ class Phone extends Thing {
     //Plug the Plug sti!
     if (!this.outlet.plugged) {
       let d = dist(this.outlet.body.position.x, this.outlet.body.position.y, this.plug.body.position.x, this.plug.body.position.y);
-      if (d <= this.outlet.w / 2 && this.outlet.active) {
-        let constraint = Constraint.create({
+      if (d <= this.outlet.w / 2 && !this.outlet.partialPlug) {
+        this.outlet.constraint = Constraint.create({
             bodyA: this.outlet.body,
             bodyB: this.plug.body,
             stiffness: 1,
@@ -261,11 +264,28 @@ class Phone extends Thing {
         Body.setInertia(this.plug.body, Infinity); //stops it from moving/spinning after it's plugged
         Body.setAngle(this.plug.body, 0);
         Body.setAngularVelocity(this.plug.body, 0);
-        physics.addToWorld([constraint]);
+        physics.addToWorld([this.outlet.constraint]);
         snd[5].play(); //plug
-        this.outlet.plugged = true;
+        this.outlet.partialPlug = true;
+        this.outlet.delay = 0;
+        if (this.outlet.active) {
+          this.outlet.plugged = true;
+        }
+      }
+
+      if (this.outlet.partialPlug) {
+        this.outlet.delay++;
+        if (this.outlet.delay > 70 && this.outlet.constraint !== undefined) {
+          Composite.remove(physics.world, this.outlet.constraint);
+          this.outlet.constraint = undefined;
+        }
+        if (d > this.outlet.w / 2) {
+          this.outlet.partialPlug = false;
+          this.outlet.delay = 0;
+        }
       }
     }
+  
 
     let doesTheCombineExist = function() { //check if combine exists
       for (let i = 0; i < state.objects.length; i++) {
