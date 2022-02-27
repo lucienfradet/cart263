@@ -4,10 +4,10 @@
 class Game extends State {
   constructor() {
     super();
-    //stop ending sounds
-    snd[16].stop(); //bells
-    snd[15].stop(); //yes
-    snd[17].stop(); //boat
+    //stop ALL sounds lol
+    for (let i = 0; i < snd.length; i++) {
+      snd[i].stop();
+    }
 
     //background
     this.background = undefined;
