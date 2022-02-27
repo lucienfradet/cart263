@@ -186,6 +186,12 @@ class Game extends State {
     imageMode(CENTER);
     image(img[25], canvas.w/2, canvas.h/2);
     pop();
+
+    //Display the rat on top of everything if it's in the phone box!
+    let findTheRat = this.findArrayID('rat');
+    if (findTheRat !== undefined && this.objects[findTheRat].obj.body.collisionFilter.category === phoneCategory) {
+      this.objects[findTheRat].obj.display();
+    }
   }
 
   //Function to find the id of a specifc object in the objects array
@@ -196,7 +202,7 @@ class Game extends State {
         return i;
       }
     }
-    console.error("ERROR: the array doen't contain the name you are looking for");
+    //console.error("ERROR: the array doen't contain the name you are looking for");
     return undefined;
   }
 
