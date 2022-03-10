@@ -26,7 +26,7 @@ let object = {
 }
 console.log(object.a);
 //object.getTheThing = 8;
-console.log(object.getTheThing);
+console.log(object.getTheThing;
 
 //setTimeout(() => {
   console.log(object.getTheThing);
