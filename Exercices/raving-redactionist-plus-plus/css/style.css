@@ -1,0 +1,29 @@
+/*********************************************
+
+Here is a description of any special CSS used.
+By default that's nothing.
+
+**********************************************/
+body {
+  background-color: beige;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+.poem-container {
+  border: 3px solid #fff;
+  padding: 20px;
+  overflow: auto;
+}
+
+.poem-child {
+  width: 45%;
+  float: left;
+  padding: 20px;
+  border: 2px solid red;
+}
+
+.poem {
+  font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", Georgia, serif;
+  padding-left: 15%;
+}
