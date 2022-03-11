@@ -10,6 +10,7 @@ body {
   margin-left: 20%;
   margin-right: 20%;
   margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 .poem-container {
@@ -77,7 +78,7 @@ span {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  
+
   border-radius: 5px;
   border: none;
   color: white;
