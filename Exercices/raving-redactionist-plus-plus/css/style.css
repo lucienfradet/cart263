@@ -25,11 +25,44 @@ body {
 }
 
 .poem-title {
-  padding-left: 15%;
+  padding-left: 8%;
   border: 2px solid red;
 }
 
 .poem {
   font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", Georgia, serif;
   padding-left: 15%;
+}
+
+.secretWord0 {
+  font-weight: bolder;
+}
+.secretWord1 {
+  font-weight: bolder;
+}
+.secretWord2 {
+  font-weight: bolder;
+}
+.secretWord3 {
+  font-weight: bolder;
+}
+.secretWord4 {
+  font-weight: bolder;
+}
+
+
+#word0 {
+  color: orange;
+}
+#word1 {
+  color: blue;
+}
+#word2 {
+  color: red;
+}
+#word3 {
+  color: green;
+}
+#word4 {
+  color: yellow;
 }
