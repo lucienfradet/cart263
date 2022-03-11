@@ -22,15 +22,6 @@ function shuffle(array) {
   return array;
 }
 
-//Extrude words from the poem with REGEX
-const NUM_SECRET_WORDS = 5;
-
-let poem = $(".poem").text() //get the text in the poem class
-let wordRegex = /\b[A-zÀ-ú]{4,}\b/g //any words equal or larger than 4 letters
-let words = shuffle(poem.match(wordRegex)); //shuffle the array
-words.splice(NUM_SECRET_WORDS); //keep only the first 5 elements
-addSpan(words);
-
 function addSpan(array) {
   $(`.poem`).each(function() { //for every element of the poem class
     let textArray = $(this).text().split(" ");
@@ -67,3 +58,47 @@ function addSpan(array) {
     }
   }
 }
+
+function replaceLetters() {
+
+}
+
+//Extrude words from the poem with REGEX
+const NUM_SECRET_WORDS = 5;
+let secretWords = [];
+let blankWords = [];
+
+let poem = $(".poem").text() //get the text in the poem class
+let wordRegex = /\b[A-zÀ-ú]{4,}\b/g //any words equal or larger than 4 letters
+let words = shuffle(poem.match(wordRegex)); //shuffle the array
+words.splice(NUM_SECRET_WORDS); //keep only the first 5 elements
+addSpan(words);
+
+$(`.secretWord`).each(function() {
+  let letters = $(this).text().toLowerCase().split("");
+  let blankLetters = letters.slice();
+  secretWords.push(letters) //save the letters
+
+  let validAnswer = false;
+  let neededHintLetters = Math.round(blankLetters.length * 40/100);
+  while(!validAnswer) {
+    let numHintLetters = 0;
+    $.each(blankLetters, function(i) {
+      let index = Math.floor(Math.random() * blankLetters.length);
+
+      if (index !== i) {
+        blankLetters[i] = '?'
+      }
+      else {
+        numHintLetters++;
+      }
+    });
+    if (numHintLetters === neededHintLetters) {
+      break;
+    }
+  }
+
+  blankWords.push(blankLetters);
+  let output = blankLetters.join(""); //bring everything back together
+  $(this).html(output); //and inside html
+});

@@ -9,10 +9,11 @@ body {
   background-color: beige;
   margin-left: 20%;
   margin-right: 20%;
+  margin-top: 5%;
 }
 
 .poem-container {
-  border: 3px solid #fff;
+  border: 3px solid grey;
   padding: 20px;
   overflow: auto;
 }
@@ -21,12 +22,12 @@ body {
   width: 45%;
   float: left;
   padding: 20px;
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
 
 .poem-title {
   padding-left: 8%;
-  border: 2px solid red;
+  border: 2px solid grey;
 }
 
 .poem {
@@ -36,20 +37,25 @@ body {
 
 .secretWord {
   font-weight: bolder;
+  font-size: 1.5rem;
+}
+
+span {
+  cursor: pointer;
 }
 
 #word0 {
-  color: orange;
+  /* color: orange; */
 }
 #word1 {
-  color: blue;
+  /* color: blue; */
 }
 #word2 {
-  color: red;
+  /* color: red; */
 }
 #word3 {
-  color: lime;
+  /* color: lime; */
 }
 #word4 {
-  color: cyan;
+  /* color: cyan; */
 }
