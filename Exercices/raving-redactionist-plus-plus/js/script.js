@@ -1,9 +1,6 @@
 /**
-Title of Project
-Author Name
-
-This is a template. You must fill in the title,
-author, and this description to match your project!
+La vis - Raymond Lévesque
+Lucien Cusson-Fradet
 */
 
 "use strict";
@@ -40,10 +37,10 @@ function addSpan(array) {
 
     $.each(textArray, function(j) { //for every "word" of the p text (index = j)
       for (let i = 0; i < array.length; i++) { //compare the textArray to everyElement in the words array
-        let wordClass = `secretWord` + i; //give everyElement a different id
+        let wordID = `word` + i; //give everyElement a different id
 
         if (textArray[j].match(array[i])) { //replace if it matches
-          textArray[j] = `<span class="${wordClass}">` + textArray[j] + `</span>`;
+          textArray[j] = `<span class="secretWord" id="${wordID}">` + textArray[j] + `</span>`;
         }
       }
       if (textArray[j].match(`\n`)) { //place the <br> back
@@ -55,7 +52,18 @@ function addSpan(array) {
   });
 
   for (let i = 0; i < array.length; i++) { //select one random word of every class and give it a specific id
-    let word = shuffle($(`.secretWord${i}`)).slice(0, 1);
-    word.attr('id', `word${i}`);
+    let wordArray = [];
+    $(`.secretWord`).each(function() {
+      if ($(this).attr(`id`) === `word${i}`) {
+        wordArray.push($(this));
+      }
+    });
+    if (wordArray.length > 1) {
+      let word = shuffle(wordArray).shift() //remove the first element of the shuffled array
+      for (let j = 0; j < wordArray.length; j++) {
+        wordArray[j].removeAttr('id');
+        wordArray[j].removeAttr('class');
+      }
+    }
   }
 }

@@ -34,22 +34,9 @@ body {
   padding-left: 15%;
 }
 
-.secretWord0 {
+.secretWord {
   font-weight: bolder;
 }
-.secretWord1 {
-  font-weight: bolder;
-}
-.secretWord2 {
-  font-weight: bolder;
-}
-.secretWord3 {
-  font-weight: bolder;
-}
-.secretWord4 {
-  font-weight: bolder;
-}
-
 
 #word0 {
   color: orange;
@@ -61,8 +48,8 @@ body {
   color: red;
 }
 #word3 {
-  color: green;
+  color: lime;
 }
 #word4 {
-  color: yellow;
+  color: cyan;
 }
