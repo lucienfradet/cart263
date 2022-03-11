@@ -108,29 +108,29 @@ $(`.secret-word`).each(function() {
   $(this).html(output); //and inside html
 });
 
-setInterval(checkInputs, 600);
+setInterval(checkInputs, 600); //check inputs every ???ms
 
 function checkInputs() {
   $(`.secret-word`).each(function(i) {
     let numBlank = 0;
     let letters = $(this).text().split("");
     $.each(letters, function(j) {
-      if (letters[j] === blankValue) {
+      if (letters[j] === blankValue) { //checks if "?" are still present
         numBlank++;
       }
     });
 
-    if (numBlank === 0 && $(this).attr(`contentEditable`)) {
+    if (numBlank === 0 && $(this).attr(`contentEditable`)) { //color is red if the word is not right
       $(this).css(`color`, `red`);
     }
 
-    if ($(this).text() === secretWords[i].join("") && $(this).attr(`contentEditable`)) {
+    if ($(this).text() === secretWords[i].join("") && $(this).attr(`contentEditable`)) { //change to green if word is right and add to the counter
       rightAnswerCounter++;
       $(this).removeAttr(`contentEditable`);
       $(this).css(`color`, `green`);
     }
-    if (rightAnswerCounter === secretWords.length) {
-      $(this).css(`color`, `black`);
+    if (rightAnswerCounter === secretWords.length) { //if everyword is correctly corrected, play the video
+      $(this).css(`color`, `black`); //a sound or visual effect would be nice here...
       setTimeout(function() {
         document.location.href = "poemVideo.html";
       }, 3000)
