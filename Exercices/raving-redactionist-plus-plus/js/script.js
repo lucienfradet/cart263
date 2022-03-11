@@ -79,24 +79,25 @@ $(`.secretWord`).each(function() {
   let blankLetters = letters.slice();
   secretWords.push(letters) //save the letters
 
-  let validAnswer = false;
-  let neededHintLetters = Math.round(blankLetters.length * 40/100);
-  while(!validAnswer) {
-    let numHintLetters = 0;
-    $.each(blankLetters, function(i) {
-      let index = Math.floor(Math.random() * blankLetters.length);
-
-      if (index !== i) {
-        blankLetters[i] = '?'
-      }
-      else {
-        numHintLetters++;
-      }
-    });
-    if (numHintLetters === neededHintLetters) {
-      break;
+  const NUM_HINT_LETTERS = Math.ceil(blankLetters.length * 50/100); //ceil.50% of the words should stay visible as hints
+  let hintPlacement = []; //array that matches the letters
+  $.each(blankLetters, function(i) {
+    let hint;
+    if (i < NUM_HINT_LETTERS - 1) {
+      hint = true; //the first NUM_HINT_LETTERS of elements are true and wont be changed to a blank space
     }
-  }
+    else {
+      hint = false;
+    }
+    hintPlacement.push(hint);
+  });
+  shuffle(hintPlacement); //give the hints random positions
+
+  $.each(blankLetters, function(i) {
+    if (!hintPlacement[i]) {
+      blankLetters[i] = '?'
+    }
+  });
 
   blankWords.push(blankLetters);
   let output = blankLetters.join(""); //bring everything back together
