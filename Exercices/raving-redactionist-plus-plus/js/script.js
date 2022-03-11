@@ -64,7 +64,7 @@ function replaceLetters() {
 }
 
 //Extrude words from the poem with REGEX
-const NUM_SECRET_WORDS = 2;
+const NUM_SECRET_WORDS = 5;
 let rightAnswerCounter = 0;
 let secretWords = []; //arrays containing the word answers
 let blankWords = []; //I don't think I really need that array but here it is lol
@@ -120,7 +120,7 @@ function checkInputs() {
       }
     });
 
-    if (numBlank === 0) {
+    if (numBlank === 0 && $(this).attr(`contentEditable`)) {
       $(this).css(`color`, `red`);
     }
 
@@ -131,6 +131,9 @@ function checkInputs() {
     }
     if (rightAnswerCounter === secretWords.length) {
       $(this).css(`color`, `black`);
+      setTimeout(function() {
+        document.location.href = "poemVideo.html";
+      }, 3000)
     }
   });
 }
