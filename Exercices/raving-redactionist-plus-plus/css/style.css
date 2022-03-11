@@ -35,7 +35,19 @@ body {
   padding-left: 15%;
 }
 
-.secretWord {
+.secret-word {
+  font-weight: bolder;
+  font-size: 1.5rem;
+}
+
+#guess-error {
+  color: red;
+  font-weight: bolder;
+  font-size: 1.5rem;
+}
+
+#guess-right {
+  color: green;
   font-weight: bolder;
   font-size: 1.5rem;
 }

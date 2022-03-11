@@ -31,7 +31,7 @@ function addSpan(array) {
         let wordID = `word` + i; //give everyElement a different id
 
         if (textArray[j].match(array[i])) { //replace if it matches
-          textArray[j] = `<span class="secretWord" id="${wordID}">` + textArray[j] + `</span>`;
+          textArray[j] = `<span class="secret-word" id="${wordID}">` + textArray[j] + `</span>`;
         }
       }
       if (textArray[j].match(`\n`)) { //place the <br> back
@@ -44,7 +44,7 @@ function addSpan(array) {
 
   for (let i = 0; i < array.length; i++) { //select one random word of every class and give it a specific id
     let wordArray = [];
-    $(`.secretWord`).each(function() {
+    $(`.secret-word`).each(function() {
       if ($(this).attr(`id`) === `word${i}`) {
         wordArray.push($(this));
       }
@@ -64,17 +64,21 @@ function replaceLetters() {
 }
 
 //Extrude words from the poem with REGEX
-const NUM_SECRET_WORDS = 5;
-let secretWords = [];
-let blankWords = [];
+const NUM_SECRET_WORDS = 2;
+let rightAnswerCounter = 0;
+let secretWords = []; //arrays containing the word answers
+let blankWords = []; //I don't think I really need that array but here it is lol
+const blankValue = "?";
 
-let poem = $(".poem").text() //get the text in the poem class
+let poemText = $(".poem").text() //get the text in the poem class
 let wordRegex = /\b[A-zÀ-ú]{4,}\b/g //any words equal or larger than 4 letters
-let words = shuffle(poem.match(wordRegex)); //shuffle the array
+let words = shuffle(poemText.match(wordRegex)); //shuffle the array
 words.splice(NUM_SECRET_WORDS); //keep only the first 5 elements
 addSpan(words);
 
-$(`.secretWord`).each(function() {
+$(`.secret-word`).each(function() {
+  $(this).attr(`contentEditable`, `true`); //make contentEditable
+
   let letters = $(this).text().toLowerCase().split("");
   let blankLetters = letters.slice();
   secretWords.push(letters) //save the letters
@@ -95,7 +99,7 @@ $(`.secretWord`).each(function() {
 
   $.each(blankLetters, function(i) {
     if (!hintPlacement[i]) {
-      blankLetters[i] = '?'
+      blankLetters[i] = blankValue;
     }
   });
 
@@ -103,3 +107,30 @@ $(`.secretWord`).each(function() {
   let output = blankLetters.join(""); //bring everything back together
   $(this).html(output); //and inside html
 });
+
+setInterval(checkInputs, 600);
+
+function checkInputs() {
+  $(`.secret-word`).each(function(i) {
+    let numBlank = 0;
+    let letters = $(this).text().split("");
+    $.each(letters, function(j) {
+      if (letters[j] === blankValue) {
+        numBlank++;
+      }
+    });
+
+    if (numBlank === 0) {
+      $(this).css(`color`, `red`);
+    }
+
+    if ($(this).text() === secretWords[i].join("") && $(this).attr(`contentEditable`)) {
+      rightAnswerCounter++;
+      $(this).removeAttr(`contentEditable`);
+      $(this).css(`color`, `green`);
+    }
+    if (rightAnswerCounter === secretWords.length) {
+      $(this).css(`color`, `black`);
+    }
+  });
+}
