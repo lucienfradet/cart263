@@ -30,7 +30,7 @@ function gotData(data) {
 
 //test button events
 $('#submit_button').on(`click`, submitRecipe);
-$('#analyse_button').on(`click`, analyseThis);
+$('#displayRecipe_button').on(`click`, displayRecipe);
 
 function submitRecipe() {
   let recipe = $('#recipe_input').val();
@@ -47,7 +47,7 @@ function submitRecipe() {
   }
 }
 
-function analyseThis() {
+function displayRecipe() {
   let txt = $('#text_input').val();
 
   let data = {

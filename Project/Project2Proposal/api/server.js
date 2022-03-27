@@ -6,6 +6,17 @@ let express = require("express");
 let app = express();
 let bodyParser = require('body-parser')
 
+// Load the Cloudant library.
+let Cloudant = require('@cloudant/cloudant');
+
+// Get account details from environment variables
+let url = "https://755b6d2e-a89a-43c4-ad5e-3c79ee9746ea-bluemix.cloudantnosqldb.appdomain.cloud/recipedb";
+let username = "apikey-v2-2tveshkio0wur6t5dclgze9lax5qd3q07xrx7b9mkxco";
+let password = "7cd8d5146af3db26a53775756baee9fa";
+
+// Initialize the library with url and credentials.
+let cloudant = Cloudant({ url: url, username: username, password: password });
+
 //loading the data
 let data = fs.readFileSync('data/recipe.json'); //Sync (synchronus) means the program waits for the readFile to complete before continuing
 let recipes = JSON.parse(data);
@@ -56,6 +67,16 @@ function addRecipe(request, response) {
     }
     response.send(reply);
   }
+
+  async function asyncCall() {
+  return cloudant.use('recipedb').insert({ happy: true }, 'rabbit');
+  }
+
+  asyncCall().then((data) => {
+    console.log(data); // { ok: true, id: 'rabbit', ...
+  }).catch((err) => {
+    console.log(err);
+  });
 }
 
 //
