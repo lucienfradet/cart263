@@ -1,6 +1,10 @@
 /**
 Recipe Book Prototype
 Lucien Cusson-Fradet
+
+The client based website was a test to upload and get data from a JSON file
+I want the data to be uploaded on the Cloudant database but I don't think it can be done (or would be wise) with a client website
+Cloudant posts and gets are done through a Node.js module that can't really be accessed by the client.
 */
 
 "use strict";
@@ -43,7 +47,7 @@ function submitRecipe() {
     }
     loadJSON(`add/${recipe}/${user}`, function(data) {
       console.log(data);
-    }); //this works but should really be something else! get vs. post? (it's using a get function to actually post...)
+    }); //this works locally but should really be something else! get vs. post? (it's using a get function to actually post...)
   }
 }
 
