@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "socket.io-client": "^4.4.1",
+    "superagent": "^7.1.1"
+  }
+}
