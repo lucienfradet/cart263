@@ -70,7 +70,7 @@ function addRecipe(request, response) {
   }
 
   async function asyncCall() {
-  return cloudant.use('recipedb').insert({ happy: true }, 'rabbit'); //this is a test and it works to upload JSON data to the Cloudant database
+  return cloudant.use('recipedb').insert({ name: user }, recipeName); //this is a test and it works to upload JSON data to the Cloudant database
   }
 
   asyncCall().then((data) => {
@@ -119,6 +119,7 @@ function analyseData(request, response) {
   response.send(reply);
 }
 
+/*
 //This section of the code is in pair with "client-app/client.js" and is trying to host the server on Heroku
 //testing code following a tutorial by Codeboard Club https://www.youtube.com/watch?v=Nyn-CEgy-B8
 let clientResponseRef;
@@ -164,15 +165,26 @@ let server_port = process.env.YOUR_PORT || process.env.PORT || 4000;
 http.listen(server_port, function() {
   console.log(`listening on *: ${server_port}`);
 })
+*/
 //END OF TUTORIAL CODE
-
-//Starting server locally
-console.log("server is starting");
-let server = app.listen(3000, listening);
-
-function listening() {
-  console.log("listening. . .");
-}
 
 //running the website
 app.use(express.static('public'));
+
+//start the server
+const PORT = parseInt(process.env.PORT) || 8080;
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+  console.log('Press Ctrl+C to quit.');
+});
+
+// [END gae_flex_node_static_files]
+module.exports = app;
+
+//Starting server locally
+// console.log("server is starting");
+// let server = app.listen(3000, listening);
+//
+// function listening() {
+//   console.log("listening. . .");
+// }
