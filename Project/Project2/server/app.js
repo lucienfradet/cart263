@@ -27,9 +27,36 @@ let cloudantPassword = "7cd8d5146af3db26a53775756baee9fa";
 // Initialize the library with url and credentials.
 let cloudant = Cloudant({ url: cloudantUrl, username: cloudantUsername, password: cloudantPassword });
 
-//loading the data
-let data = fs.readFileSync('data/recipe.json'); //Sync (synchronus) means the program waits for the readFile to complete before continuing
-let recipes = JSON.parse(data);
+//loading the recipe data
+let recipeData = fs.readFileSync('data/recipe.json'); //Sync (synchronus) means the program waits for the readFile to complete before continuing
+let recipes = JSON.parse(recipeData);
+
+//loading usernameData
+let usernameOptions = [];
+let usernameOptionsFrench = [];
+
+let usernameEndingsData = fs.readFileSync('data/username/usernameEndings.json');
+let usernameEndings = JSON.parse(usernameEndingsData);
+//English
+let menuItemsData = fs.readFileSync('data/username/menuItems.json');
+let menuItems = JSON.parse(menuItemsData);
+let verbsData = fs.readFileSync('data/username/verbs.json');
+let verbs = JSON.parse(verbsData);
+let wineDescriptionsData = fs.readFileSync('data/username/wineDescriptions.json');
+let wineDescriptions = JSON.parse(wineDescriptionsData);
+
+
+usernameOptions = [menuItems, verbs, wineDescriptions, usernameEndings];
+
+//French
+let menuItemsFrenchData = fs.readFileSync('data/username/menuItemsFrench.json');
+let menuItemsFrench = JSON.parse(menuItemsFrenchData);
+let verbsFrenchData = fs.readFileSync('data/username/verbsFrench.json');
+let verbsFrench = JSON.parse(verbsFrenchData);
+let wineDescriptionsFrenchData = fs.readFileSync('data/username/wineDescriptionsFrench.json');
+let wineDescriptionsFrench = JSON.parse(wineDescriptionsFrenchData);
+
+usernameOptionsFrench = [menuItemsFrench, verbsFrench, wineDescriptionsFrench, usernameEndings];
 
 
 //parse application from https://www.npmjs.com/package/body-parser
@@ -80,9 +107,18 @@ function addRecipe(request, response) {
   });
 }
 
-//not in use
-app.get('/recipes', sendAll);
+app.get('/usernameOptions', sendUsername);
+function sendUsername(request, response) {
+  response.send(usernameOptions);
+}
 
+app.get('/usernameOptionsFrench', sendUsername);
+function sendUsername(request, response) {
+  response.send(usernameOptionsFrench);
+}
+
+//very much in use
+app.get('/recipes', sendAll);
 function sendAll(request, response) {
   response.send(recipes);
 }

@@ -68,3 +68,43 @@ function dataPosted(result) {
 function postErr(err) {
   console.log(err);
 }
+
+//browser detect
+function browserDetect(){
+   let userAgent = navigator.userAgent;
+   let browserName;
+
+   if(userAgent.match(/chrome|chromium|crios/i)){
+       browserName = "chrome";
+     }else if(userAgent.match(/firefox|fxios/i)){
+       browserName = "firefox";
+     }  else if(userAgent.match(/safari/i)){
+       browserName = "safari";
+     }else if(userAgent.match(/opr\//i)){
+       browserName = "opera";
+     } else if(userAgent.match(/edg/i)){
+       browserName = "edge";
+     }else{
+       browserName="No browser detection";
+     }
+
+    return browserName;
+  }
+
+  //Save and load from localStorage
+  function saveLocal(data, name) {
+    console.log(data);
+    let dataString = JSON.stringify(data);
+    localStorage.setItem(name, dataString);
+  }
+
+  function getLocal(dataName) {
+    let data = JSON.parse(localStorage.getItem(dataName));
+    if (data !== null) {
+      console.log(data);
+    }
+    else {
+      console.log('nothing in username storage!')
+    }
+    return data;
+  }

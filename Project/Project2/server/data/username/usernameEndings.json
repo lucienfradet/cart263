@@ -1,0 +1,27 @@
+{
+  "description": "Une liste de terminaison pour les usernames",
+  "regular": [
+    "64",
+    "1234",
+    "69",
+    "777",
+    "666",
+    "XxXx",
+    "8",
+    "QWERTY",
+    "God",
+    "1995",
+    "1980",
+    "2000",
+    "Smoked",
+    "Fumé"
+  ],
+  "emojis": [
+    ["pot of honey", "0x1F36F"],
+    ["clown", "0x1F921"],
+    ["hand correct", "0x1F44C"],
+    ["langue", "0x1F445"],
+    ["tomato", "0x1F345"],
+    ["croissant", "0x1F950"]
+  ]
+}
