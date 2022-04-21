@@ -1,20 +1,26 @@
 //check if geolocation is available on the browser
-if ('geolocation' in navigator) {
-  console.log('geolocation available');
+let userPosition;
 
-  navigator.geolocation.getCurrentPosition(position => {
-    const userPosition = {
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-    }
-    console.log(position);
-    $('#latitude').html(userPosition.latitude);
-    $('#longitude').html(userPosition.longitude);
-    // Show a map centered at latitude / longitude.
-  });
+$('#geolocation_button').on(`click`, geoLocalize);
 
-} else {
-  console.log('geolocation not available');
+function geoLocalize() {
+  if ('geolocation' in navigator) {
+    console.log('geolocation available');
+
+    navigator.geolocation.getCurrentPosition(position => {
+      userPosition = {
+        lat: position.coords.latitude,
+        long: position.coords.longitude,
+      }
+      console.log(position);
+      $('#latitude').html(userPosition.lat);
+      $('#longitude').html(userPosition.long);
+      // Show a map centered at latitude / longitude.
+    });
+
+  } else {
+    console.log('geolocation not available');
+  }
 }
 
 //Handling errors

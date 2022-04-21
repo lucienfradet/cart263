@@ -19,9 +19,11 @@
 
   <body>
     <p>
-      recipe: <input id="recipe_input"></input>
+      recipeName: <input id="recipeName_input"></input>
       <br>
-      userName: <input id="userName_input"></input>
+      recipeDescription: <input id="recipeDescription_input"></input>
+      <br>
+      recipe: <input id="recipe_input"></input>
       <br>
       <button id="submit_button">submit</button>
       <br>
@@ -32,8 +34,11 @@
     </p>
 
     <p>
-      latitude: <span id="latitude"></span>&deg;<br>
-      longitude: <span id="longitude"></span>&deg;<br>
+      latitude: <span id="latitude"></span>&deg;
+      <br>
+      longitude: <span id="longitude"></span>&deg;
+      <br>
+      <button id="geolocation_button">GeoLocalize!</button>
     </p>
 
     <p>
@@ -45,5 +50,6 @@
   <script src="js/script.js"></script>
   <script src="js/usernameGenerator.js"></script>
   <script src="js/geolocation.js"></script>
+  <script src="js/sendUserData.js"></script>
 
 </html>

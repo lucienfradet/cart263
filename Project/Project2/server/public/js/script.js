@@ -33,9 +33,9 @@ function gotData(data) {
 }
 
 //test button events
-$('#submit_button').on(`click`, submitRecipe);
 $('#displayRecipe_button').on(`click`, displayRecipe);
 
+//THIS SHIT IS DEAD was only a test, I'm rebuilding it in sendUserData.js!
 function submitRecipe() {
   let recipe = $('#recipe_input').val();
   let user = $('#userName_input').val();

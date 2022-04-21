@@ -25,7 +25,15 @@ let cloudantUsername = "apikey-v2-2tveshkio0wur6t5dclgze9lax5qd3q07xrx7b9mkxco";
 let cloudantPassword = "7cd8d5146af3db26a53775756baee9fa";
 
 // Initialize the library with url and credentials.
-let cloudant = Cloudant({ url: cloudantUrl, username: cloudantUsername, password: cloudantPassword });
+let cloudant = Cloudant({ url: cloudantUrl, username: cloudantUsername, password: cloudantPassword }, function(err, cloudant, pong) {
+  //callback that informs if the db connection was successfull
+  if (err) {
+    return console.log('Failed to initialize Cloudant: ' + err.message);
+  }
+  console.log('Successfully initialized Cloudant:');
+  console.log(pong); // {"couchdb":"Welcome","version": ...);
+});
+let db = cloudant.db.use('recipedb');
 
 //loading the recipe data
 let recipeData = fs.readFileSync('data/recipe.json'); //Sync (synchronus) means the program waits for the readFile to complete before continuing
@@ -64,6 +72,20 @@ usernameOptionsFrench = [menuItemsFrench, verbsFrench, wineDescriptionsFrench, u
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
+
+//running the website
+app.use(express.static('public'));
+//app.use(express.json());
+
+//start the server
+const PORT = parseInt(process.env.PORT) || 8080;
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+  console.log('Press Ctrl+C to quit.');
+});
+
+// [END gae_flex_node_static_files]
+module.exports = app;
 
 /*
 --GET AND POST PATHS--
@@ -144,6 +166,28 @@ function searchRecipe(request, response) {
   response.send(reply);
 }
 
+app.post('/postUserData', (request, response) => {
+  console.log('new post request...')
+  console.log(request.body);
+
+  async function asyncCall() {
+    return cloudant.use('recipedb').insert(request.body);
+  }
+
+  asyncCall().then((data) => {
+    console.log('data successfully uploaded to recipedb');
+    console.log(data); // { ok: true, id: 'rabbit', ...
+    response.json({
+      status: 'upload to database successfull'
+    });
+  }).catch((err) => {
+    console.log(err);
+    response.json({
+      status: 'upload to database FAILED'
+    });
+  });
+});
+
 //trying body parser with a post
 app.post('/analyse', analyseData);
 
@@ -154,73 +198,3 @@ function analyseData(request, response) {
   }
   response.send(reply);
 }
-
-/*
-//This section of the code is in pair with "client-app/client.js" and is trying to host the server on Heroku
-//testing code following a tutorial by Codeboard Club https://www.youtube.com/watch?v=Nyn-CEgy-B8
-let clientResponseRef;
-app.get('/*', generalGet);
-function generalGet(request, response) {
-  let pathname = url.parse(request.url).pathname;
-
-  let req = {
-    pathname: pathname,
-    method: "get",
-    parmas: request.query
-  }
-
-  io.emit("page-request", req);
-  clientResponseRef = response;
-}
-
-app.post('/*', generalPost);
-function generalPost(request, response) {
-  let pathname = url.parse(request.url).pathname;
-
-  let req = {
-    pathname: pathname,
-    method: "post",
-    parmas: request.body
-  }
-
-  io.emit("page-request", req);
-  clientResponseRef = response;
-}
-
-io.on('connection', manageConnections);
-function manageConnections(socket) {
-  console.log('a node connected');
-  socket.on("page-response", pageResponse);
-  function pageResponse(response) {
-    clientResponseRef.send(response);
-  }
-}
-
-//Server ports
-let server_port = process.env.YOUR_PORT || process.env.PORT || 4000;
-http.listen(server_port, function() {
-  console.log(`listening on *: ${server_port}`);
-})
-*/
-//END OF TUTORIAL CODE
-
-//running the website
-app.use(express.static('public'));
-
-//start the server
-const PORT = parseInt(process.env.PORT) || 8080;
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log('Press Ctrl+C to quit.');
-});
-
-// [END gae_flex_node_static_files]
-module.exports = app;
-
-//Starting server locally
-// console.log("server is starting");
-// let server = app.listen(3000, listening);
-//
-// function listening() {
-//   console.log("listening. . .");
-// }
