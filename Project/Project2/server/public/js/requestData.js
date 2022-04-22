@@ -29,6 +29,9 @@ async function requestData(timeStamp, range) {
 
     const result = await response.json(); //await for the result
     console.log(result)
+
+    //array with the required data
+    return result.docs
   }
   catch (error) {
     console.log(error);

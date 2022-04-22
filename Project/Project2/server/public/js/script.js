@@ -51,6 +51,7 @@ function submitRecipe() {
   }
 }
 
+//Should remove...
 function displayRecipe() {
   let txt = $('#text_input').val();
 
