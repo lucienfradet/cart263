@@ -1,8 +1,9 @@
 $('#submit_button').on(`click`, sendUserData);
 
 async function sendUserData() { //async funtion to wait for the response
+  let dateTest = new Date().getTime();
   let data = { //create the data
-    date: new Date().toISOString(), //not sure about the ISOString...
+    date: dateTest.toString(), //not sure about the ISOString...
     location: userPosition,
     username: getLocal(USERNAME_DATA).username,
     recipeName: $('#recipeName_input').val(),
@@ -18,6 +19,7 @@ async function sendUserData() { //async funtion to wait for the response
   };
   console.log('posting data to the server...')
   console.log(data);
+  console.log(convertTimeStamp(parseInt(data.date)));
 
   //try catch to allow for errors to Console Logs
   try {
@@ -29,6 +31,7 @@ async function sendUserData() { //async funtion to wait for the response
 
     const result = await response.json(); //await for the result
     console.log(result)
+
   }
   catch (error) {
     console.log(error);

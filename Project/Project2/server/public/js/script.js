@@ -69,6 +69,18 @@ function postErr(err) {
   console.log(err);
 }
 
+//Convert TimeStamp to ISO-8601 string
+function convertTimeStamp(stamp) {
+  let date = new Date(stamp);
+  return  "" + date.getFullYear() +
+          "-" + (date.getMonth() + 1) +
+          "-" + date.getDate() +
+          "T" + date.getHours() +
+          ":" + date.getMinutes() +
+          ":" + date.getSeconds() +
+          date.getMilliseconds() + "Z";
+}
+
 //browser detect
 function browserDetect(){
    let userAgent = navigator.userAgent;
@@ -91,20 +103,20 @@ function browserDetect(){
     return browserName;
   }
 
-  //Save and load from localStorage
-  function saveLocal(data, name) {
-    console.log(data);
-    let dataString = JSON.stringify(data);
-    localStorage.setItem(name, dataString);
-  }
+//Save and load from localStorage
+function saveLocal(data, name) {
+  console.log(data);
+  let dataString = JSON.stringify(data);
+  localStorage.setItem(name, dataString);
+}
 
-  function getLocal(dataName) {
-    let data = JSON.parse(localStorage.getItem(dataName));
-    if (data !== null) {
-      console.log(data);
-    }
-    else {
-      console.log('nothing in username storage!')
-    }
-    return data;
+function getLocal(dataName) {
+  let data = JSON.parse(localStorage.getItem(dataName));
+  if (data !== null) {
+    console.log(data);
   }
+  else {
+    console.log('nothing in username storage!')
+  }
+  return data;
+}

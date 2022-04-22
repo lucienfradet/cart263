@@ -166,6 +166,48 @@ function searchRecipe(request, response) {
   response.send(reply);
 }
 
+//Convert TimeStamp to ISO-8601 string
+function convertTimeStamp(stamp) {
+  let date = new Date(stamp);
+  return  "" + date.getFullYear() +
+          "-" + (date.getMonth() + 1) +
+          "-" + date.getDate() +
+          "T" + date.getHours() +
+          ":" + date.getMinutes() +
+          ":" + date.getSeconds() +
+          date.getMilliseconds() + "Z";
+}
+
+//Getting the user data in a date range
+app.get('/get_data?', async (request, response) => {
+  console.log('new getData request...')
+  console.log("query: ", convertTimeStamp(parseInt(request.query.min)), convertTimeStamp(parseInt(request.query.max)));
+  console.log('yo'+request.query.min)
+
+  const query = {
+    selector: {
+      date: { "$gte": request.query.min , "$lte": request.query.max },
+      //date: { "$gte": '0' , "$lte": '0' },
+    },
+    fields: ["date", "location", "username", "recipeName", "recipeDescription", "recipe"],
+    limit: 150
+  };
+
+  const data = await db.find(query, (err, cursor) => {
+    if (err) {
+      console.log(`there was an error fetching the data:`);
+      console.log(err);
+      response.json(err);
+    }
+    else {
+      //console.log(cursor);
+      response.json(cursor);
+    }
+  });
+});
+
+
+//Posting UserData to cloudant db
 app.post('/postUserData', (request, response) => {
   console.log('new post request...')
   console.log(request.body);
