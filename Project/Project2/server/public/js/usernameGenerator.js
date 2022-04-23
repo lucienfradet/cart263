@@ -2,18 +2,20 @@
 const USERNAME_DATA = 'username-data-for-the-share-a-recipe-app'
 
 $('#generateUsername_button').on(`click`, generateUsername);
-let usernameLanguage = 'french';
 let usernameData;
 
 function generateUsername() {
+  console.log(language);
   //get the username JSONs from the server
-  if (usernameLanguage === 'french') {
+  if (language === 'fr') {
     $.get('/usernameOptionsFrench', function(data, status) {
       usernameData = data;
     })
   }
-  else {
-    //English version of the data
+  else if (language === 'en') {
+    $.get('/usernameOptions', function(data, status) {
+      usernameData = data;
+    })
   }
 
   //roulette effect to select the username
@@ -72,7 +74,7 @@ function randomizeUsername() {
   if (r > 0.5) {
     verb = toCamelCase(
       capitalizeFirstLetter(
-        random(usernameData[1].verbes)
+        random(usernameData[1].verbs)
       )
     );
   }

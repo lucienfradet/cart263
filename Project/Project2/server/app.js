@@ -129,17 +129,17 @@ function addRecipe(request, response) {
   });
 }
 
-app.get('/usernameOptions', sendUsername);
-function sendUsername(request, response) {
+app.get('/usernameOptions', (request, response) => {
   response.send(usernameOptions);
-}
+  console.log('sending english username Data');
+});
 
-app.get('/usernameOptionsFrench', sendUsername);
-function sendUsername(request, response) {
+app.get('/usernameOptionsFrench', (request, response) => {
   response.send(usernameOptionsFrench);
-}
+  console.log('sending french username Data');
+});
 
-//very much in use
+//very much in use (not?)
 app.get('/recipes', sendAll);
 function sendAll(request, response) {
   response.send(recipes);
