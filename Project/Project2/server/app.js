@@ -35,16 +35,13 @@ let cloudant = Cloudant({ url: cloudantUrl, username: cloudantUsername, password
 });
 let db = cloudant.db.use('recipedb');
 
-//loading the recipe data
-let recipeData = fs.readFileSync('data/recipe.json'); //Sync (synchronus) means the program waits for the readFile to complete before continuing
-let recipes = JSON.parse(recipeData);
-
 //loading usernameData
 let usernameOptions = [];
 let usernameOptionsFrench = [];
 
 let usernameEndingsData = fs.readFileSync('data/username/usernameEndings.json');
 let usernameEndings = JSON.parse(usernameEndingsData);
+
 //English
 let menuItemsData = fs.readFileSync('data/username/menuItems.json');
 let menuItems = JSON.parse(menuItemsData);
@@ -52,7 +49,6 @@ let verbsData = fs.readFileSync('data/username/verbs.json');
 let verbs = JSON.parse(verbsData);
 let wineDescriptionsData = fs.readFileSync('data/username/wineDescriptions.json');
 let wineDescriptions = JSON.parse(wineDescriptionsData);
-
 
 usernameOptions = [menuItems, verbs, wineDescriptions, usernameEndings];
 
@@ -75,7 +71,7 @@ app.use(bodyParser.json())
 
 //running the website
 app.use(express.static('public'));
-//app.use(express.json());
+//app.use(express.json()); //same as bodyParser but with express...
 
 //start the server
 const PORT = parseInt(process.env.PORT) || 8080;
@@ -91,44 +87,7 @@ module.exports = app;
 --GET AND POST PATHS--
 */
 
-//playing around with JSON files stored locally in the Node.js server
-//those "gets" post new recipes to the JSON data file
-app.get('/add/:recipeName/:user?', addRecipe); //: is looking for a user entry and ? can only be added to the last one and means it's optional
-app.get('/add/:recipeName', addRecipe);
-
-function addRecipe(request, response) {
-  let recipe = request.params;
-  let recipeName = recipe.recipeName;
-  let user = recipe.user;
-  if (!user) {
-    user = 'unknown';
-  }
-
-  recipes[recipeName] = user;
-  let data = JSON.stringify(recipes);
-  fs.writeFile('data/recipe.json', data, finished);
-
-  function finished(err) {
-    console.log('data updated!');
-    let reply = {
-      recipe: recipeName,
-      user: user,
-      status: "Successfully saved in Data!"
-    }
-    response.send(reply);
-  }
-
-  async function asyncCall() {
-  return cloudant.use('recipedb').insert({ name: user }, recipeName); //this is a test and it works to upload JSON data to the Cloudant database
-  }
-
-  asyncCall().then((data) => {
-    console.log(data); // { ok: true, id: 'rabbit', ...
-  }).catch((err) => {
-    console.log(err);
-  });
-}
-
+//Username requests
 app.get('/usernameOptions', (request, response) => {
   response.send(usernameOptions);
   console.log('sending english username Data');
@@ -139,50 +98,10 @@ app.get('/usernameOptionsFrench', (request, response) => {
   console.log('sending french username Data');
 });
 
-//very much in use (not?)
-app.get('/recipes', sendAll);
-function sendAll(request, response) {
-  response.send(recipes);
-}
-
-//experimenting with simple search calls
-app.get('/search/:recipe?', searchRecipe);
-
-function searchRecipe(request, response) {
-  let recipe = request.params.recipe;
-  let reply;
-  if (recipes[recipe]) {
-    reply = {
-      status: "found",
-      recipe: recipe,
-      user: recipes[recipe]
-    }
-  } else {
-    reply = {
-      status: "not found",
-      recipe: recipe
-    }
-  }
-  response.send(reply);
-}
-
-//Convert TimeStamp to ISO-8601 string
-function convertTimeStamp(stamp) {
-  let date = new Date(stamp);
-  return  "" + date.getFullYear() +
-          "-" + (date.getMonth() + 1) +
-          "-" + date.getDate() +
-          "T" + date.getHours() +
-          ":" + date.getMinutes() +
-          ":" + date.getSeconds() +
-          date.getMilliseconds() + "Z";
-}
-
 //Getting the user data in a date range
 app.get('/get_data?', async (request, response) => {
   console.log('new getData request...')
   console.log("query: ", convertTimeStamp(parseInt(request.query.min)), convertTimeStamp(parseInt(request.query.max)));
-  console.log('yo'+request.query.min)
 
   const query = {
     selector: {
@@ -205,7 +124,6 @@ app.get('/get_data?', async (request, response) => {
     }
   });
 });
-
 
 //Posting UserData to cloudant db
 app.post('/postUserData', (request, response) => {
@@ -230,13 +148,14 @@ app.post('/postUserData', (request, response) => {
   });
 });
 
-//trying body parser with a post
-app.post('/analyse', analyseData);
-
-function analyseData(request, response) {
-  console.log(`New data submited for analysis:`); console.log(request.body); //works because of bodyParser!
-  let reply = {
-    msg: 'thank you.'
-  }
-  response.send(reply);
+//Convert TimeStamp to ISO-8601 string
+function convertTimeStamp(stamp) {
+  let date = new Date(stamp);
+  return  "" + date.getFullYear() +
+          "-" + (date.getMonth() + 1) +
+          "-" + date.getDate() +
+          "T" + date.getHours() +
+          ":" + date.getMinutes() +
+          ":" + date.getSeconds() +
+          date.getMilliseconds() + "Z";
 }
