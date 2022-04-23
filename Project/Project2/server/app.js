@@ -87,6 +87,15 @@ module.exports = app;
 --GET AND POST PATHS--
 */
 
+//map key request (does it change something? should I put the whole map on the server instead?)
+let mapBoxToken = {
+  token: 'pk.eyJ1IjoibHVjaWVuZnJhZGV0IiwiYSI6ImNsMmM4cXh2bDA0eDUzaW9mNmR6YWpuaHMifQ.K2ygmN3MjODPxC9LX5Asow'
+}
+app.get('/getToken', async (request, response) => {
+  await response.send(mapBoxToken);
+  console.log('sending mapBoxToken');
+});
+
 //Username requests
 app.get('/usernameOptions', (request, response) => {
   response.send(usernameOptions);
