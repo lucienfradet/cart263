@@ -76,10 +76,36 @@ async function createMap() {
     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
 
-    new mapboxgl.Popup()
-    .setLngLat(coordinates)
-    .setHTML(description)
-    .addTo(map);
+    const options = {
+      maxWidth: '80vw'
+    }
+    if (description !== undefined) {
+      new mapboxgl.Popup(options)
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map);
+    }
+
+    $(".mapboxgl-popup-content").attr("id", "active-popup");
+    $(".mapboxgl-popup-tip").attr("id", "active-popup-tip");
+    });
+
+    map.on('click', 'clusters', (e) => {
+      const features = map.queryRenderedFeatures(e.point, {
+        layers: ['clusters']
+      });
+      const clusterId = features[0].properties.cluster_id;
+      map.getSource('recipe').getClusterExpansionZoom(
+        clusterId,
+        (err, zoom) => {
+          if (err) return;
+
+          map.easeTo({
+            center: features[0].geometry.coordinates,
+            zoom: zoom + 1
+          });
+        }
+      );
     });
 
     // Change the cursor to a pointer when the mouse is over the places layer.
@@ -90,6 +116,14 @@ async function createMap() {
     // Change it back to a pointer when it leaves.
     map.on('mouseleave', 'recipe', () => {
     map.getCanvas().style.cursor = '';
+
+    map.on('mouseenter', 'clusters', () => {
+    map.getCanvas().style.cursor = 'pointer';
+    });
+
+    map.on('mouseleave', 'clusters', () => {
+    map.getCanvas().style.cursor = '';
+    });
     });
 
     //Request data from the last 24h
@@ -164,11 +198,15 @@ function displayDataOnMap(timeStamp) {
         <br>
         <strong>par: </strong>
         <span class="username">${recipeRawData.username}</span>
-        <strong>description:</strong>
+        <br>
+        <br>
+        <strong>Description:</strong>
         <br>
         <span class="recipe-description">${recipeRawData.recipeDescription}</span>
         <br>
-        <strong>recette:</strong>
+        <br>
+        <strong>Recette:</strong>
+        <br>
         <span class="recipe-description">${recipeRawData.recipe}</span>
         </p>`;
       }
@@ -179,11 +217,15 @@ function displayDataOnMap(timeStamp) {
         <br>
         <strong>by: </strong>
         <span class="username">${recipeRawData.username}</span>
+        <br>
+        <br>
         <strong>Description:</strong>
         <br>
         <span class="recipe-description">${recipeRawData.recipeDescription}</span>
         <br>
+        <br>
         <strong>Recipe:</strong>
+        <br>
         <span class="recipe-description">${recipeRawData.recipe}</span>
         </p>`;
       }

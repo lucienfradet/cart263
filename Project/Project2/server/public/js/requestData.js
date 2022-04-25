@@ -6,10 +6,10 @@ async function requestData(timeStamp, range) {
   $("#map-loader").show();
   //this is for testing
   const timeStampTest = 1650835214960;
-  const minTimeStamp = timeStampTest - range;
+  const minTimeStamp = timeStamp - range;
   let params = {
     min: minTimeStamp, //this should normally be timeStamp!!!
-    max: timeStampTest
+    max: timeStamp
   };
 
   // let params = {

@@ -51,3 +51,40 @@ function displayTopControls() {
     }
   });
 }
+
+function changeDateNumber(timeStamp, direction) {
+
+}
+
+async function arrowClick(direction) {
+  let date = parseInt(displayDate.text().split(' ')[0]);
+  let sliderMin = parseInt(timeSlider[0].attributes['2'].nodeValue);;
+  let sliderMax = parseInt(timeSlider[0].attributes['3'].nodeValue);
+  let sliderValue = parseInt(timeSlider.val());
+
+  let dayLength = 24*60*60*1000;
+  if (direction === 'left') {
+    date -= 1;
+    sliderMin -= dayLength;
+    sliderMax -= dayLength;
+    sliderValue -= dayLength;
+  } else if (direction === 'right') {
+    date += 1;
+    sliderMin += dayLength;
+    sliderMax += dayLength;
+    sliderValue += dayLength;
+  }
+
+  timeSlider.prop({
+    'max': sliderMax,
+    'min': sliderMin
+  });
+  timeSlider.val(sliderValue);
+  displayDate.html(
+    convertTimeStampDate(sliderValue) + ' ' + convertTimeStampMonth(sliderValue)
+  )
+
+  await requestData(sliderMax, dayLength);
+  displayDataOnMap(sliderValue);
+  console.log(recipe);
+}

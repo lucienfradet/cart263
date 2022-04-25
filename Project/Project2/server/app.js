@@ -119,7 +119,7 @@ app.get('/get_data?', async (request, response) => {
       //date: { "$gte": '0' , "$lte": '0' },
     },
     fields: ["_id", "date", "location", "username", "recipeName", "recipeDescription", "recipe"],
-    limit: 150
+    limit: 300
   };
 
   const data = await db.find(query, (err, cursor) => {
