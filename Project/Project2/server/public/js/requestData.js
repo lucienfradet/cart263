@@ -3,12 +3,12 @@ $('#requestData_button').on(`click`, requestData);
 
 //request all data from a timeStamp and timeStamp - range
 async function requestData(timeStamp, range) {
-
+  $("#map-loader").show();
   //this is for testing
-  const timeStampTest = 1650591254857;
-  const minTimeStamp = timeStampTest - 1000*60*60;
+  const timeStampTest = 1650835214960;
+  const minTimeStamp = timeStampTest - range;
   let params = {
-    min: minTimeStamp,
+    min: minTimeStamp, //this should normally be timeStamp!!!
     max: timeStampTest
   };
 
@@ -28,10 +28,10 @@ async function requestData(timeStamp, range) {
     }
 
     const result = await response.json(); //await for the result
-    console.log(result)
-
+    $("#map-loader").hide();
     //array with the required data
-    return result.docs
+    recipe = result.docs;
+    return;
   }
   catch (error) {
     console.log(error);

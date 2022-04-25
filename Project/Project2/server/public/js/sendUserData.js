@@ -1,9 +1,9 @@
 $('#submit_button').on(`click`, sendUserData);
 
 async function sendUserData() { //async funtion to wait for the response
-  let dateTest = new Date().getTime();
+  let date = new Date().getTime();
   let data = { //create the data
-    date: dateTest.toString(), //not sure about the ISOString...
+    date: date.toString(), //not sure about the ISOString...
     location: userPosition,
     username: getLocal(USERNAME_DATA).username,
     recipeName: $('#recipeName_input').val(),

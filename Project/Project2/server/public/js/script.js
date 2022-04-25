@@ -8,6 +8,22 @@ Cloudant posts and gets are done through a Node.js module that can't really be a
 */
 
 "use strict";
+let hello = "HELLO!?!? YA TU KEK CHOSE QUI S'PASSE!?!?"
+
+let recipe;
+
+//hide the loaders
+$("#map-loader").hide();
+
+displayTopControls();
+
+function setup() {
+  noCanvas();
+}
+
+function draw() {
+
+}
 
 //Convert TimeStamp to ISO-8601 string
 function convertTimeStamp(stamp) {
@@ -18,7 +34,49 @@ function convertTimeStamp(stamp) {
           "T" + date.getHours() +
           ":" + date.getMinutes() +
           ":" + date.getSeconds() +
-          date.getMilliseconds() + "Z";
+          "." + date.getMilliseconds() + "Z";
+}
+
+function convertTimeStampHourMinutes(stamp) {
+  let date = new Date(stamp);
+  let minutes = date.getMinutes();
+
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+
+  return  "" + date.getHours() +
+          ":" + minutes;
+}
+
+function convertTimeStampHour(stamp) {
+  let date = new Date(stamp);
+  return  '' + date.getHours();
+}
+
+function convertTimeStampMonth(stamp) {
+  let date = new Date(stamp);
+  let month =  date.getMonth();
+
+  const monthNamesEnglish = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+  ];
+  const monthNamesFrench = ["janvier", "février", "mars", "avril", "mai", "juin",
+  "juillet", "août", "septembre", "octobre", "novembre", "décembre"
+  ];
+
+  if (language === 'en') {
+    return monthNamesEnglish[month]
+  }
+  else if (language === 'fr') {
+    return monthNamesFrench[month]
+  }
+
+}
+
+function convertTimeStampDate(stamp) {
+  let date = new Date(stamp);
+  return  "" + date.getDate();
 }
 
 //browser detect

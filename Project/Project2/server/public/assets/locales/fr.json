@@ -2,7 +2,7 @@
   "head": {
     "title": "Prototype pour le API de recette"
   },
-  "body": {
+  ".text-test-container": {
     "test": "Bonjour, ceci est un test."
   }
 }

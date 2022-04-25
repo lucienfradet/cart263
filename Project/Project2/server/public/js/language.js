@@ -2,10 +2,10 @@
 
 $("#french_button").on(`click`, () => {
   setLanguage('fr');
-  console.log(getLanguage());
+  //console.log(getLanguage());
 });
 
 $("#english_button").on(`click`, () => {
   setLanguage('en');
-  console.log(getLanguage());
+  //console.log(getLanguage());
 });

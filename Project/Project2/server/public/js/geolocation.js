@@ -7,6 +7,10 @@ function geoLocalize() {
   if ('geolocation' in navigator) {
     console.log('geolocation available');
 
+    const options = {
+      
+    }
+
     navigator.geolocation.getCurrentPosition(position => {
       userPosition = {
         lat: position.coords.latitude,
@@ -16,7 +20,9 @@ function geoLocalize() {
       $('#latitude').html(userPosition.lat);
       $('#longitude').html(userPosition.long);
       // Show a map centered at latitude / longitude.
-    });
+    }, (error) => {
+      throw new Error(`Error! status: ${error}`);
+    }, options);
 
   } else {
     console.log('geolocation not available');

@@ -8,58 +8,83 @@
 
     <!-- CSS stylesheet(s) -->
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link href='css/mapbox-gl.css' rel="stylesheet" />
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
 
     <!-- Library script(s) -->
     <script src="js/libraries/p5.min.js"></script>
     <script src="js/libraries/p5.sound.min.js"></script>
     <script src="js/libraries/jquery-3.6.0.min.js"></script>
     <script src="js/libraries/jquery.MultiLanguage.js"></script>
-    <script src="js/libraries/mappa.js" type="text/javascript"></script>
-
+    <script src="js/libraries/jquery-ui.min.js"></script>
+    <script src="js/libraries/mapbox-gl.js"></script>
 
   </head>
 
   <body>
-    <h1 id="translation_test" key="test">Hello, this is a test.</h1>
-    <p>
-      <button id="french_button">FR</button>  <button id="english_button">EN</button>
-    </p>
+    <div class="image-container">
+      <p class="image-holder">
+      <img id="map-loader" src="assets/images/mapLoader.gif" />
+      </p>
+    </div>
 
-    <p>
-      recipeName: <input id="recipeName_input"></input>
-      <br>
-      recipeDescription: <input id="recipeDescription_input"></input>
-      <br>
-      recipe: <input id="recipe_input"></input>
-      <br>
-      <button id="submit_button">submit</button>
-      <br>
-      <br>
-      userName: <h2 id=generated_username><h2></h2>
-      <br>
-      <button id="generateUsername_button">Generate UserName</button>
-    </p>
+    <div class="top-container">
+      <div class="time-container">
+      <h1 id="time">8:12</h1>
+      </div>
+      <div class="date-container">
+      <p id="date">23 avril</h1>
+      </div>
+      <div id="slider-container" class="slider-container-big-screen">
+      <input id="time-slider" type="range" min="1" max="100" value="50" class="slider">
+      </div>
+    </div>
 
-    <p>
-      latitude: <span id="latitude"></span>&deg;
-      <br>
-      longitude: <span id="longitude"></span>&deg;
-      <br>
-      <button id="geolocation_button">GeoLocalize!</button>
-    </p>
+    <!-- <div class="text-test-container">
+      <h1 id="translation_test" key="test">Hello, this is a test.</h1>
+      <p>
+        <button id="french_button">FR</button>  <button id="english_button">EN</button>
+      </p>
 
-    <p>
-      <button id="requestData_button">requestData</button>
-    </p>
+      <p>
+        recipeName: <input id="recipeName_input"></input>
+        <br>
+        recipeDescription: <input id="recipeDescription_input"></input>
+        <br>
+        recipe: <input id="recipe_input"></input>
+        <br>
+        <button id="submit_button">submit</button>
+        <br>
+        <br>
+        userName: <h2 id=generated_username><h2></h2>
+        <br>
+        <button id="generateUsername_button">Generate UserName</button>
+      </p>
+
+      <p>
+        latitude: <span id="latitude"></span>&deg;
+        <br>
+        longitude: <span id="longitude"></span>&deg;
+        <br>
+        <button id="geolocation_button">GeoLocalize!</button> <button id="createMap_button">createMap</button>
+      </p>
+
+      <p>
+        <button id="requestData_button">requestData</button>
+      </p>
+    </div> -->
+    <div id="map"></div>
   </body>
 
+
   <!-- My script(s) -->
-  <script src="js/script.js"></script>
   <script src="js/usernameGenerator.js"></script>
   <script src="js/geolocation.js"></script>
   <script src="js/sendUserData.js"></script>
   <script src="js/requestData.js"></script>
   <script src="js/language.js"></script>
   <script src="js/map.js"></script>
+  <script src="js/UI.js"></script>
+  <script src="js/script.js"></script>
 
 </html>

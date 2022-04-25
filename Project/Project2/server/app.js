@@ -88,8 +88,9 @@ module.exports = app;
 */
 
 //map key request (does it change something? should I put the whole map on the server instead?)
+//tokenPrivate: 'pk.eyJ1IjoibHVjaWVuZnJhZGV0IiwiYSI6ImNsMmM4cXh2bDA0eDUzaW9mNmR6YWpuaHMifQ.K2ygmN3MjODPxC9LX5Asow'
 let mapBoxToken = {
-  token: 'pk.eyJ1IjoibHVjaWVuZnJhZGV0IiwiYSI6ImNsMmM4cXh2bDA0eDUzaW9mNmR6YWpuaHMifQ.K2ygmN3MjODPxC9LX5Asow'
+  token: 'pk.eyJ1IjoibHVjaWVuZnJhZGV0IiwiYSI6ImNsMmFwZXJ3YjA3bmczZHFkN2ZqcTVqMTAifQ.VACSvm517kgmnWLCUfp8lA'
 }
 app.get('/getToken', async (request, response) => {
   await response.send(mapBoxToken);
@@ -117,7 +118,7 @@ app.get('/get_data?', async (request, response) => {
       date: { "$gte": request.query.min , "$lte": request.query.max },
       //date: { "$gte": '0' , "$lte": '0' },
     },
-    fields: ["date", "location", "username", "recipeName", "recipeDescription", "recipe"],
+    fields: ["_id", "date", "location", "username", "recipeName", "recipeDescription", "recipe"],
     limit: 150
   };
 
