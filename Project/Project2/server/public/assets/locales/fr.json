@@ -4,5 +4,8 @@
   },
   ".text-test-container": {
     "test": "Bonjour, ceci est un test."
+  },
+  ".language-container": {
+    "selector": "EN"
   }
 }
