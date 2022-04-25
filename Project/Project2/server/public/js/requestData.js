@@ -18,7 +18,6 @@ async function requestData(timeStamp, range) {
   // };
 
   const url = '/get_data?' + new URLSearchParams(params).toString();
-  console.log(url);
 
   try {
     const response = await fetch(url); //await the response
