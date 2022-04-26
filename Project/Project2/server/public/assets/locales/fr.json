@@ -7,5 +7,27 @@
   },
   ".language-container": {
     "selector": "EN"
+  },
+  ".add-button-container": {
+    "add-button": "Ajouter une recette?"
+  },
+  ".info-container": {
+    "intro-title": "Qu'est ce que cette bouillabaisse?",
+    "intro-text": "Sur cette carte, chaque point représente une recette partagé par un utilisateur.<br><br>Ajoute la tienne!",
+    "close-intro-button": "Ok c'est bon!",
+    "geoloc-title": "Une application pour cartographier et partager c'que l'on se fait à manger",
+    "geoloc-text": "Comme inspiration ou par simple curiosité, pour se sentir accompagné quand on mange seul ou pour rire entre amis.<br><br>L'application garde en mémoire la date, l'heure et l'endroit approximatif où vous avez mangé.<br>(Tout en restant totalement anonyme)<br><br><span style='color:#620500'>Vous devez consentir à la géolocalisation approximative pour continuer!</span>",
+    "geoloc-next-button": "Oui, j'accepte!",
+    "username-title": "Ton pseudonyme",
+    "username-text": "Sur la carte, les recettes sont accompagnées d'un pseudonyme généré automatiquement. Il sera gardé en mémoire pour plus tard, mais il peut aussi être changé à chaque visite.",
+    "random-button": "Aléatoirisation!",
+    "username-next-button": "Nice!",
+    "title-title": "Le titre",
+    "titre-text": "On mange quoi? Un sandwich au beurre de peanut ou un plât cinq étoiles?<br>Y'a rien de trop beau!",
+    "title-next-button": "Suivant!",
+    "description-title": "Ajoute un commentaire ou une description",
+    "description-next-button": "Suivant!",
+    "recipe-title": "Si tu te sens brave, ajoute la recette!<br>(c'est optionel là!)",
+    "recipe-next-button": "C'est bon, on publie!"
   }
 }

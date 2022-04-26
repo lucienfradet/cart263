@@ -1,4 +1,5 @@
 let map;
+let popup;
 
 $('#createMap_button').on(`click`, createMap);
 
@@ -15,7 +16,7 @@ async function createMap() {
   //console.log(mapboxgl.accessToken);
   map = new mapboxgl.Map(options);
 
-  map.on('load', function() {
+  map.on('load', async function() {
     // disable map rotation using right click + drag
     map.dragRotate.disable();
     // disable map rotation using touch rotation gesture
@@ -80,7 +81,7 @@ async function createMap() {
       maxWidth: '80vw'
     }
     if (description !== undefined) {
-      new mapboxgl.Popup(options)
+      popup = new mapboxgl.Popup(options)
       .setLngLat(coordinates)
       .setHTML(description)
       .addTo(map);
@@ -127,7 +128,12 @@ async function createMap() {
     });
 
     //Request data from the last 24h
-    requestData(parseInt(inputQuery.value), 24*60*60*1000);
+    await requestData(parseInt(rangeInputQuery.value), 24*60*60*1000);
+    displayDataOnMap(
+      parseInt(
+        rangeInputQuery.value
+      )
+    );
   });
 
   //resize the map with window resize
@@ -175,84 +181,120 @@ async function getMapToken() {
 
 
 function displayDataOnMap(timeStamp) {
-  let timeMin = timeStamp - 2*60*60*1000; //2 hours?
-  const geojsonSource = map.getSource('recipe');
-
-  //remove previsous sources
-  geojsonSource.setData({
-  "type": "FeatureCollection",
-  "features": []
-  });
-
-  //array with the JSON data
-  let arrayOfData = [];
-  for (let i = 0; i < recipe.length; i++) {
-    let recipeRawData = recipe[i];
-
-    if (parseInt(recipeRawData.date) >= timeMin && parseInt(recipeRawData.date) <= timeStamp) {
-      let description;
-      if (language === 'fr') {
-        description =
-        `<p>
-        <strong class="recipe-name">${recipeRawData.recipeName}</strong>
-        <br>
-        <strong>par: </strong>
-        <span class="username">${recipeRawData.username}</span>
-        <br>
-        <br>
-        <strong>Description:</strong>
-        <br>
-        <span class="recipe-description">${recipeRawData.recipeDescription}</span>
-        <br>
-        <br>
-        <strong>Recette:</strong>
-        <br>
-        <span class="recipe-description">${recipeRawData.recipe}</span>
-        </p>`;
-      }
-      else if (language === 'en') {
-        description =
-        `<p>
-        <strong class="recipe-name">${recipeRawData.recipeName}</strong>
-        <br>
-        <strong>by: </strong>
-        <span class="username">${recipeRawData.username}</span>
-        <br>
-        <br>
-        <strong>Description:</strong>
-        <br>
-        <span class="recipe-description">${recipeRawData.recipeDescription}</span>
-        <br>
-        <br>
-        <strong>Recipe:</strong>
-        <br>
-        <span class="recipe-description">${recipeRawData.recipe}</span>
-        </p>`;
-      }
-
-      let data = {
-          "type": "Feature",
-          "properties": {
-            'description': description
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              recipeRawData.location.long,
-              recipeRawData.location.lat
-            ]
-          }
-        }
-      arrayOfData.push(data);
-    }
-  }
-
-  //update the data on the map
-  if (arrayOfData.length !== 0) {
+  if (recipe) {
+    let timeMin = timeStamp - 2*60*60*1000; //2 hours?
     const geojsonSource = map.getSource('recipe');
+
+    //remove previsous sources
     geojsonSource.setData({
     "type": "FeatureCollection",
-    "features": arrayOfData
+    "features": []
     });
+
+    //array with the JSON data
+    let arrayOfData = [];
+    for (let i = 0; i < recipe.length; i++) {
+      let recipeRawData = recipe[i];
+
+      if (parseInt(recipeRawData.date) >= timeMin && parseInt(recipeRawData.date) <= timeStamp) {
+        let description;
+        if (recipeRawData.recipe === undefined) {
+          //no recipe
+          if (language === 'fr') {
+            description =
+            `<p>
+            <strong class="recipe-name">${recipeRawData.recipeName}</strong>
+            <br>
+            <strong id="subtitle-popup">Auteur: </strong>
+            <span class="username">${recipeRawData.username}</span>
+            <br>
+            <br>
+            <strong id="subtitle-popup">Commentaire:</strong>
+            <br>
+            <span class="recipe-description">${recipeRawData.recipeDescription}</span>
+            </p>`;
+          }
+          else if (language === 'en') {
+            description =
+            `<p>
+            <strong class="recipe-name">${recipeRawData.recipeName}</strong>
+            <br>
+            <strong id="subtitle-popup">Author: </strong>
+            <span class="username">${recipeRawData.username}</span>
+            <br>
+            <br>
+            <strong id="subtitle-popup">Comment:</strong>
+            <br>
+            <span class="recipe-description">${recipeRawData.recipeDescription}</span>
+            </p>`;
+          }
+        } else {
+          // with recipe
+          if (language === 'fr') {
+            description =
+            `<p>
+            <strong class="recipe-name">${recipeRawData.recipeName}</strong>
+            <br>
+            <strong id="subtitle-popup">Auteur: </strong>
+            <span class="username">${recipeRawData.username}</span>
+            <br>
+            <br>
+            <strong id="subtitle-popup">Commentaire:</strong>
+            <br>
+            <span class="recipe-description">${recipeRawData.recipeDescription}</span>
+            <br>
+            <br>
+            <strong id="subtitle-popup">Recette:</strong>
+            <br>
+            <span class="recipe-description">${recipeRawData.recipe}</span>
+            </p>`;
+          }
+          else if (language === 'en') {
+            description =
+            `<p>
+            <strong class="recipe-name">${recipeRawData.recipeName}</strong>
+            <br>
+            <strong id="subtitle-popup">Author: </strong>
+            <span class="username">${recipeRawData.username}</span>
+            <br>
+            <br>
+            <strong id="subtitle-popup">Comment:</strong>
+            <br>
+            <span class="recipe-description">${recipeRawData.recipeDescription}</span>
+            <br>
+            <br>
+            <strong id="subtitle-popup">Recipe:</strong>
+            <br>
+            <span class="recipe-description">${recipeRawData.recipe}</span>
+            </p>`;
+          }
+        }
+
+
+        let data = {
+            "type": "Feature",
+            "properties": {
+              'description': description
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                recipeRawData.location.long,
+                recipeRawData.location.lat
+              ]
+            }
+          }
+        arrayOfData.push(data);
+      }
+    }
+
+    //update the data on the map
+    if (arrayOfData.length !== 0) {
+      const geojsonSource = map.getSource('recipe');
+      geojsonSource.setData({
+      "type": "FeatureCollection",
+      "features": arrayOfData
+      });
+    }
   }
 }

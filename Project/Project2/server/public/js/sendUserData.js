@@ -1,14 +1,12 @@
-$('#submit_button').on(`click`, sendUserData);
-
 async function sendUserData() { //async funtion to wait for the response
-  let date = new Date().getTime();
+  let date = parseInt(timeSlider[0].attributes['3'].nodeValue);
   let data = { //create the data
     date: date.toString(), //not sure about the ISOString...
     location: userPosition,
     username: getLocal(USERNAME_DATA).username,
-    recipeName: $('#recipeName_input').val(),
-    recipeDescription: $('#recipeDescription_input').val(),
-    recipe: $('#recipe_input').val()
+    recipeName: $('#name-input').val(),
+    recipeDescription: $('#description-text').val(),
+    recipe: $('#recette-text').val()
   };
   const options = {
     method: 'POST',

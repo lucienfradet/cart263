@@ -30,7 +30,7 @@ function getLanguage() {
         $.each(lang, function (index, val) {
             (index === 'head') ? $(document).attr("title", val['title']) : false;
             $(index).children().each(function () {
-                $(this).text(val[$(this).attr('key')])
+                $(this).html(val[$(this).attr('key')])
             })
         })
     })

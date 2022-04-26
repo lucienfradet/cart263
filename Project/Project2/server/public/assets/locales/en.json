@@ -7,5 +7,27 @@
   },
   ".language-container": {
     "selector": "FR"
+  },
+  ".add-button-container": {
+    "add-button": "Add a recipe?"
+  },
+  ".info-container": {
+    "intro-title": "What is this bouillabaisse?",
+    "intro-text": "On this map, each dot represents a recipe shared by a user.<br><br>Add your own!",
+    "close-intro-button": "Ok it's good!",
+    "geoloc-title": "An application to map and share what we cook for ourselves",
+    "geoloc-text": "As an inspiration or for simple curiosity, to feel accompanied when you eat alone or to laugh with friends.<br><br>This application keeps track of the date, time and approximate location of your meal.<br>(While remaining totally anonymous)<br><br><span style='color:#620500'>To continue, you must agree to the approximate geolocation!</span>",
+    "geoloc-next-button": "Yes, I accept!",
+    "username-title": "Your username",
+    "username-text": "On the map, the recipes are accompanied by automatically generated usernames. It will be kept in memory for later, but it can also be changed on each visit.",
+    "random-button": "Randomization!",
+    "username-next-button": "Nice!",
+    "title-title": "The Title",
+    "titre-text": "What do we eat? A peanut butter sandwich or a five star meal?<br>Nothing is too good!",
+    "title-next-button": "Next!",
+    "description-title": "Add a comment or a description",
+    "description-next-button": "Next!",
+    "recipe-title": "If you're feeling brave, provide the recipe!<br>(it's optional eh!)",
+    "recipe-next-button": "All good, publish it!"
   }
 }

@@ -1,5 +1,5 @@
 let timeSlider = $("#time-slider");
-let inputQuery = document.querySelector('input');
+let rangeInputQuery = document.querySelector('#time-slider');
 let displayTime = $("#time");
 let displayDate = $("#date");
 let dateSwitcher = false;
@@ -24,8 +24,8 @@ function displayTopControls() {
   )
 
   //Create event listenner for the slider
-  inputQuery.addEventListener('input', function() {
-    let value = parseInt(inputQuery.value);
+  rangeInputQuery.addEventListener('input', function() {
+    let value = parseInt(rangeInputQuery.value);
     displayTime.html(
       convertTimeStampHourMinutes(value)
     );
@@ -50,10 +50,6 @@ function displayTopControls() {
       dateSwitcher = false;
     }
   });
-}
-
-function changeDateNumber(timeStamp, direction) {
-
 }
 
 async function arrowClick(direction) {
@@ -86,5 +82,97 @@ async function arrowClick(direction) {
 
   await requestData(sliderMax, dayLength);
   displayDataOnMap(sliderValue);
-  console.log(recipe);
+}
+
+//Recipe input functions
+
+//hide all the popup elements on startup
+$("#geoloc-popup").hide();
+$("#username-popup").hide();
+$("#title-popup").hide();
+$("#description-popup").hide();
+$("#recipe-popup").hide();
+
+function addRecipeStart() {
+  geoLocalize();
+  if (popup !== undefined) {
+    popup.remove()
+  };
+  $("#geoloc-popup").show();
+}
+
+function geolocNext() {
+  $("#geoloc-popup").hide();
+  $("#username-popup").show();
+
+  if (!usernameFixed) {
+    usernameFixed = getLocal(USERNAME_DATA).username;
+    if (usernameFixed !== undefined) {
+      $('#username-display').html(usernameFixed);
+    }
+  }
+}
+
+function geolocBack() {
+  $("#geoloc-popup").hide();
+}
+
+function usernameNext() {
+  $("#username-popup").hide();
+  $("#title-popup").show();
+}
+
+function usernameBack() {
+  $("#username-popup").hide();
+  $("#geoloc-popup").show();
+}
+
+function titleNext() {
+  if ($('#name-input').val() === '') {
+    $('#name-input').effect("shake", { times:3 }, 300);
+  }
+  else {
+    $("#title-popup").hide();
+    $("#description-popup").show();
+  }
+}
+
+function titleBack() {
+  $("#title-popup").hide();
+  $("#username-popup").show();
+}
+
+function descriptionNext() {
+  if ($('#description-text').val() === '') {
+    $('#description-text').effect("shake", { times:3 }, 300);
+  }
+  else {
+    $("#description-popup").hide();
+    $("#recipe-popup").show();
+  }
+}
+
+function descriptionBack() {
+  $("#description-popup").hide();
+  $("#title-popup").show();
+}
+
+async function recipeNext() {
+  await sendUserData()
+  resetMap();
+}
+
+async function resetMap() {
+  await requestData(parseInt(timeSlider[0].attributes['3'].nodeValue), 24*60*60*1000);
+  displayDataOnMap(
+    parseInt(
+      rangeInputQuery.value
+    )
+  );
+  $("#recipe-popup").hide();
+}
+
+function recipeBack() {
+  $("#recipe-popup").hide();
+  $("#description-popup").show();
 }

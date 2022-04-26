@@ -30,6 +30,7 @@ async function requestData(timeStamp, range) {
     $("#map-loader").hide();
     //array with the required data
     recipe = result.docs;
+    console.log(result.docs);
     return;
   }
   catch (error) {

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no>
 
     <title>Prototype for Recipe API</title>
 
@@ -32,6 +32,177 @@
       <span onclick="languageSwitch()" id="language-selector" key= "selector">
         FR
       </span>
+    </div>
+
+    <div class="add-button-container">
+      <button type="button" onclick="addRecipeStart();" id="add-button" key= "add-button">
+        Ajouter une recette?
+      </button>
+    </div>
+
+    <div class="info-wrapper" id="intro-popup">
+      <div class="info-container">
+        <h1 key= "intro-title">
+          Qu'est ce que cette bouillabaisse?
+        </h1>
+        <p key="intro-text">
+          Sur cette carte, chaque point représente une recette partagé par un utilisateur.<br><br>
+          Ajoute la tienne!
+        </p>
+        <button type="button" onclick="$('#intro-popup').hide();" id="close-intro-button" key= "close-intro-button">
+          Ok c'est bon!
+        </button>
+      </div>
+    </div>
+
+    <div class="info-wrapper" id="geoloc-popup">
+      <div class="info-container">
+        <h1 key= "geoloc-title">
+          Une application pour cartographier et partager c'que l'on se fait à manger
+        </h1>
+        <p key="geoloc-text">
+          Comme inspiration ou par simple curiosité,
+          pour se sentir accompagné quand on mange seul ou pour rire entre amis.<br>
+          <br>
+          L'application garde en mémoire la date, l'heure et l'endroit approximatif où vous avez mangé.<br>(Tout en restant totalement anonyme)<br>
+          <br>
+          <span style="color:#620500">Vous devez consentir à la géolocalisation approximative pour continuer!</span>
+        </p>
+        <button type="button" onclick="geolocNext();" id="geoloc-next-button" key= "geoloc-next-button">
+          Oui, j'accepte!
+        </button>
+
+        <div class="arrow-left" id="back-button">
+          <?xml version="1.0" encoding="iso-8859-1"?>
+          <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+          <svg onclick="geolocBack()" version="1.1" id="arrow-left" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          	 viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+          <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001
+          	c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213
+          	C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606
+          	C255,161.018,253.42,157.202,250.606,154.389z"/>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="info-wrapper" id="username-popup">
+      <div class="info-container">
+        <h1 key="username-title">
+          Ton pseudonyme
+        </h1>
+        <p key="username-text">
+          Sur la carte, les recettes sont accompagnées d'un pseudonyme généré automatiquement.
+          Il sera gardé en mémoire pour plus tard, mais il peut aussi être changé à chaque visite.
+        </p>
+        <button type="button" onclick="generateUsername();" id="random-button" key="random-button">
+          Aléatoirisation!
+        </button>
+        <h2 id="username-display">*****************</h2>
+        <button type="button" onclick="usernameNext();" id="username-next-button" key="username-next-button">
+          Nice!
+        </button>
+
+        <div class="arrow-left" id="back-button">
+          <?xml version="1.0" encoding="iso-8859-1"?>
+          <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+          <svg onclick="usernameBack()" version="1.1" id="arrow-left" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+             viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+          <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001
+            c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213
+            C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606
+            C255,161.018,253.42,157.202,250.606,154.389z"/>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="info-wrapper" id="title-popup">
+      <div class="info-container">
+        <h1 key= "title-title">
+          Le titre
+        </h1>
+        <p key="titre-text">
+          On mange quoi? Un sandwich au beurre de peanut ou un plât cinq étoiles?<br>
+          y'a rien de trop beau!
+        </p>
+        <input type="text" id="name-input" name="name-input" placeholder="Titre..">
+
+        <button type="button" onclick="titleNext();" id="title-next-button" key= "title-next-button">
+          Suivant!
+        </button>
+
+
+        <div class="arrow-left" id="back-button">
+          <?xml version="1.0" encoding="iso-8859-1"?>
+          <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+          <svg onclick="titleBack()" version="1.1" id="arrow-left" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+             viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+          <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001
+            c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213
+            C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606
+            C255,161.018,253.42,157.202,250.606,154.389z"/>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="info-wrapper" id="description-popup">
+      <div class="info-container">
+        <h1 key= "description-title">
+          Ajoute un commentaire ou une description
+        </h1>
+        <textarea id="description-text" name="description-text" rows="4" cols="50" placeholder="commentaire/description.." maxlength="1000"></textarea>
+
+        <button type="button" onclick="descriptionNext();" id="description-next-button" key= "description-next-button">
+          Suivant!
+        </button>
+
+
+        <div class="arrow-left" id="back-button">
+          <?xml version="1.0" encoding="iso-8859-1"?>
+          <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+          <svg onclick="descriptionBack()" version="1.1" id="arrow-left" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+             viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+          <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001
+            c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213
+            C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606
+            C255,161.018,253.42,157.202,250.606,154.389z"/>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="info-wrapper" id="recipe-popup">
+      <div class="info-container">
+        <h1 key= "recipe-title">
+          Si tu te sens brave, ajoute la recette!<br>
+          (c'est optionel là)
+        </h1>
+        <textarea id="recette-text" name="recette-text" rows="4" cols="50" placeholder="recette.." maxlength="1000"></textarea>
+
+        <button type="button" onclick="recipeNext();" id="recipe-next-button" key= "recipe-next-button">
+          C'est bon, on publie!
+        </button>
+
+
+        <div class="arrow-left" id="back-button">
+          <?xml version="1.0" encoding="iso-8859-1"?>
+          <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+          <svg onclick="recipeBack();" version="1.1" id="arrow-left" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+             viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
+          <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001
+            c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213
+            C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606
+            C255,161.018,253.42,157.202,250.606,154.389z"/>
+          </svg>
+        </div>
+
+      </div>
     </div>
 
     <div class="top-container">
@@ -68,39 +239,6 @@
       </div>
     </div>
 
-    <!-- <div class="text-test-container">
-      <h1 id="translation_test" key="test">Hello, this is a test.</h1>
-      <p>
-        <button id="french_button">FR</button>  <button id="english_button">EN</button>
-      </p>
-
-      <p>
-        recipeName: <input id="recipeName_input"></input>
-        <br>
-        recipeDescription: <input id="recipeDescription_input"></input>
-        <br>
-        recipe: <input id="recipe_input"></input>
-        <br>
-        <button id="submit_button">submit</button>
-        <br>
-        <br>
-        userName: <h2 id=generated_username><h2></h2>
-        <br>
-        <button id="generateUsername_button">Generate UserName</button>
-      </p>
-
-      <p>
-        latitude: <span id="latitude"></span>&deg;
-        <br>
-        longitude: <span id="longitude"></span>&deg;
-        <br>
-        <button id="geolocation_button">GeoLocalize!</button> <button id="createMap_button">createMap</button>
-      </p>
-
-      <p>
-        <button id="requestData_button">requestData</button>
-      </p>
-    </div> -->
     <div id="map"></div>
   </body>
 

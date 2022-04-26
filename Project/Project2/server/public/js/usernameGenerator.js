@@ -1,8 +1,7 @@
 //Generate a username and save it in localStorage
 const USERNAME_DATA = 'username-data-for-the-share-a-recipe-app'
-
-$('#generateUsername_button').on(`click`, generateUsername);
 let usernameData;
+let usernameFixed;
 
 function generateUsername() {
   console.log(language);
@@ -46,7 +45,7 @@ function generateUsername() {
                   intervalSlow = setInterval(function(){
                       timesRun += 1;
                       username = randomizeUsername()
-                      $('#generated_username').html(username);
+                      $('#username-display').html(username);
                       if(timesRun === timesRunSlow){
                           clearInterval(intervalSlow);
                           //Save to the LocatStorage
@@ -54,15 +53,16 @@ function generateUsername() {
                             username: username
                           }
                           saveLocal(userData, USERNAME_DATA);
+                          usernameFixed = userData.username;
                       }
                   }, slowSpeed);
               }
               username = randomizeUsername()
-              $('#generated_username').html(username);
+              $('#username-display').html(username);
           }, mediumSpeed);
       }
       username = randomizeUsername()
-      $('#generated_username').html(username);
+      $('#username-display').html(username);
   }, fastSpeed);
 }
 

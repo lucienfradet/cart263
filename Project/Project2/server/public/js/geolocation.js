@@ -1,14 +1,12 @@
 //check if geolocation is available on the browser
 let userPosition;
 
-$('#geolocation_button').on(`click`, geoLocalize);
-
 function geoLocalize() {
   if ('geolocation' in navigator) {
     console.log('geolocation available');
 
     const options = {
-      
+
     }
 
     navigator.geolocation.getCurrentPosition(position => {
