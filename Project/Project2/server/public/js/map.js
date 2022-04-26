@@ -1,8 +1,9 @@
+//Function using the MapBox map API
+
 let map;
 let popup;
 
-$('#createMap_button').on(`click`, createMap);
-
+//create the map
 createMap();
 async function createMap() {
   const options = {
@@ -13,9 +14,10 @@ async function createMap() {
     maxZoom: 13
   }
   mapboxgl.accessToken = await getMapToken();
-  //console.log(mapboxgl.accessToken);
+
   map = new mapboxgl.Map(options);
 
+  //Executes when the map is loaded (DUUUUUUUUH)
   map.on('load', async function() {
     // disable map rotation using right click + drag
     map.dragRotate.disable();
@@ -34,7 +36,7 @@ async function createMap() {
       clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
     });
 
-    let circleRadiusViewPort = window.innerWidth * 2.5 / 100;
+    let circleRadiusViewPort = window.innerWidth * 2.5 / 100; //convert px to vw
     map.addLayer({
       id: "recipe",
       type: "circle",
@@ -65,6 +67,7 @@ async function createMap() {
       }
     });
 
+    //code following a MapBox example. Generates popup windows
     map.on('click', 'recipe', (e) => {
     // Copy coordinates array.
     const coordinates = e.features[0].geometry.coordinates.slice();
@@ -87,10 +90,15 @@ async function createMap() {
       .addTo(map);
     }
 
+    //attributes ids to the popup window for CSS customization
     $(".mapboxgl-popup-content").attr("id", "active-popup");
     $(".mapboxgl-popup-tip").attr("id", "active-popup-tip");
     });
 
+    //Zooms on clustered points
+    //There seems to be not function to spread points that are to close to each other.
+    //The map zoom max level is quite unzoomed because of the desire to keep user location private
+    //This can create problem if more than one entry is created at the same location :(
     map.on('click', 'clusters', (e) => {
       const features = map.queryRenderedFeatures(e.point, {
         layers: ['clusters']
@@ -141,7 +149,10 @@ async function createMap() {
   resizeMap();
 }
 
+//resize map!
 function resizeMap() {
+  //Displays the slider differently for tablets and desktops...
+  //in the end, there's only this feature and not much more to make the experience pleasing on the big screen
   if (deviceTypeDetect() !== "mobile") {
     if (window.innerWidth < 575) {
       $("#slider-container").removeClass("slider-container-big-screen");
@@ -163,6 +174,8 @@ function resizeMap() {
   map.resize();
 }
 
+//I thought about using a private map token and ended up using a public one.
+//This wouldn't have been that much more safe either lol
 async function getMapToken() {
   try {
     const response = await fetch('/getToken'); //await the response
@@ -179,12 +192,13 @@ async function getMapToken() {
   }
 }
 
-
+//Display date... on the map! (dammn)
 function displayDataOnMap(timeStamp) {
   if (recipe) {
-    let timeMin = timeStamp - 2*60*60*1000; //2 hours?
+    let timeMin = timeStamp - 2*60*60*1000; //2 hours? yeah it's good
     const geojsonSource = map.getSource('recipe');
 
+    //data is stored in the map as JSON features
     //remove previsous sources
     geojsonSource.setData({
     "type": "FeatureCollection",
@@ -196,6 +210,7 @@ function displayDataOnMap(timeStamp) {
     for (let i = 0; i < recipe.length; i++) {
       let recipeRawData = recipe[i];
 
+      //deal with data disparities like french/english or no recipe provided
       if (parseInt(recipeRawData.date) >= timeMin && parseInt(recipeRawData.date) <= timeStamp) {
         let description;
         if (recipeRawData.recipe === undefined) {

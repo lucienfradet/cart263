@@ -1,10 +1,10 @@
 //Generate a username and save it in localStorage
+
 const USERNAME_DATA = 'username-data-for-the-share-a-recipe-app'
 let usernameData;
 let usernameFixed;
 
 function generateUsername() {
-  console.log(language);
   //get the username JSONs from the server
   if (language === 'fr') {
     $.get('/usernameOptionsFrench', function(data, status) {
@@ -48,11 +48,13 @@ function generateUsername() {
                       $('#username-display').html(username);
                       if(timesRun === timesRunSlow){
                           clearInterval(intervalSlow);
+                          //This is the end of the roulette effect
                           //Save to the LocatStorage
                           userData = {
                             username: username
                           }
                           saveLocal(userData, USERNAME_DATA);
+                          //save the username in a global variable
                           usernameFixed = userData.username;
                       }
                   }, slowSpeed);
@@ -66,6 +68,7 @@ function generateUsername() {
   }, fastSpeed);
 }
 
+//shuffles the arrays of data
 function randomizeUsername() {
   let verb;
   let ending = '';
@@ -111,6 +114,7 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+//Convert the strings to camel case... well with the first letter also capitalize hehe 
 function toCamelCase(string) {
   let result = "";
   //convert to Words

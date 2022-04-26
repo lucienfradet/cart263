@@ -1,12 +1,13 @@
+//Geolocation functions!
+
 //check if geolocation is available on the browser
 let userPosition;
 
 function geoLocalize() {
   if ('geolocation' in navigator) {
     console.log('geolocation available');
-
     const options = {
-
+      //WE GOT NO MORE OPTIONS
     }
 
     navigator.geolocation.getCurrentPosition(position => {
@@ -14,10 +15,6 @@ function geoLocalize() {
         lat: position.coords.latitude,
         long: position.coords.longitude,
       }
-      console.log(position);
-      $('#latitude').html(userPosition.lat);
-      $('#longitude').html(userPosition.long);
-      // Show a map centered at latitude / longitude.
     }, (error) => {
       throw new Error(`Error! status: ${error}`);
     }, options);
@@ -27,6 +24,7 @@ function geoLocalize() {
   }
 }
 
+//code was taken somewhere a while back (sorry for my terrible sourcing job)
 //Handling errors
 // Request repeated updates.
 const watchId = navigator.geolocation.watchPosition(

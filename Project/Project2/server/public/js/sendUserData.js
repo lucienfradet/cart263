@@ -1,7 +1,9 @@
+//Prep and send userData to the server to be posted to the database
+
 async function sendUserData() { //async funtion to wait for the response
   let date = parseInt(timeSlider[0].attributes['3'].nodeValue);
   let data = { //create the data
-    date: date.toString(), //not sure about the ISOString...
+    date: date.toString(),
     location: userPosition,
     username: getLocal(USERNAME_DATA).username,
     recipeName: $('#name-input').val(),

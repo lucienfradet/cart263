@@ -1,9 +1,12 @@
+//Function dealing with the user interface
+
 let timeSlider = $("#time-slider");
 let rangeInputQuery = document.querySelector('#time-slider');
 let displayTime = $("#time");
 let displayDate = $("#date");
-let dateSwitcher = false;
+let dateSwitcher = false; //switcher for the midnight day switch
 
+//sets up the date values and the controls for date "queries"
 function displayTopControls() {
   const dateStamp = new Date().getTime();
 
@@ -30,6 +33,8 @@ function displayTopControls() {
       convertTimeStampHourMinutes(value)
     );
 
+    //Displays the data contained in recipe variable according to the slider selected time.
+    //(Time stamp appear on the map up to 2 hours after their creation)
     displayDataOnMap(value);
 
     //Change the date number if user passes midnight
@@ -52,6 +57,8 @@ function displayTopControls() {
   });
 }
 
+//add or remove 24 hours to the range slider and change the date display
+//Also, loads data for the new 24 hour range and display it if needed
 async function arrowClick(direction) {
   let date = parseInt(displayDate.text().split(' ')[0]);
   let sliderMin = parseInt(timeSlider[0].attributes['2'].nodeValue);;
@@ -84,7 +91,7 @@ async function arrowClick(direction) {
   displayDataOnMap(sliderValue);
 }
 
-//Recipe input functions
+//--Recipe input functions--
 
 //hide all the popup elements on startup
 $("#geoloc-popup").hide();
@@ -93,8 +100,9 @@ $("#title-popup").hide();
 $("#description-popup").hide();
 $("#recipe-popup").hide();
 
+//There is a Next and Back button for every popup window.
 function addRecipeStart() {
-  geoLocalize();
+  geoLocalize(); //initiate geolocation
   if (popup !== undefined) {
     popup.remove()
   };
@@ -158,12 +166,16 @@ function descriptionBack() {
 }
 
 async function recipeNext() {
-  await sendUserData()
+  await sendUserData() //publish data from the user!
   resetMap();
 }
 
+//dowload and refresh the data from the database including the one from the user
 async function resetMap() {
   await requestData(parseInt(timeSlider[0].attributes['3'].nodeValue), 24*60*60*1000);
+  //timeSliderMaxValue is the exact time the user got on the site
+  //Because it doesn't get refreshed I use the value for posting
+  //Without it the newly entered userData would be stuck in an non existing future on the website's scope lol
   displayDataOnMap(
     parseInt(
       rangeInputQuery.value

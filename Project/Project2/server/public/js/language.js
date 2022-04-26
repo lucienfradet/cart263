@@ -1,5 +1,4 @@
 //Language selection function using the MultiLanguage library
-
 function languageSwitch() {
   if (language === 'fr') {
     setLanguage('en');

@@ -1,9 +1,6 @@
 'use strict';
 /*
-This is a server test
-I was able to run the static website located in "public" folder using Node.js and express
-It was also possible to post and get data to the Cloudant database.
-I felt like I was almost there, but I can't seem to run the server on the internet
+This server is deployed with Google's App Engine
 */
 
 //reference to node.js modules
@@ -71,7 +68,6 @@ app.use(bodyParser.json())
 
 //running the website
 app.use(express.static('public'));
-//app.use(express.json()); //same as bodyParser but with express...
 
 //start the server
 const PORT = parseInt(process.env.PORT) || 8080;
@@ -87,7 +83,7 @@ module.exports = app;
 --GET AND POST PATHS--
 */
 
-//map key request (does it change something? should I put the whole map on the server instead?)
+//map key request (does it change something? should I put the whole map on the server instead? nope. lol.)
 //tokenPrivate: 'pk.eyJ1IjoibHVjaWVuZnJhZGV0IiwiYSI6ImNsMmM4cXh2bDA0eDUzaW9mNmR6YWpuaHMifQ.K2ygmN3MjODPxC9LX5Asow'
 let mapBoxToken = {
   token: 'pk.eyJ1IjoibHVjaWVuZnJhZGV0IiwiYSI6ImNsMmFwZXJ3YjA3bmczZHFkN2ZqcTVqMTAifQ.VACSvm517kgmnWLCUfp8lA'
@@ -108,7 +104,7 @@ app.get('/usernameOptionsFrench', (request, response) => {
   console.log('sending french username Data');
 });
 
-//Getting the user data in a date range
+//Getting the user data according to a date range passed in the url
 app.get('/get_data?', async (request, response) => {
   console.log('new getData request...')
   console.log("query: ", convertTimeStamp(parseInt(request.query.min)), convertTimeStamp(parseInt(request.query.max)));
@@ -116,7 +112,6 @@ app.get('/get_data?', async (request, response) => {
   const query = {
     selector: {
       date: { "$gte": request.query.min , "$lte": request.query.max },
-      //date: { "$gte": '0' , "$lte": '0' },
     },
     fields: ["_id", "date", "location", "username", "recipeName", "recipeDescription", "recipe"],
     limit: 300
@@ -129,7 +124,6 @@ app.get('/get_data?', async (request, response) => {
       response.json(err);
     }
     else {
-      //console.log(cursor);
       response.json(cursor);
     }
   });
@@ -158,7 +152,7 @@ app.post('/postUserData', (request, response) => {
   });
 });
 
-//Convert TimeStamp to ISO-8601 string
+//Convert TimeStamp to ISO-8601 string (for debugging and console readability)
 function convertTimeStamp(stamp) {
   let date = new Date(stamp);
   return  "" + date.getFullYear() +
