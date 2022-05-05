@@ -72,28 +72,25 @@ async function createMap() {
     // Copy coordinates array.
     const coordinates = e.features[0].geometry.coordinates.slice();
     const description = e.features[0].properties.description;
+    displayPopUp(coordinates, description);
 
-    // Ensure that if the map is zoomed out such that multiple
-    // copies of the feature are visible, the popup appears
-    // over the copy being pointed to.
-    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-    }
-
-    const options = {
-      maxWidth: '80vw'
-    }
-    if (description !== undefined) {
-      popup = new mapboxgl.Popup(options)
-      .setLngLat(coordinates)
-      .setHTML(description)
-      .addTo(map);
-    }
-
-    //attributes ids to the popup window for CSS customization
-    $(".mapboxgl-popup-content").attr("id", "active-popup");
-    $(".mapboxgl-popup-tip").attr("id", "active-popup-tip");
     });
+
+    function displayPopUp(coordinates, description) {
+      const options = {
+        maxWidth: '80vw'
+      }
+      if (description !== undefined) {
+        popup = new mapboxgl.Popup(options)
+        .setLngLat(coordinates)
+        .setHTML(description)
+        .addTo(map);
+      }
+
+      //attributes ids to the popup window for CSS customization
+      $(".mapboxgl-popup-content").attr("id", "active-popup");
+      $(".mapboxgl-popup-tip").attr("id", "active-popup-tip");
+    }
 
     //Zooms on clustered points
     //There seems to be not function to spread points that are to close to each other.
@@ -104,17 +101,37 @@ async function createMap() {
         layers: ['clusters']
       });
       const clusterId = features[0].properties.cluster_id;
-      map.getSource('recipe').getClusterExpansionZoom(
-        clusterId,
-        (err, zoom) => {
-          if (err) return;
+      const point_count = features[0].properties.point_count;
+      const clusterSource = map.getSource('recipe');
 
-          map.easeTo({
-            center: features[0].geometry.coordinates,
-            zoom: zoom + 1
-          });
+      //display a random recipe from the cluster if zoom level reached maximum
+      if (map.getZoom() >= 13) {
+        clusterSource.getClusterChildren(clusterId, (error, features) => {
+        if (!error) {
+          //console.log('Cluster children:', features);
+          let randomRecipe = random(features);
+          const coordinates = randomRecipe.geometry.coordinates.slice();
+          const description = randomRecipe.properties.description;
+          displayPopUp(coordinates, description);
         }
-      );
+        else {
+          throw new Error(`Error! status: ${error}`); //this might be problematic! not sure of the syntax
+        }
+        });
+      }
+      else {
+        map.getSource('recipe').getClusterExpansionZoom(
+          clusterId,
+          (err, zoom) => {
+            if (err) return;
+
+            map.easeTo({
+              center: features[0].geometry.coordinates,
+              zoom: zoom + 1
+            });
+          }
+        );
+      }
     });
 
     // Change the cursor to a pointer when the mouse is over the places layer.
