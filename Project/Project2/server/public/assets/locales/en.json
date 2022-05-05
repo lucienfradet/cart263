@@ -29,5 +29,9 @@
     "description-next-button": "Next!",
     "recipe-title": "If you're feeling brave, provide the recipe!<br>(it's optional eh!)",
     "recipe-next-button": "All good, publish it!"
+  },
+  ".snippet": {
+    "getting-location": "geolocation in progress...",
+    "got-location": "geolocation aquired!"
   }
 }

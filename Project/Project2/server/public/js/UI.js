@@ -10,12 +10,6 @@ let dateSwitcher = false; //switcher for the midnight day switch
 function displayTopControls() {
   const dateStamp = new Date().getTime();
 
-  //Find the timestamp at midnight to deal with the date switch
-  const dateArray = convertTimeStamp(dateStamp).split('T');
-  const dateZero = new Date(
-    dateArray[0].toString()
-  ).getTime();
-
   displayTime.html(convertTimeStampHourMinutes(dateStamp));
   timeSlider.prop({
     'max': dateStamp,
@@ -25,6 +19,17 @@ function displayTopControls() {
   displayDate.html(
     convertTimeStampDate(dateStamp) + ' ' + convertTimeStampMonth(dateStamp)
   )
+
+  addSliderEventListener();
+}
+
+function addSliderEventListener() {
+  //Find the timestamp at midnight to deal with the date switch
+  const dateArray = convertTimeStamp(parseInt(timeSlider[0].attributes['3'].nodeValue)).split('T');
+  const dateZero = new Date( //giving the Date object only a date puts 00:00.000 time by default
+    dateArray[0].toString()
+  ).getTime();
+  console.log(new Date(dateZero));
 
   //Create event listenner for the slider
   rangeInputQuery.addEventListener('input', function() {
@@ -82,12 +87,15 @@ async function arrowClick(direction) {
     'max': sliderMax,
     'min': sliderMin
   });
+  console.log(timeSlider.val());
   timeSlider.val(sliderValue);
+  console.log(timeSlider.val());
   displayDate.html(
     convertTimeStampDate(sliderValue) + ' ' + convertTimeStampMonth(sliderValue)
   )
 
   await requestData(sliderMax, dayLength);
+  addSliderEventListener(); //reset the event listenner
   displayDataOnMap(sliderValue);
 }
 
@@ -107,18 +115,31 @@ function addRecipeStart() {
     popup.remove()
   };
   $("#geoloc-popup").show();
+  $("#geoloc-done").hide();
 }
 
 function geolocNext() {
-  $("#geoloc-popup").hide();
-  $("#username-popup").show();
+  if (userPosition) {
+    $("#geoloc-popup").hide();
+    $("#username-popup").show();
 
-  if (!usernameFixed) {
-    usernameFixed = getLocal(USERNAME_DATA).username;
-    if (usernameFixed !== undefined) {
-      $('#username-display').html(usernameFixed);
+    if (!usernameFixed) {
+      usernameFixed = getLocal(USERNAME_DATA).username;
+      if (usernameFixed !== undefined) {
+        $('#username-display').html(usernameFixed);
+      }
     }
   }
+  else {
+    if (language === 'fr') {
+      alert("Il semble y avoir un problème avec la géolocation... Essayez plus tard :(");
+    }
+    else if (language === 'en') {
+      alert("Looks like there is a problem with the geolocation... Try again later :(");
+    }
+  }
+
+
 }
 
 function geolocBack() {
@@ -172,15 +193,13 @@ async function recipeNext() {
 
 //dowload and refresh the data from the database including the one from the user
 async function resetMap() {
-  await requestData(parseInt(timeSlider[0].attributes['3'].nodeValue), 24*60*60*1000);
+  await requestData(new Date().getTime(), 24*60*60*1000);
   //timeSliderMaxValue is the exact time the user got on the site
   //Because it doesn't get refreshed I use the value for posting
   //Without it the newly entered userData would be stuck in an non existing future on the website's scope lol
-  displayDataOnMap(
-    parseInt(
-      rangeInputQuery.value
-    )
-  );
+  displayTopControls();
+  //make sure the fresh data is being displayed
+  displayDataOnMap(parseInt(timeSlider[0].attributes['3'].nodeValue));
   $("#recipe-popup").hide();
 }
 

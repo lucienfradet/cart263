@@ -29,5 +29,9 @@
     "description-next-button": "Suivant!",
     "recipe-title": "Si tu te sens brave, ajoute la recette!<br>(c'est optionel là!)",
     "recipe-next-button": "C'est bon, on publie!"
+  },
+  ".snippet": {
+    "getting-location": "géolocalisation en cours...",
+    "got-location": "géolocalisation acquise!"
   }
 }

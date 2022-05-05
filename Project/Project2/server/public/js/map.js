@@ -9,8 +9,8 @@ async function createMap() {
   const options = {
     container: 'map', // container id
     style: 'mapbox://styles/lucienfradet/cl2cae7e3000e16rwp3mhtpcl', //stylesheet location
-    center: [-73.560846, 45.527377], // starting position
-    zoom: 10.7, // starting zoom
+    center: [-69.591943, 52.042068], // starting position
+    zoom: 4, // starting zoom
     maxZoom: 13
   }
   mapboxgl.accessToken = await getMapToken();

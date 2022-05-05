@@ -11,10 +11,24 @@ function geoLocalize() {
     }
 
     navigator.geolocation.getCurrentPosition(position => {
+      $(".dot-pulse").hide();
+      $("#geoloc-in-progress").hide();
+      $("#geoloc-done").show();
       userPosition = {
         lat: position.coords.latitude,
         long: position.coords.longitude,
       }
+
+      //fly to user location when the location is aquired
+      map.flyTo({
+        center: [
+          userPosition.long,
+          userPosition.lat
+        ],
+        zoom: 10.3,
+        essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+
     }, (error) => {
       throw new Error(`Error! status: ${error}`);
     }, options);
