@@ -6,6 +6,7 @@ This server is deployed with Google's App Engine
 //reference to node.js modules
 let fs = require('fs');
 let express = require('express');
+const requestPack = require('request');
 let app = express();
 let http = require('http').createServer(app);
 let io = require('socket.io')(http);
@@ -17,9 +18,9 @@ let bodyParser = require('body-parser')
 let Cloudant = require('@cloudant/cloudant');
 
 // Get account details from environment variables
-let cloudantUrl = "https://755b6d2e-a89a-43c4-ad5e-3c79ee9746ea-bluemix.cloudantnosqldb.appdomain.cloud/recipedb";
-let cloudantUsername = "apikey-v2-2tveshkio0wur6t5dclgze9lax5qd3q07xrx7b9mkxco";
-let cloudantPassword = "7cd8d5146af3db26a53775756baee9fa";
+const cloudantUrl = "https://755b6d2e-a89a-43c4-ad5e-3c79ee9746ea-bluemix.cloudantnosqldb.appdomain.cloud/recipedb";
+const cloudantUsername = "apikey-v2-2tveshkio0wur6t5dclgze9lax5qd3q07xrx7b9mkxco";
+const cloudantPassword = "7cd8d5146af3db26a53775756baee9fa";
 
 // Initialize the library with url and credentials.
 let cloudant = Cloudant({ url: cloudantUrl, username: cloudantUsername, password: cloudantPassword }, function(err, cloudant, pong) {
@@ -68,13 +69,6 @@ app.use(bodyParser.json())
 
 //running the website
 app.use(express.static('public'));
-
-//start the server
-const PORT = parseInt(process.env.PORT) || 8080;
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log('Press Ctrl+C to quit.');
-});
 
 // [END gae_flex_node_static_files]
 module.exports = app;
@@ -129,6 +123,35 @@ app.get('/get_data?', async (request, response) => {
   });
 });
 
+//Posting Captcha
+app.post('/captcha', (request, response) => {
+  console.log('new post reCAPTCHA request...');
+
+  if(request.body['token'] === undefined || request.body['token'] === '' || request.body['token'] === null)
+  {
+    return response.json({
+      responseError : 'something has gone wrong'
+    });
+  }
+  const SECRET_RECAPTCHA = "6LdkQtQfAAAAAEc0_i-wgt9sR1zBJOOXaLxf9c1J"
+  const verificationURL = "https://www.google.com/recaptcha/api/siteverify?secret=" + SECRET_RECAPTCHA + "&response=" + request.body['token'] + "&remoteip=" + request.connection.remoteAddress;
+
+  requestPack(verificationURL, function(error, res, body) { //request is a node module
+    body = JSON.parse(body);
+
+    if(body.success !== undefined && !body.success) {
+      console.log('Failed captcha verification');
+      return response.json({
+        responseError : 'failed captcha verification'
+      });
+    }
+    console.log('successfull captcha verification');
+    response.json({
+      responseSuccess : 'Sucess'
+    });
+  });
+});
+
 //Posting UserData to cloudant db
 app.post('/postUserData', (request, response) => {
   console.log('new post request...')
@@ -163,3 +186,10 @@ function convertTimeStamp(stamp) {
           ":" + date.getSeconds() +
           date.getMilliseconds() + "Z";
 }
+
+//start the server
+const PORT = parseInt(process.env.PORT) || 8080;
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+  console.log('Press Ctrl+C to quit.');
+});

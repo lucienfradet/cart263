@@ -21,6 +21,10 @@ Also hides overflow.
   }
 }
 
+.grecaptcha-badge {
+  z-index: 9999;
+}
+
 
 body {
   position: relative;

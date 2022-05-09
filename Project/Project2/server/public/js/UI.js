@@ -29,7 +29,6 @@ function addSliderEventListener() {
   const dateZero = new Date( //giving the Date object only a date puts 00:00.000 time by default
     dateArray[0].toString()
   ).getTime();
-  console.log(new Date(dateZero));
 
   //Create event listenner for the slider
   rangeInputQuery.addEventListener('input', function() {
@@ -186,10 +185,47 @@ function descriptionBack() {
   $("#title-popup").show();
 }
 
-async function recipeNext() {
-  await sendUserData() //publish data from the user!
-  resetMap();
-}
+//PUBLISH DATA AND CHECK reCAPTCHA
+const SITE_RECAPTCHA = "6LdkQtQfAAAAAM7piynbUL60f56rwt6XAfGJf1Jj";
+
+$("#recipe-next-button").on('click', (e) =>{
+  //grecaptcha.ready(function() {
+    grecaptcha.execute(SITE_RECAPTCHA, {action: 'submit'}).then(async (token) => {
+      const data = {
+        token: token
+      }
+      const options = {
+        method: 'POST',
+        headers: {
+          'content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      };
+      console.log('posting reCAPTCHA token to server...');
+
+      try {
+        const response = await fetch('/captcha', options); //await the response
+
+        if (!response.ok) {
+          throw new Error(`Error! status: ${response.status}`);
+        }
+
+        const result = await response.json(); //await for the result
+        console.log("reCAPTCHA response:", result);
+        if (!result['responseSuccess']) {
+          console.error(`Error! status: ${result.responseError}`);
+          alert("Google thinks you're a robot...");
+        }
+        else {
+          await sendUserData() //publish data from the user!
+          resetMap();
+        }
+      }
+      catch (error) {
+        console.log(error);
+      }
+    });
+});
 
 //dowload and refresh the data from the database including the one from the user
 async function resetMap() {
