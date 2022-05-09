@@ -191,7 +191,7 @@ const SITE_RECAPTCHA = "6LdkQtQfAAAAAM7piynbUL60f56rwt6XAfGJf1Jj";
 $("#recipe-next-button").on('click', (e) =>{
   //grecaptcha.ready(function() {
     grecaptcha.execute(SITE_RECAPTCHA, {action: 'submit'}).then(async (token) => {
-      const data = {
+      const data = { //place the token in a data object
         token: token
       }
       const options = {
