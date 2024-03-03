@@ -188,43 +188,45 @@ function descriptionBack() {
 //PUBLISH DATA AND CHECK reCAPTCHA
 const SITE_RECAPTCHA = "6LdkQtQfAAAAAM7piynbUL60f56rwt6XAfGJf1Jj";
 
-$("#recipe-next-button").on('click', (e) =>{
+$("#recipe-next-button").on('click', async (e) =>{
   //grecaptcha.ready(function() {
-    grecaptcha.execute(SITE_RECAPTCHA, {action: 'submit'}).then(async (token) => {
-      const data = { //place the token in a data object
-        token: token
-      }
-      const options = {
-        method: 'POST',
-        headers: {
-          'content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      };
-      console.log('posting reCAPTCHA token to server...');
-
-      try {
-        const response = await fetch('/captcha', options); //await the response
-
-        if (!response.ok) {
-          throw new Error(`Error! status: ${response.status}`);
-        }
-
-        const result = await response.json(); //await for the result
-        console.log("reCAPTCHA response:", result);
-        if (!result['responseSuccess']) {
-          console.error(`Error! status: ${result.responseError}`);
-          alert("Google thinks you're a robot...");
-        }
-        else {
+    // grecaptcha.execute(SITE_RECAPTCHA, {action: 'submit'}).then(async (token) => {
+    //   const data = { //place the token in a data object
+    //     token: token
+    //   }
+    //   const options = {
+    //     method: 'POST',
+    //     headers: {
+    //       'content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(data)
+    //   };
+    //   console.log('posting reCAPTCHA token to server...');
+    //
+    //   try {
+    //     const response = await fetch('/captcha', options); //await the response
+    //
+    //     if (!response.ok) {
+    //       throw new Error(`Error! status: ${response.status}`);
+    //     }
+    //
+    //     const result = await response.json(); //await for the result
+    //     console.log("reCAPTCHA response:", result);
+    //     if (!result['responseSuccess']) {
+    //       console.error(`Error! status: ${result.responseError}`);
+    //       alert("Google thinks you're a robot...");
+    //     }
+    //     else {
+    //       await sendUserData() //publish data from the user!
+    //       resetMap();
+    //     }
+    //   }
+    //   catch (error) {
+    //     console.log(error);
+    //   }
+    // });
           await sendUserData() //publish data from the user!
           resetMap();
-        }
-      }
-      catch (error) {
-        console.log(error);
-      }
-    });
 });
 
 //dowload and refresh the data from the database including the one from the user

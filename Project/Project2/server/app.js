@@ -9,6 +9,7 @@ let express = require('express');
 const requestPack = require('request');
 let app = express();
 let http = require('http').createServer(app);
+const https = require('https');
 let io = require('socket.io')(http);
 let url = require('url');
 let bodyParser = require('body-parser')
@@ -80,7 +81,7 @@ module.exports = app;
 //map key request (does it change something? should I put the whole map on the server instead? nope. lol.)
 //tokenPrivate: 'pk.eyJ1IjoibHVjaWVuZnJhZGV0IiwiYSI6ImNsMmM4cXh2bDA0eDUzaW9mNmR6YWpuaHMifQ.K2ygmN3MjODPxC9LX5Asow'
 let mapBoxToken = {
-  token: 'pk.eyJ1IjoibHVjaWVuZnJhZGV0IiwiYSI6ImNsMmFwZXJ3YjA3bmczZHFkN2ZqcTVqMTAifQ.VACSvm517kgmnWLCUfp8lA'
+  token: 'pk.eyJ1IjoibHVjaWVuZnJhZGV0IiwiYSI6ImNsMmM4cXh2bDA0eDUzaW9mNmR6YWpuaHMifQ.K2ygmN3MjODPxC9LX5Asow'
 }
 app.get('/getToken', async (request, response) => {
   await response.send(mapBoxToken);
@@ -133,7 +134,7 @@ app.post('/captcha', (request, response) => {
       responseError : 'something has gone wrong'
     });
   }
-  const SECRET_RECAPTCHA = "6LdkQtQfAAAAAEc0_i-wgt9sR1zBJOOXaLxf9c1J"
+  const SECRET_RECAPTCHA = "6LdjTogpAAAAAOujw-WUBUiQNGAPQAI7VGgmTQub";
   const verificationURL = "https://www.google.com/recaptcha/api/siteverify?secret=" + SECRET_RECAPTCHA + "&response=" + request.body['token'] + "&remoteip=" + request.connection.remoteAddress;
 
   requestPack(verificationURL, function(error, res, body) { //request is a node module
@@ -187,9 +188,19 @@ function convertTimeStamp(stamp) {
           date.getMilliseconds() + "Z";
 }
 
+// Read SSL certificate files
+const privateKey = fs.readFileSync('./sslcert/server.key', 'utf8');
+const certificate = fs.readFileSync('./sslcert/server.cert', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+
+// Use HTTPS server
+const httpsServer = https.createServer(credentials, app);
+
 //start the server
 const PORT = parseInt(process.env.PORT) || 8080;
-app.listen(PORT, () => {
+// const IP_ADDRESS = '192.168.0.91';
+const IP_ADDRESS = '0.0.0.0';
+httpsServer.listen(PORT, IP_ADDRESS, () => {
   console.log(`App listening on port ${PORT}`);
   console.log('Press Ctrl+C to quit.');
 });
